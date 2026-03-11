@@ -2185,9 +2185,9 @@ async function runTests() {
 
         assert.strictEqual(code, 0, `detect-project should source cleanly, stderr: ${stderr}`);
 
-        const [projectId, projectDir] = stdout.trim().split(/\r?\n/);
+        const [projectId] = stdout.trim().split(/\r?\n/);
         const registryPath = path.join(homeDir, '.claude', 'homunculus', 'projects.json');
-        const projectMetadataPath = path.join(projectDir, 'project.json');
+        const projectMetadataPath = path.join(homeDir, '.claude', 'homunculus', 'projects', projectId, 'project.json');
 
         assert.ok(projectId, 'detect-project should emit a project id');
         assert.ok(fs.existsSync(registryPath), 'projects.json should be created');
