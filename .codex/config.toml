@@ -38,33 +38,33 @@ Follow ECC principles:
 # MCP Servers
 # Codex supports command-based MCP servers
 [mcp_servers.github]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-github"]
+command = "pnpm"
+args = ["dlx", "@modelcontextprotocol/server-github"]
 
 [mcp_servers.context7]
-command = "npx"
-args = ["-y", "@upstash/context7-mcp@latest"]
+command = "pnpm"
+args = ["dlx", "@upstash/context7-mcp@latest"]
 
 [mcp_servers.memory]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-memory"]
+command = "pnpm"
+args = ["dlx", "@modelcontextprotocol/server-memory"]
 
 [mcp_servers.sequential-thinking]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+command = "pnpm"
+args = ["dlx", "@modelcontextprotocol/server-sequential-thinking"]
 
 # Additional MCP servers (uncomment as needed):
 # [mcp_servers.supabase]
-# command = "npx"
-# args = ["-y", "supabase-mcp-server@latest", "--read-only"]
+# command = "pnpm"
+# args = ["dlx", "supabase-mcp-server@latest", "--read-only"]
 #
 # [mcp_servers.firecrawl]
-# command = "npx"
-# args = ["-y", "firecrawl-mcp"]
+# command = "pnpm"
+# args = ["dlx", "firecrawl-mcp"]
 #
 # [mcp_servers.railway]
-# command = "npx"
-# args = ["-y", "@anthropic/railway-mcp"]
+# command = "pnpm"
+# args = ["dlx", "@anthropic/railway-mcp"]
 
 # Features
 [features]
