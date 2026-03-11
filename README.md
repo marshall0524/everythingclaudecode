@@ -1,4 +1,4 @@
-**Language:** English | [繁體中文](docs/zh-TW/README.md)
+**Language:** English | [繁體中文](docs/zh-TW/README.md) | [한국어](docs/ko-KR/README.md)
 
 # Everything Claude Code
 
@@ -25,7 +25,7 @@
 
 **🌐 Language / 语言 / 語言**
 
-[**English**](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](docs/zh-TW/README.md) | [日本語](docs/ja-JP/README.md)
+[**English**](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](docs/zh-TW/README.md) | [日本語](docs/ja-JP/README.md) | [한국어](docs/ko-KR/README.md)
 
 </div>
 
