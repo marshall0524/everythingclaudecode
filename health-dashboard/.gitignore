@@ -1,0 +1,5 @@
+node_modules/
+.next/
+.env.local
+data/health-data.json
+public/uploads/
