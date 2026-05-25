@@ -125,9 +125,6 @@ export const sampleHealthData: HealthData = {
       filePath: '/uploads/Sports_Physical_Jan_2025.pdf',
     },
   ],
-  lastSync: {
-    apple_health: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    strava: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-    renpho: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-  },
+  lastSync: {},
+  isSampleData: true,
 };

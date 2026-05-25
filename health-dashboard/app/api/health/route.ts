@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
     }
 
     data.lastSync.apple_health = new Date().toISOString();
+    data.isSampleData = false;
     await saveHealthData(data);
     return NextResponse.json({ success: true });
   } catch (e) {

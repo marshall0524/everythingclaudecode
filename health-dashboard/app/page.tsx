@@ -1,262 +1,186 @@
+import Link from 'next/link';
 import { getHealthData } from '@/lib/store';
-import { last, avg, trend, getBMICategory, formatRelativeTime } from '@/lib/utils';
+import { last, avg, trend } from '@/lib/utils';
 import RecoveryRing from '@/components/RecoveryRing';
-import MetricCard from '@/components/MetricCard';
 import WeightChart from '@/components/WeightChart';
-import SleepChart from '@/components/SleepChart';
-import ExerciseChart from '@/components/ExerciseChart';
-import StressChart from '@/components/StressChart';
-import VO2MaxChart from '@/components/VO2MaxChart';
-import BMIGauge from '@/components/BMIGauge';
-import { Scale, Bed, Dumbbell, Wind, Zap, FileText, ChevronRight, Flame } from 'lucide-react';
+import { ChevronRight, AlertTriangle } from 'lucide-react';
 
 export const revalidate = 60;
 
+function recoveryColor(s: number) { return s >= 67 ? '#30D158' : s >= 34 ? '#FF9F0A' : '#FF3B30'; }
+function recoveryLabel(s: number) { return s >= 67 ? 'Optimal' : s >= 34 ? 'Moderate' : 'Low'; }
+
 export default async function DashboardPage() {
   const data = await getHealthData();
-  const { weight, sleep, exercise, stress, vo2max, profile, pathology, lastSync } = data;
+  const { weight, sleep, exercise, stress, vo2max, profile, isSampleData } = data;
 
-  const lw = last(weight);
-  const ls = last(stress);
-  const lv = last(vo2max);
+  const lw  = last(weight);
+  const ls  = last(stress);
+  const lv  = last(vo2max);
   const lsl = last(sleep);
 
-  const avgSleep7   = avg(sleep.slice(-7).map(s => s.totalHours));
-  const avgStress7  = avg(stress.slice(-7).map(s => s.score));
-  const avgHRV7     = avg(stress.slice(-7).map(s => s.hrv));
+  const avgSleep7  = avg(sleep.slice(-7).map(s => s.totalHours));
+  const avgHRV7    = avg(stress.slice(-7).map(s => s.hrv));
+  const avgStress7 = avg(stress.slice(-7).map(s => s.score));
 
-  // Recovery score: weighted from HRV baseline, sleep, resting HR
-  const hrvBase = avgHRV7 || 60;
-  const todayHRV = ls?.hrv || hrvBase;
-  const todaySleep = lsl?.totalHours || 7;
-  const sleepScore = Math.round(Math.min((todaySleep / 8) * 100, 100));
-  const hrvScore   = Math.round(Math.min((todayHRV / 80) * 100, 100));
+  const sleepScore    = Math.round(Math.min(((lsl?.totalHours ?? 0) / 8) * 100, 100));
+  const hrvScore      = Math.round(Math.min(((ls?.hrv ?? 0) / 80) * 100, 100));
   const recoveryScore = Math.round(hrvScore * 0.6 + sleepScore * 0.4);
+  const rColor        = recoveryColor(recoveryScore);
 
-  const recentEx       = exercise.slice(-7);
-  const weeklyMin      = recentEx.reduce((s, e) => s + e.duration, 0);
+  // Strain = weighted exercise load 0–21 scale like Whoop
+  const recentEx      = exercise.slice(-7);
+  const weeklyMin     = recentEx.reduce((s, e) => s + e.duration, 0);
   const weeklyCalories = recentEx.reduce((s, e) => s + e.activeCalories, 0);
+  const strainScore   = Math.min(parseFloat(((weeklyMin / 7) * 0.05 + (recentEx.length * 0.3)).toFixed(1)), 21);
 
-  const weightTrend    = trend(weight.map(w => w.weight));
+  const wTrend = trend(weight.map(w => w.weight));
   const weightChange30 = weight.length >= 2
     ? (last(weight)!.weight - weight[Math.max(0, weight.length - 8)].weight).toFixed(1)
     : '0';
-  const bmiCat = lw ? getBMICategory(lw.bmi) : { label: '', color: '' };
-
-  const lastSyncStr = lastSync.apple_health ? formatRelativeTime(lastSync.apple_health) : 'Never';
 
   const today = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <div className="px-4 py-5 space-y-6 animate-fade">
+    <div className="animate-fade">
 
-      {/* ── Date + sync ─────────────────────── */}
-      <div className="flex items-center justify-between">
+      {/* ── Sample data banner ───────────── */}
+      {isSampleData && (
+        <div className="mx-4 mt-4 mb-0 flex items-start gap-2.5 rounded-2xl p-3" style={{ background: 'color-mix(in srgb, #FF9F0A 12%, var(--bg-card))', border: '1px solid color-mix(in srgb, #FF9F0A 30%, transparent)' }}>
+          <AlertTriangle size={15} style={{ color: '#FF9F0A', flexShrink: 0, marginTop: 1 }} />
+          <div>
+            <p className="text-xs font-bold" style={{ color: '#FF9F0A' }}>No real data synced yet</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+              This is sample data. <Link href="/sync" className="underline" style={{ color: '#FF9F0A' }}>Connect Apple Health & Strava</Link> to see your real metrics.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Date header ──────────────────── */}
+      <div className="px-4 pt-4 pb-2 flex items-center justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>Today</p>
-          <h1 className="text-lg font-bold leading-tight" style={{ color: 'var(--text)' }}>{today}</h1>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--text-faint)' }}>Today</p>
+          <p className="text-base font-bold" style={{ color: 'var(--text)' }}>{today}</p>
         </div>
-        <div className="text-right">
-          <p className="text-[10px]" style={{ color: 'var(--text-faint)' }}>Last sync</p>
-          <p className="text-xs font-semibold" style={{ color: 'var(--recovery)' }}>{lastSyncStr}</p>
-        </div>
+        {!isSampleData && ls && (
+          <div className="text-right">
+            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>Resting HR</p>
+            <p className="text-xl font-black" style={{ color: rColor }}>{ls.restingHeartRate}<span className="text-xs font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>bpm</span></p>
+          </div>
+        )}
       </div>
 
-      {/* ── Recovery ring hero ───────────────── */}
-      <div className="card p-5">
+      {/* ── Recovery ring hero ───────────── */}
+      <Link href="/recovery" className="flex flex-col items-center py-2 active:opacity-80 transition-opacity">
         <RecoveryRing
-          recovery={recoveryScore}
-          sleep={sleepScore}
-          hrv={ls?.hrv ?? 62}
-          rhr={ls?.restingHeartRate ?? 60}
+          score={recoveryScore}
+          label="Recovery"
+          sublabel={recoveryLabel(recoveryScore)}
+          color={rColor}
+          size={260}
+          strokeWidth={22}
         />
-      </div>
+      </Link>
 
-      {/* ── Today at a glance ────────────────── */}
-      <div className="grid grid-cols-3 gap-2">
-        {[
-          { label: 'Sleep', val: `${lsl?.totalHours.toFixed(1) ?? '--'}h`, color: 'var(--sleep)', pct: sleepScore },
-          { label: 'Strain', val: `${Math.round(weeklyMin / 7)}m`, color: 'var(--strain)', pct: Math.min(Math.round(weeklyMin / 3), 100) },
-          { label: 'Stress', val: `${ls?.score ?? '--'}`, color: avgStress7 < 50 ? 'var(--recovery)' : avgStress7 < 65 ? 'var(--warning)' : 'var(--danger)', pct: 100 - (ls?.score ?? 50) },
-        ].map(({ label, val, color, pct }) => (
-          <div key={label} className="card p-3 flex flex-col items-center gap-1.5">
-            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>{label}</p>
-            <p className="text-lg font-extrabold" style={{ color }}>{val}</p>
-            <div className="w-full h-1.5 rounded-full" style={{ background: 'var(--bg-elevated)' }}>
-              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
-            </div>
+      {/* ── Strain + Sleep row ───────────── */}
+      <div className="grid grid-cols-2 gap-3 mx-4 mb-4">
+        <Link href="/exercise" className="card p-4 text-center active:scale-95 transition-transform block">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: 'var(--text-faint)' }}>Strain</p>
+          <p className="font-black leading-none" style={{ fontSize: 42, color: '#0A84FF' }}>{strainScore}</p>
+          <p className="text-[10px] font-bold mt-1" style={{ color: 'var(--text-muted)' }}>{weeklyMin} min · {weeklyCalories} kcal</p>
+          <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
+            <div className="h-full rounded-full" style={{ width: `${Math.min((strainScore / 21) * 100, 100)}%`, background: '#0A84FF', boxShadow: '0 0 6px #0A84FF88' }} />
           </div>
-        ))}
+        </Link>
+
+        <Link href="/sleep" className="card p-4 text-center active:scale-95 transition-transform block">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: 'var(--text-faint)' }}>Sleep</p>
+          <p className="font-black leading-none" style={{ fontSize: 42, color: '#BF5AF2' }}>{lsl?.totalHours.toFixed(1) ?? '--'}<span className="text-lg">h</span></p>
+          <p className="text-[10px] font-bold mt-1" style={{ color: 'var(--text-muted)' }}>7d avg {avgSleep7.toFixed(1)}h</p>
+          <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
+            <div className="h-full rounded-full" style={{ width: `${sleepScore}%`, background: '#BF5AF2', boxShadow: '0 0 6px #BF5AF288' }} />
+          </div>
+        </Link>
       </div>
 
-      {/* ── Weight & Body ───────────────────── */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>Weight & Body</h2>
-          <a href="/sync" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: 'var(--strain)' }}>Sync <ChevronRight size={12} /></a>
-        </div>
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <MetricCard
-            title="Weight"
-            value={lw?.weight ?? '--'}
-            unit="kg"
-            subtitle={`Goal ${profile.targetWeight} kg · Source: Apple Health`}
-            trend={weightTrend}
-            trendGood={false}
-            trendValue={`${weightChange30}kg`}
-            accentColor="var(--strain)"
-            icon={<Scale size={14} />}
-            badge={bmiCat.label}
-          />
-          <MetricCard
-            title="Body Fat"
-            value={lw?.bodyFat ?? '--'}
-            unit="%"
-            subtitle={`Muscle ${lw?.muscleMass ?? '--'} kg`}
-            accentColor="var(--warning)"
-            icon={<Flame size={14} />}
-            badge={`Visceral ${lw?.visceralFat ?? '--'}`}
-          />
-        </div>
+      {/* ── Divider ──────────────────────── */}
+      <div className="mx-4 mb-4" style={{ height: 1, background: 'var(--border-subtle)' }} />
 
-        {/* BMI Gauge */}
+      {/* ── Body ─────────────────────────── */}
+      <div className="px-4 mb-2">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-faint)' }}>Body Composition</p>
+        <Link href="/body" className="card p-4 flex items-center gap-3 active:opacity-80 transition-opacity block mb-3">
+          <div className="flex-1">
+            <div className="flex items-end gap-2 mb-1">
+              <span className="text-3xl font-black" style={{ color: '#0A84FF' }}>{lw?.weight ?? '--'}</span>
+              <span className="text-sm font-bold mb-1" style={{ color: 'var(--text-muted)' }}>kg</span>
+              {wTrend !== 'stable' && (
+                <span className="text-xs font-bold mb-1" style={{ color: Number(weightChange30) < 0 ? '#30D158' : '#FF9F0A' }}>{Number(weightChange30) > 0 ? '+' : ''}{weightChange30}kg</span>
+              )}
+            </div>
+            <p className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>
+              BMI {lw?.bmi ?? '--'} · Body fat {lw?.bodyFat ?? '--'}% · Muscle {lw?.muscleMass ?? '--'}kg
+            </p>
+            <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-faint)' }}>
+              Goal {profile.targetWeight}kg · {((lw?.weight ?? 78) - profile.targetWeight).toFixed(1)}kg to go · Source: Apple Health + RENPHO
+            </p>
+          </div>
+          <ChevronRight size={16} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
+        </Link>
+
+        {/* Weight trend mini */}
         <div className="card p-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>BMI</span>
-            <span className="text-xs font-bold" style={{ color: bmiCat.color.includes('green') ? 'var(--recovery)' : bmiCat.color.includes('amber') ? 'var(--warning)' : bmiCat.color.includes('red') ? 'var(--danger)' : 'var(--strain)' }}>
-              {bmiCat.label} — Asian scale
-            </span>
-          </div>
-          <div className="flex items-center justify-around">
-            <BMIGauge bmi={lw?.bmi ?? 27.6} asian />
-            <div className="space-y-1.5 text-xs">
-              {[['#0A84FF','Under',    '<18.5'],['#30D158','Normal','18.5–23'],['#FF9F0A','Over','23–27.5'],['#FF3B30','Obese','>27.5']].map(([c, l, r]) => (
-                <div key={l} className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: c }} />
-                  <span style={{ color: 'var(--text-muted)' }}>{l} <span style={{ color: 'var(--text-faint)' }}>{r}</span></span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-4 mt-3">
-          <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>30-Day Weight Trend</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-3" style={{ color: 'var(--text-faint)' }}>30-Day Weight Trend</p>
           <WeightChart data={weight} targetWeight={profile.targetWeight} />
         </div>
-      </section>
+      </div>
 
-      {/* ── Sleep ───────────────────────────── */}
-      <section>
-        <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>Sleep</h2>
-        <MetricCard
-          title="Last Night"
-          value={lsl?.totalHours.toFixed(1) ?? '--'}
-          unit="hrs"
-          subtitle={`7-day avg ${avgSleep7.toFixed(1)}h · Source: Apple Health`}
-          trend={trend(sleep.slice(-7).map(s => s.totalHours))}
-          trendGood={true}
-          accentColor="var(--sleep)"
-          icon={<Bed size={14} />}
-          badge={lsl?.quality}
-        >
-          <div className="flex gap-4 mt-2">
-            {[['Deep', lsl?.deepSleep, '#0A84FF'], ['REM', lsl?.remSleep, '#BF5AF2'], ['Light', lsl?.lightSleep, '#8E8E93']].map(([l, v, c]) => (
-              <div key={String(l)}>
-                <span className="text-sm font-bold" style={{ color: String(c) }}>{(Number(v) || 0).toFixed(1)}h</span>
-                <span className="text-xs ml-1" style={{ color: 'var(--text-faint)' }}>{String(l)}</span>
+      {/* ── Divider ──────────────────────── */}
+      <div className="mx-4 my-4" style={{ height: 1, background: 'var(--border-subtle)' }} />
+
+      {/* ── Fitness ──────────────────────── */}
+      <div className="px-4 mb-2">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-faint)' }}>Fitness</p>
+        <div className="grid grid-cols-2 gap-3">
+          <Link href="/exercise" className="card p-4 active:scale-95 transition-transform block">
+            <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'var(--text-faint)' }}>This Week</p>
+            <p className="text-2xl font-black" style={{ color: '#30D158' }}>{weeklyMin}<span className="text-sm font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>min</span></p>
+            <p className="text-xs mt-1 font-semibold" style={{ color: 'var(--text-muted)' }}>{recentEx.length} sessions</p>
+            <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-faint)' }}>Strava + Apple Health</p>
+          </Link>
+          <Link href="/exercise" className="card p-4 active:scale-95 transition-transform block">
+            <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'var(--text-faint)' }}>VO2 Max</p>
+            <p className="text-2xl font-black" style={{ color: '#0A84FF' }}>{lv?.value ?? '--'}<span className="text-xs font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>mL/kg</span></p>
+            <p className="text-xs mt-1 font-semibold" style={{ color: 'var(--text-muted)' }}>{lv?.category ?? '--'}</p>
+            <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-faint)' }}>{lv?.source === 'strava' ? 'Strava' : 'Apple Health'}</p>
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Divider ──────────────────────── */}
+      <div className="mx-4 my-4" style={{ height: 1, background: 'var(--border-subtle)' }} />
+
+      {/* ── Recovery quick stats ─────────── */}
+      <div className="px-4 mb-6">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-faint)' }}>Recovery & Stress</p>
+        <Link href="/recovery" className="card p-4 flex items-center gap-4 active:opacity-80 transition-opacity block">
+          <div className="flex-1 grid grid-cols-3 gap-3 text-center">
+            {[
+              { label: 'HRV', val: `${ls?.hrv ?? '--'}`, unit: 'ms', color: '#BF5AF2' },
+              { label: 'Resting HR', val: `${ls?.restingHeartRate ?? '--'}`, unit: 'bpm', color: rColor },
+              { label: 'Stress', val: `${ls?.score ?? '--'}`, unit: '/100', color: avgStress7 < 50 ? '#30D158' : avgStress7 < 65 ? '#FF9F0A' : '#FF3B30' },
+            ].map(({ label, val, unit, color }) => (
+              <div key={label}>
+                <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: 'var(--text-faint)' }}>{label}</p>
+                <p className="text-xl font-black" style={{ color }}>{val}<span className="text-[9px] font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>{unit}</span></p>
               </div>
             ))}
           </div>
-        </MetricCard>
-        <div className="card p-4 mt-3">
-          <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>14-Day Sleep</p>
-          <SleepChart data={sleep} />
-        </div>
-      </section>
-
-      {/* ── Exercise ────────────────────────── */}
-      <section>
-        <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>Exercise</h2>
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <MetricCard
-            title="This Week"
-            value={weeklyMin}
-            unit="min"
-            subtitle={`${weeklyCalories} kcal · Strava + Apple Health`}
-            accentColor="var(--recovery)"
-            icon={<Dumbbell size={14} />}
-            badge={`${recentEx.length} sessions`}
-          />
-          <MetricCard
-            title="VO2 Max"
-            value={lv?.value ?? '--'}
-            unit="mL/kg"
-            subtitle={lv?.category}
-            accentColor="var(--strain)"
-            icon={<Wind size={14} />}
-            badge={`Source: ${lv?.source === 'strava' ? 'Strava' : 'Apple Health'}`}
-          />
-        </div>
-        <div className="card p-4">
-          <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>Activity (14 days)</p>
-          <ExerciseChart data={exercise} />
-        </div>
-        <div className="card p-4 mt-3">
-          <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>VO2 Max Progress</p>
-          <VO2MaxChart data={vo2max} />
-        </div>
-      </section>
-
-      {/* ── Stress & HRV ────────────────────── */}
-      <section>
-        <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>Stress & HRV</h2>
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <MetricCard
-            title="Stress"
-            value={ls?.score ?? '--'}
-            unit="/100"
-            subtitle="Lower is better"
-            accentColor={avgStress7 < 50 ? 'var(--recovery)' : avgStress7 < 65 ? 'var(--warning)' : 'var(--danger)'}
-            icon={<Zap size={14} />}
-          />
-          <MetricCard
-            title="HRV"
-            value={ls?.hrv ?? '--'}
-            unit="ms"
-            subtitle={`RHR ${ls?.restingHeartRate ?? '--'} bpm`}
-            accentColor="var(--sleep)"
-            icon={<Zap size={14} />}
-            badge={ls?.recoveryScore ? `Recovery ${ls.recoveryScore}%` : undefined}
-          />
-        </div>
-        <div className="card p-4">
-          <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>Stress & HRV (14 days)</p>
-          <StressChart data={stress} />
-        </div>
-      </section>
-
-      {/* ── Pathology quick links ────────────── */}
-      {pathology.length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>Documents</h2>
-            <a href="/pathology" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: 'var(--strain)' }}>All <ChevronRight size={12} /></a>
-          </div>
-          {pathology.slice(0, 2).map(doc => (
-            <a key={doc.id} href="/pathology" className="surface flex items-center gap-3 p-3 mb-2 hover:opacity-80 transition-opacity">
-              <FileText size={18} style={{ color: 'var(--strain)' }} />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold truncate" style={{ color: 'var(--text)' }}>{doc.filename}</p>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{doc.uploadDate} · {doc.type.replace(/_/g, ' ')}</p>
-              </div>
-              <ChevronRight size={14} style={{ color: 'var(--text-faint)' }} />
-            </a>
-          ))}
-        </section>
-      )}
-
-      <div className="h-2" />
+          <ChevronRight size={16} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
+        </Link>
+        <p className="text-[10px] mt-2 ml-1" style={{ color: 'var(--text-faint)' }}>7d avg HRV: {avgHRV7.toFixed(0)} ms · Source: Apple Health</p>
+      </div>
     </div>
   );
 }

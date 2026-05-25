@@ -75,6 +75,7 @@ export interface HealthData {
   vo2max: VO2MaxEntry[];
   pathology: PathologyDocument[];
   lastSync: Record<string, string>;
+  isSampleData: boolean;
 }
 
 export interface UserProfile {

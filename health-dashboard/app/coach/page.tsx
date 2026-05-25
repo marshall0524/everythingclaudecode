@@ -78,9 +78,16 @@ export default function CoachPage() {
   const [loading, setLoading] = useState(false);
   const [weeklyPlan, setWeeklyPlan] = useState<string>('');
   const [weeklyLoaded, setWeeklyLoaded] = useState(false);
+  const [apiStatus, setApiStatus] = useState<'unknown' | 'ok' | 'missing'>('unknown');
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, loading]);
+
+  useEffect(() => {
+    fetch('/api/coach/test').then(r => r.json()).then(d => {
+      setApiStatus(d.configured ? 'ok' : 'missing');
+    }).catch(() => setApiStatus('missing'));
+  }, []);
 
   const callCoach = async (question?: string, mode?: string) => {
     setLoading(true);
@@ -123,6 +130,17 @@ export default function CoachPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-7.5rem)]">
+
+      {/* ── API key missing banner ───────────── */}
+      {apiStatus === 'missing' && (
+        <div className="mx-4 mt-3 p-3 rounded-2xl flex items-start gap-2" style={{ background: 'color-mix(in srgb, #FF3B30 12%, var(--bg-card))', border: '1px solid color-mix(in srgb, #FF3B30 25%, transparent)' }}>
+          <span className="text-sm">⚠️</span>
+          <div>
+            <p className="text-xs font-bold" style={{ color: '#FF3B30' }}>API key not configured</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>Go to <strong>Vercel → Project → Settings → Environment Variables</strong>, add <code style={{ color: '#FF9F0A' }}>ANTHROPIC_API_KEY</code>, then <strong>redeploy</strong> (Deployments → Redeploy).</p>
+          </div>
+        </div>
+      )}
 
       {/* ── Header ──────────────────────────── */}
       <div className="px-4 pt-4 pb-3" style={{ borderBottom: '1px solid var(--border-subtle)' }}>

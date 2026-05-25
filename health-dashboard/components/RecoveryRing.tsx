@@ -1,104 +1,48 @@
 'use client';
 
 interface Props {
-  recovery: number;   // 0–100
-  sleep: number;      // 0–100
-  hrv: number;
-  rhr: number;
+  score: number;       // 0–100
+  label: string;       // e.g. "RECOVERY"
+  sublabel?: string;   // e.g. "OPTIMAL"
+  color: string;
+  size?: number;
+  strokeWidth?: number;
 }
 
-function polarToXY(cx: number, cy: number, r: number, angleDeg: number) {
-  const rad = ((angleDeg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+function arcD(cx: number, cy: number, r: number, pct: number) {
+  const clamp = Math.min(pct, 0.9999);
+  const angle = clamp * 360;
+  const toRad = (d: number) => ((d - 90) * Math.PI) / 180;
+  const x1 = cx + r * Math.cos(toRad(0));
+  const y1 = cy + r * Math.sin(toRad(0));
+  const x2 = cx + r * Math.cos(toRad(angle));
+  const y2 = cy + r * Math.sin(toRad(angle));
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${angle > 180 ? 1 : 0} 1 ${x2} ${y2}`;
 }
 
-function arcPath(cx: number, cy: number, r: number, pct: number) {
-  const end = Math.min(pct, 0.9999);
-  const angle = end * 360;
-  const p1 = polarToXY(cx, cy, r, 0);
-  const p2 = polarToXY(cx, cy, r, angle);
-  const large = angle > 180 ? 1 : 0;
-  return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} 1 ${p2.x} ${p2.y}`;
-}
-
-function recoveryColor(score: number): string {
-  if (score >= 67) return '#30D158';
-  if (score >= 34) return '#FF9F0A';
-  return '#FF3B30';
-}
-
-function recoveryLabel(score: number): string {
-  if (score >= 67) return 'Optimal';
-  if (score >= 34) return 'Moderate';
-  return 'Low';
-}
-
-export default function RecoveryRing({ recovery, sleep, hrv, rhr }: Props) {
-  const cx = 100; const cy = 100;
-  const outerR = 80; const innerR = 64;
-  const sw = 14;
-
-  const rColor = recoveryColor(recovery);
-  const sColor = '#BF5AF2';
+export default function RecoveryRing({ score, label, sublabel, color, size = 260, strokeWidth = 20 }: Props) {
+  const cx = size / 2; const cy = size / 2; const r = (size - strokeWidth * 2) / 2;
 
   return (
-    <div className="flex flex-col items-center">
-      <svg width="200" height="200" viewBox="0 0 200 200">
-        {/* Outer track */}
-        <circle cx={cx} cy={cy} r={outerR} fill="none" className="ring-track" strokeWidth={sw} />
-        {/* Outer arc — recovery */}
+    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ position: 'absolute', top: 0, left: 0 }}>
+        {/* Background track */}
+        <circle cx={cx} cy={cy} r={r} fill="none" strokeWidth={strokeWidth} stroke="var(--bg-elevated)" />
+        {/* Score arc */}
         <path
-          d={arcPath(cx, cy, outerR, recovery / 100)}
+          d={arcD(cx, cy, r, score / 100)}
           fill="none"
-          stroke={rColor}
-          strokeWidth={sw}
+          stroke={color}
+          strokeWidth={strokeWidth}
           strokeLinecap="round"
+          style={{ filter: `drop-shadow(0 0 8px ${color}66)` }}
         />
-        {/* Inner track */}
-        <circle cx={cx} cy={cy} r={innerR} fill="none" className="ring-track" strokeWidth={sw} />
-        {/* Inner arc — sleep */}
-        <path
-          d={arcPath(cx, cy, innerR, sleep / 100)}
-          fill="none"
-          stroke={sColor}
-          strokeWidth={sw}
-          strokeLinecap="round"
-        />
-        {/* Center text */}
-        <text x={cx} y={cy - 12} textAnchor="middle" fontSize={36} fontWeight="800" fill={rColor} fontFamily="system-ui">
-          {recovery}
-        </text>
-        <text x={cx} y={cy + 8} textAnchor="middle" fontSize={11} fontWeight="700" fill={rColor} fontFamily="system-ui" letterSpacing="2">
-          {recoveryLabel(recovery).toUpperCase()}
-        </text>
-        <text x={cx} y={cy + 24} textAnchor="middle" fontSize={9} fill="#8E8E93" fontFamily="system-ui">
-          RECOVERY SCORE
-        </text>
       </svg>
-
-      {/* Legend */}
-      <div className="flex gap-5 -mt-2">
-        <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full" style={{ background: rColor }} />
-          <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Recovery</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full" style={{ background: sColor }} />
-          <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Sleep</span>
-        </div>
-      </div>
-
-      {/* HRV + RHR row */}
-      <div className="flex gap-6 mt-4">
-        <div className="text-center">
-          <p className="text-xl font-bold" style={{ color: 'var(--text)' }}>{hrv}<span className="text-xs font-normal ml-0.5" style={{ color: 'var(--text-muted)' }}>ms</span></p>
-          <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-faint)' }}>HRV</p>
-        </div>
-        <div className="w-px" style={{ background: 'var(--border)' }} />
-        <div className="text-center">
-          <p className="text-xl font-bold" style={{ color: 'var(--text)' }}>{rhr}<span className="text-xs font-normal ml-0.5" style={{ color: 'var(--text-muted)' }}>bpm</span></p>
-          <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-faint)' }}>Resting HR</p>
-        </div>
+      {/* Center text */}
+      <div className="flex flex-col items-center gap-0.5 z-10">
+        <span className="font-black tracking-tight leading-none" style={{ fontSize: size * 0.22, color }}>{score}%</span>
+        <span className="font-black tracking-[0.2em] uppercase" style={{ fontSize: size * 0.055, color: 'var(--text-muted)' }}>{label}</span>
+        {sublabel && <span className="font-bold tracking-[0.15em] uppercase" style={{ fontSize: size * 0.045, color }}>{sublabel}</span>}
       </div>
     </div>
   );
