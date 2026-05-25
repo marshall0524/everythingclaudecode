@@ -2,54 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens ─────────────────────────────────── */
 :root {
-  --font-inter: 'Inter', system-ui, sans-serif;
+  /* Light mode (Bevel/MFP) */
+  --bg:           #F2F2F7;
+  --bg-surface:   #FFFFFF;
+  --bg-card:      #FFFFFF;
+  --bg-elevated:  #F9F9FB;
+  --border:       #D1D1D6;
+  --border-subtle:#E5E5EA;
+  --text:         #1C1C1E;
+  --text-muted:   #6C6C70;
+  --text-faint:   #AEAEB2;
+
+  /* Semantic */
+  --recovery:     #30D158;
+  --recovery-bg:  #0D3D1E;
+  --strain:       #0A84FF;
+  --strain-bg:    #001F3D;
+  --sleep:        #BF5AF2;
+  --sleep-bg:     #2D1047;
+  --warning:      #FF9F0A;
+  --warning-bg:   #3D2200;
+  --danger:       #FF3B30;
+  --danger-bg:    #3D0900;
+  --nutrition:    #FF6B35;
+
+  --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
 
-* {
-  -webkit-tap-highlight-color: transparent;
+.dark {
+  /* Dark mode (Whoop style) */
+  --bg:           #0A0A0B;
+  --bg-surface:   #141416;
+  --bg-card:      #1C1C1E;
+  --bg-elevated:  #242426;
+  --border:       #2C2C2E;
+  --border-subtle:#232325;
+  --text:         #F5F5F7;
+  --text-muted:   #8E8E93;
+  --text-faint:   #48484A;
 }
+
+/* ── Base ───────────────────────────────────────────── */
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 
 body {
-  background-color: #030712;
-  color: #f9fafb;
-  font-family: var(--font-inter);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
   overscroll-behavior-y: none;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Safe area for iPhone notch/home indicator */
-.safe-area-pb {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+/* ── Utility classes ────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+.surface {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 2px;
+.text-primary   { color: var(--text); }
+.text-muted     { color: var(--text-muted); }
+.text-faint     { color: var(--text-faint); }
+
+.recovery-text  { color: var(--recovery); }
+.strain-text    { color: var(--strain); }
+.sleep-text     { color: var(--sleep); }
+.warning-text   { color: var(--warning); }
+.danger-text    { color: var(--danger); }
+
+/* ── Safe area ──────────────────────────────────────── */
+.safe-pb { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Animations ─────────────────────────────────────── */
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp  { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes pulse    { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+@keyframes shimmer  {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-/* Prevent text selection on cards */
-.select-none {
-  -webkit-user-select: none;
-  user-select: none;
+.animate-fade  { animation: fadeIn 0.35s ease-out both; }
+.animate-up    { animation: slideUp 0.3s ease-out both; }
+.animate-spin  { animation: spin 0.8s linear infinite; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-elevated) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
 
-@layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out;
-  }
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out;
-  }
-}
+/* ── Ring chart ─────────────────────────────────────── */
+.ring-track { stroke: var(--bg-elevated); }

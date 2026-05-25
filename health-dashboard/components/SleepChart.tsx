@@ -1,59 +1,42 @@
 'use client';
 
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ReferenceLine } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, Cell } from 'recharts';
 import { SleepEntry } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 
-interface Props {
-  data: SleepEntry[];
-}
+const qColor: Record<string, string> = { poor: '#FF3B30', fair: '#FF9F0A', good: '#30D158', excellent: '#0A84FF' };
 
-const qualityColors: Record<string, string> = {
-  poor: '#ef4444',
-  fair: '#f59e0b',
-  good: '#22c55e',
-  excellent: '#3b82f6',
-};
-
-export default function SleepChart({ data }: Props) {
-  const chartData = data.slice(-14).map((s) => ({
+export default function SleepChart({ data }: { data: SleepEntry[] }) {
+  const chartData = data.slice(-14).map(s => ({
     date: formatDate(s.date),
-    total: parseFloat(s.totalHours.toFixed(1)),
-    deep: s.deepSleep,
-    rem: s.remSleep,
-    light: s.lightSleep,
-    quality: s.quality,
+    deep: s.deepSleep, rem: s.remSleep, light: s.lightSleep,
+    quality: s.quality, total: s.totalHours,
   }));
+
+  const tooltipStyle = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 11 };
 
   return (
     <div className="space-y-4">
       <div className="h-44">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }} barSize={14}>
-            <XAxis dataKey="date" tick={{ fill: '#6b7280', fontSize: 10 }} tickLine={false} axisLine={false} interval={1} />
-            <YAxis domain={[0, 10]} tick={{ fill: '#6b7280', fontSize: 10 }} tickLine={false} axisLine={false} ticks={[0, 2, 4, 6, 8, 10]} />
-            <Tooltip
-              contentStyle={{ background: '#1f2937', border: '1px solid #374151', borderRadius: '12px', fontSize: 12 }}
-              labelStyle={{ color: '#9ca3af' }}
-              formatter={(v: number, name: string) => [`${v}h`, name.charAt(0).toUpperCase() + name.slice(1)]}
-            />
-            <ReferenceLine y={7} stroke="#8b5cf6" strokeDasharray="4 4" strokeWidth={1.5} label={{ value: '7h target', fill: '#8b5cf6', fontSize: 10, position: 'right' }} />
-            <Bar dataKey="deep" stackId="a" fill="#3b82f6" radius={[0, 0, 0, 0]} />
-            <Bar dataKey="rem" stackId="a" fill="#8b5cf6" />
-            <Bar dataKey="light" stackId="a" fill="#6b7280" radius={[4, 4, 0, 0]}>
-              {chartData.map((entry, index) => (
-                <Cell key={index} fill={qualityColors[entry.quality]} opacity={0.7} />
-              ))}
+          <BarChart data={chartData} margin={{ top: 4, right: 4, left: -24, bottom: 0 }} barSize={12}>
+            <XAxis dataKey="date" tick={{ fill: 'var(--text-faint)', fontSize: 10 }} tickLine={false} axisLine={false} interval={1} />
+            <YAxis domain={[0, 10]} ticks={[0, 2, 4, 6, 8, 10]} tick={{ fill: 'var(--text-faint)', fontSize: 10 }} tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: 'var(--text-muted)' }} formatter={(v: number, n: string) => [`${v}h`, n.charAt(0).toUpperCase() + n.slice(1)]} />
+            <ReferenceLine y={7.5} stroke="#BF5AF2" strokeDasharray="5 3" strokeWidth={1.5} label={{ value: '7.5h', fill: '#BF5AF2', fontSize: 9, position: 'right' }} />
+            <Bar dataKey="deep"  stackId="a" fill="#0A84FF" />
+            <Bar dataKey="rem"   stackId="a" fill="#BF5AF2" />
+            <Bar dataKey="light" stackId="a" radius={[3, 3, 0, 0]}>
+              {chartData.map((e, i) => <Cell key={i} fill={qColor[e.quality]} opacity={0.65} />)}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
-
-      <div className="flex gap-3 flex-wrap">
-        {[{ label: 'Deep', color: '#3b82f6' }, { label: 'REM', color: '#8b5cf6' }, { label: 'Light', color: '#6b7280' }].map((s) => (
-          <div key={s.label} className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm" style={{ background: s.color }} />
-            <span className="text-xs text-gray-400">{s.label}</span>
+      <div className="flex gap-4 flex-wrap">
+        {[['#0A84FF','Deep'],['#BF5AF2','REM'],['#8E8E93','Light']].map(([c,l]) => (
+          <div key={l} className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-sm" style={{ background: c }} />
+            <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{l}</span>
           </div>
         ))}
       </div>

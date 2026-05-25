@@ -4,64 +4,36 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recha
 import { ExerciseEntry } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 
-interface Props {
-  data: ExerciseEntry[];
-}
-
-const typeColors: Record<string, string> = {
-  Running: '#f59e0b',
-  Cycling: '#3b82f6',
-  'Strength Training': '#8b5cf6',
-  Yoga: '#22c55e',
-  Walking: '#6b7280',
-  Swimming: '#0ea5e9',
-  HIIT: '#ef4444',
+const typeColor: Record<string, string> = {
+  Running: '#FF9F0A', Cycling: '#0A84FF', 'Strength Training': '#BF5AF2',
+  Yoga: '#30D158', Walking: '#8E8E93', Swimming: '#00C7BE', HIIT: '#FF3B30',
 };
 
-export default function ExerciseChart({ data }: Props) {
-  const recent = data.slice(-14);
-  const chartData = recent.map((e) => ({
-    date: formatDate(e.date),
-    duration: e.duration,
-    calories: e.activeCalories,
-    type: e.type,
-    color: typeColors[e.type] || '#6b7280',
+export default function ExerciseChart({ data }: { data: ExerciseEntry[] }) {
+  const chartData = data.slice(-14).map(e => ({
+    date: formatDate(e.date), duration: e.duration, type: e.type,
+    color: typeColor[e.type] || '#8E8E93',
   }));
-
-  const weeklyTypes = recent.reduce<Record<string, number>>((acc, e) => {
-    acc[e.type] = (acc[e.type] || 0) + 1;
-    return acc;
-  }, {});
+  const types = [...new Set(data.slice(-14).map(e => e.type))];
+  const tooltipStyle = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 11 };
 
   return (
     <div className="space-y-4">
       <div className="h-40">
-        <p className="text-xs text-gray-500 mb-1 ml-1">Duration (min)</p>
+        <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--text-faint)' }}>Duration (min)</p>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }} barSize={16}>
-            <XAxis dataKey="date" tick={{ fill: '#6b7280', fontSize: 10 }} tickLine={false} axisLine={false} interval={1} />
-            <YAxis tick={{ fill: '#6b7280', fontSize: 10 }} tickLine={false} axisLine={false} />
-            <Tooltip
-              contentStyle={{ background: '#1f2937', border: '1px solid #374151', borderRadius: '12px', fontSize: 12 }}
-              labelStyle={{ color: '#9ca3af' }}
-              formatter={(v: number, _name: string, props: { payload?: { type?: string } }) => [
-                `${v} min — ${props.payload?.type || ''}`,
-                'Duration',
-              ]}
-            />
-            <Bar dataKey="duration" radius={[4, 4, 0, 0]} fill="#f59e0b" />
+          <BarChart data={chartData} margin={{ top: 4, right: 4, left: -24, bottom: 0 }} barSize={14}>
+            <XAxis dataKey="date" tick={{ fill: 'var(--text-faint)', fontSize: 10 }} tickLine={false} axisLine={false} interval={1} />
+            <YAxis tick={{ fill: 'var(--text-faint)', fontSize: 10 }} tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: 'var(--text-muted)' }} formatter={(v: number, _n: string, p: { payload?: { type?: string } }) => [`${v} min — ${p.payload?.type || ''}`, 'Duration']} />
+            <Bar dataKey="duration" radius={[4, 4, 0, 0]} fill="#FF9F0A" />
           </BarChart>
         </ResponsiveContainer>
       </div>
-
       <div className="flex gap-2 flex-wrap">
-        {Object.entries(weeklyTypes).map(([type, count]) => (
-          <span
-            key={type}
-            className="text-[11px] font-medium px-2 py-1 rounded-full"
-            style={{ background: `${typeColors[type] || '#6b7280'}22`, color: typeColors[type] || '#9ca3af' }}
-          >
-            {type} ×{count}
+        {types.map(t => (
+          <span key={t} className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ background: `color-mix(in srgb, ${typeColor[t] || '#8E8E93'} 18%, var(--bg-elevated))`, color: typeColor[t] || '#8E8E93' }}>
+            {t}
           </span>
         ))}
       </div>
