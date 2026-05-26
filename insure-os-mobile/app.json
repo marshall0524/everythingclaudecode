@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "InsureOS",
+    "slug": "insure-os",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "insure-os",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#08091A"
+    },
+    "ios": {
+      "bundleIdentifier": "com.insureos.app",
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#08091A"
+      },
+      "package": "com.insureos.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

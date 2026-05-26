@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ─────────────────────────────────── */
+:root {
+  --bg:           #F0F4FF;
+  --bg-surface:   #FFFFFF;
+  --bg-card:      #FFFFFF;
+  --bg-elevated:  #F8FAFF;
+  --border:       #DDE3F0;
+  --border-subtle:#E8EDFA;
+  --text:         #0A0E1A;
+  --text-muted:   #5B6480;
+  --text-faint:   #A0AABB;
+
+  --primary:      #4F6EF7;
+  --primary-bg:   #EEF1FE;
+  --covered:      #10B981;
+  --covered-bg:   #D1FAE5;
+  --warning:      #F59E0B;
+  --warning-bg:   #FEF3C7;
+  --danger:       #EF4444;
+  --danger-bg:    #FEE2E2;
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.dark {
+  --bg:           #08091A;
+  --bg-surface:   #0F1228;
+  --bg-card:      #161D35;
+  --bg-elevated:  #1C2540;
+  --border:       #252F50;
+  --border-subtle:#1A2240;
+  --text:         #F0F4FF;
+  --text-muted:   #8896BB;
+  --text-faint:   #3D4A70;
+
+  --primary-bg:   #1A2350;
+  --covered-bg:   #0A2620;
+  --warning-bg:   #2A1E05;
+  --danger-bg:    #2A0A0A;
+}
+
+/* ── Base ───────────────────────────────────────────── */
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  overscroll-behavior-y: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ── Utility classes ────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.surface {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+}
+
+.text-primary   { color: var(--text); }
+.text-muted     { color: var(--text-muted); }
+.text-faint     { color: var(--text-faint); }
+
+.primary-text   { color: var(--primary); }
+.covered-text   { color: var(--covered); }
+.warning-text   { color: var(--warning); }
+.danger-text    { color: var(--danger); }
+
+/* ── Safe area ──────────────────────────────────────── */
+.safe-pb { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Animations ─────────────────────────────────────── */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes pulse   { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.animate-fade  { animation: fadeIn 0.35s ease-out both; }
+.animate-up    { animation: slideUp 0.3s ease-out both; }
+.animate-spin  { animation: spin 0.8s linear infinite; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-elevated) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Ring chart ─────────────────────────────────────── */
+.ring-track { stroke: var(--bg-elevated); }
+
+/* ── Typing indicator ──────────────────────────────── */
+.typing-dot:nth-child(1) { animation: typingDot 1.2s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation: typingDot 1.2s ease-in-out 0.2s infinite; }
+.typing-dot:nth-child(3) { animation: typingDot 1.2s ease-in-out 0.4s infinite; }
