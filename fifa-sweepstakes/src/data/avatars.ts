@@ -1,0 +1,28 @@
+import type { Avatar } from '../types';
+
+export const AVATARS: Avatar[] = [
+  { id: 'striker', emoji: '⚽', name: 'The Striker', color: '#e74c3c' },
+  { id: 'keeper', emoji: '🧤', name: 'The Keeper', color: '#3498db' },
+  { id: 'captain', emoji: '🦁', name: 'The Captain', color: '#f39c12' },
+  { id: 'wizard', emoji: '🧙', name: 'The Wizard', color: '#9b59b6' },
+  { id: 'rocket', emoji: '🚀', name: 'The Rocket', color: '#e67e22' },
+  { id: 'king', emoji: '👑', name: 'The King', color: '#ffd700' },
+  { id: 'ninja', emoji: '🥷', name: 'The Ninja', color: '#2c3e50' },
+  { id: 'beast', emoji: '🦊', name: 'The Fox', color: '#d35400' },
+  { id: 'eagle', emoji: '🦅', name: 'The Eagle', color: '#16a085' },
+  { id: 'wolf', emoji: '🐺', name: 'The Wolf', color: '#7f8c8d' },
+  { id: 'bull', emoji: '🐂', name: 'The Bull', color: '#c0392b' },
+  { id: 'shark', emoji: '🦈', name: 'The Shark', color: '#2980b9' },
+  { id: 'tiger', emoji: '🐯', name: 'The Tiger', color: '#f1c40f' },
+  { id: 'dragon', emoji: '🐉', name: 'The Dragon', color: '#27ae60' },
+  { id: 'panther', emoji: '🐆', name: 'The Panther', color: '#8e44ad' },
+  { id: 'viking', emoji: '⚔️', name: 'The Viking', color: '#95a5a6' },
+  { id: 'flash', emoji: '⚡', name: 'The Flash', color: '#f39c12' },
+  { id: 'ice', emoji: '❄️', name: 'The Ice Man', color: '#5dade2' },
+  { id: 'fire', emoji: '🔥', name: 'The Fire', color: '#e74c3c' },
+  { id: 'ghost', emoji: '👻', name: 'The Ghost', color: '#ecf0f1' },
+  { id: 'robot', emoji: '🤖', name: 'The Robot', color: '#1abc9c' },
+  { id: 'alien', emoji: '👽', name: 'The Alien', color: '#2ecc71' },
+  { id: 'pirate', emoji: '🏴‍☠️', name: 'The Pirate', color: '#2c3e50' },
+  { id: 'wizard2', emoji: '🎩', name: 'The Magician', color: '#9b59b6' },
+];
