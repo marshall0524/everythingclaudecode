@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+body {
+  background: linear-gradient(135deg, #0f1923 0%, #1a2a3a 50%, #0f1923 100%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: white;
+  margin: 0;
+  /* iOS safe-area insets for notch / home bar */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.glow-gold {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.2);
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(255, 215, 0, 0.25);
+}
+
+.trophy-pulse {
+  animation: trophy-pulse 2s ease-in-out infinite;
+}
+
+@keyframes trophy-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255,215,0,0.6)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(255,215,0,1)); }
+}
+
+.spin-draw {
+  animation: spin-draw 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes spin-draw {
+  0% { transform: rotateY(180deg) scale(0.5); opacity: 0; }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f1923; }
+::-webkit-scrollbar-thumb { background: #2a3f55; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #ffd700; }
