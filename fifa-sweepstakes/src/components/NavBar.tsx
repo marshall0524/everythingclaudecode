@@ -24,7 +24,11 @@ export function NavBar({ current, onNavigate }: Props) {
   return (
     <nav
       className="sticky top-0 z-40 border-b border-white/10"
-      style={{ background: 'rgba(15, 25, 35, 0.95)', backdropFilter: 'blur(16px)' }}
+      style={{
+        background: 'rgba(15, 25, 35, 0.95)',
+        backdropFilter: 'blur(16px)',
+        paddingTop: 'env(safe-area-inset-top)',
+      }}
     >
       <div className="max-w-5xl mx-auto px-4 py-2 flex items-center gap-1 overflow-x-auto">
         <div className="flex items-center gap-1.5 mr-4 shrink-0">

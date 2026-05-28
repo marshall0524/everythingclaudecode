@@ -3,9 +3,14 @@
 body {
   background: linear-gradient(135deg, #0f1923 0%, #1a2a3a 50%, #0f1923 100%);
   min-height: 100vh;
+  min-height: 100dvh;
   font-family: 'Segoe UI', system-ui, sans-serif;
   color: white;
   margin: 0;
+  /* iOS safe-area insets for notch / home bar */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 #root {
