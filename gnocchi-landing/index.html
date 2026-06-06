@@ -15,30 +15,33 @@
        DESIGN TOKENS
     ============================================ */
     :root {
-      /* Colour palette: warm cream + forest green + yellow-green highlights */
-      --cream:            #F5F0E6;
-      --cream-light:      #FEFCF8;
-      --cream-dark:       #EDE6D5;
-      --cream-mid:        #E6DCC8;
+      /* ── Gnocchi palette ──────────────────────────────────────────────────
+         Inspired by the food: ivory dough · golden butter · walnut brown
+         Pop accent: saffron yellow  ─────────────────────────────────────── */
 
-      --green-forest:     #1E3D0F;
-      --green-deep:       #2D5016;
-      --green-mid:        #4A7C2F;
-      --green-leaf:       #6B9E45;
-      --green-highlight:  #B8D136;   /* vibrant yellow-green accent */
-      --green-pale:       #D8ECA0;
-      --green-subtle:     #EDF5D4;
+      --cream:            #F8F2E2;   /* ivory dough — main background         */
+      --cream-light:      #FDF9F0;   /* very pale dough — cards, white sects  */
+      --cream-dark:       #EFE2C4;   /* parchment — alternate section bg      */
+      --cream-mid:        #E4D0A0;   /* wheat — mid accent                    */
+
+      --green-forest:     #2A1508;   /* espresso-walnut — footer, dark sects  */
+      --green-deep:       #3D1E0A;   /* walnut — primary brand, nav, nums     */
+      --green-mid:        #7A3D18;   /* chestnut — eyebrows, italic em        */
+      --green-leaf:       #B06828;   /* caramel — decorative, deco circles    */
+      --green-highlight:  #F5C000;   /* SAFFRON — the pop: CTAs, stars, dots  */
+      --green-pale:       #FAE89A;   /* butter-pale — chip backgrounds        */
+      --green-subtle:     #FDF4CC;   /* pale saffron — very light accent bg   */
 
       --earth:            #8B6B47;
-      --earth-dark:       #2E1F12;
+      --earth-dark:       #2A1508;
       --earth-warm:       #C4863A;
 
-      --text-primary:     #1A1208;
-      --text-secondary:   #4A3D2C;
-      --text-muted:       #7A6B52;
-      --border:           #D4C9B0;
-      --border-light:     #E8E0CC;
-      --white:            #FEFCF8;
+      --text-primary:     #1C0D06;
+      --text-secondary:   #4A3020;
+      --text-muted:       #7A5840;
+      --border:           #D4B880;
+      --border-light:     #E8D5A8;
+      --white:            #FDF9F0;
 
       --font-display: 'Cormorant Garamond', Georgia, serif;
       --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
@@ -101,7 +104,7 @@
     .announcement-bar a {
       color: var(--green-highlight);
       font-weight: 600;
-      border-bottom: 1px solid rgba(184,209,54,0.4);
+      border-bottom: 1px solid rgba(245,192,0,0.4);
       transition: border-color 0.2s;
     }
 
@@ -114,7 +117,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(245, 240, 230, 0.94);
+      background: rgba(248, 242, 226, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-light);
@@ -210,7 +213,7 @@
     .btn-primary:hover {
       background: var(--green-forest);
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(30, 61, 15, 0.28);
+      box-shadow: 0 6px 16px rgba(61, 30, 10, 0.32);
     }
 
     .btn-accent {
@@ -219,9 +222,9 @@
     }
 
     .btn-accent:hover {
-      background: #A8BF28;
+      background: #D9A900;
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(184, 209, 54, 0.45);
+      box-shadow: 0 6px 20px rgba(245, 192, 0, 0.5);
     }
 
     .btn-ghost {
@@ -382,7 +385,7 @@
 
     .input:focus {
       border-color: var(--green-mid);
-      box-shadow: 0 0 0 3px rgba(74, 124, 47, 0.12);
+      box-shadow: 0 0 0 3px rgba(122, 61, 24, 0.14);
     }
 
     .hero-note {
@@ -814,8 +817,8 @@
     }
 
     .comp-card.legacy {
-      background: #FAF3EC;
-      border-color: #E6CEB0;
+      background: #F7EDDA;
+      border-color: #DFC49A;
     }
 
     .comp-card.gnocchi-card {
@@ -834,7 +837,7 @@
       margin-bottom: 22px;
     }
 
-    .legacy .comp-pill    { background: #EDD0B8; color: #8B4020; }
+    .legacy .comp-pill    { background: #E8C89A; color: #6B3010; }
     .gnocchi-card .comp-pill { background: var(--green-highlight); color: var(--green-forest); }
 
     .comp-title {
@@ -2050,7 +2053,7 @@
       btn.textContent = '✓ You\'re on the list!';
       btn.disabled    = true;
       input.disabled  = true;
-      btn.style.background = '#4A7C2F';
+      btn.style.background = '#3D1E0A';
 
       // Reset after 3.5s
       setTimeout(() => {
