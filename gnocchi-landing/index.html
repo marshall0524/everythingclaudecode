@@ -3,475 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gnocchi — Startup Insurance, Made Simple</title>
-  <meta name="description" content="Tailored business insurance for founders and SMEs. Get covered in minutes — not weeks. No brokers, no jargon, no waiting.">
+  <title>Gnocchi — Startup & SME Insurance for Every Stage</title>
+  <meta name="description" content="Business insurance packaged by funding stage and industry vertical. Tailored coverage that scales with your company. No brokers. Quote in 5 minutes.">
+
+  <!--
+    TYPEFORM INTEGRATION
+    Replace the TYPEFORM_URL constant in the <script> section with your actual Typeform URL.
+    Suggested Typeform questions:
+      1. What type of company do you run? (SaaS/Tech, Fintech, Healthtech, Climate/Deeptech, E-commerce, Agency/Services, Other)
+      2. How many employees do you have? (1–5, 6–25, 26–100, 100+)
+      3. What is your annual revenue? (Pre-revenue, £0–250k, £250k–2M, £2M–15M, £15M+)
+      4. What is your funding stage? (Pre-Seed, Seed, Series A, Series B+, Bootstrapped / Established SME)
+      5. Which types of insurance are you most interested in? (multi-select: D&O, Cyber, Tech E&O, Professional Indemnity, Public Liability, EPLI, Other)
+  -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 
   <style>
-    /* ============================================
+    /* ─────────────────────────────────────────
        DESIGN TOKENS
-    ============================================ */
+    ───────────────────────────────────────── */
     :root {
-      /* ── Gnocchi palette ──────────────────────────────────────────────────
-         Inspired by the food: ivory dough · golden butter · walnut brown
-         Pop accent: saffron yellow  ─────────────────────────────────────── */
+      /* Surfaces */
+      --ivory:       #F8F2E2;
+      --dough:       #FDF9F0;
+      --parchment:   #EFE2C4;
+      --wheat:       #E0CDA0;
 
-      --cream:            #F8F2E2;   /* ivory dough — main background         */
-      --cream-light:      #FDF9F0;   /* very pale dough — cards, white sects  */
-      --cream-dark:       #EFE2C4;   /* parchment — alternate section bg      */
-      --cream-mid:        #E4D0A0;   /* wheat — mid accent                    */
+      /* Brand darks */
+      --espresso:    #1C0D06;
+      --walnut:      #2A1508;
+      --brown:       #3D1E0A;
+      --chestnut:    #7A3D18;
+      --caramel:     #B06828;
 
-      --green-forest:     #2A1508;   /* espresso-walnut — footer, dark sects  */
-      --green-deep:       #3D1E0A;   /* walnut — primary brand, nav, nums     */
-      --green-mid:        #7A3D18;   /* chestnut — eyebrows, italic em        */
-      --green-leaf:       #B06828;   /* caramel — decorative, deco circles    */
-      --green-highlight:  #F5C000;   /* SAFFRON — the pop: CTAs, stars, dots  */
-      --green-pale:       #FAE89A;   /* butter-pale — chip backgrounds        */
-      --green-subtle:     #FDF4CC;   /* pale saffron — very light accent bg   */
+      /* Pop accent — saffron */
+      --saffron:     #F5C000;
+      --saffron-dk:  #D9A900;
+      --saffron-lt:  #FDF0B0;
 
-      --earth:            #8B6B47;
-      --earth-dark:       #2A1508;
-      --earth-warm:       #C4863A;
+      /* Text */
+      --t1:  #1C0D06;
+      --t2:  #4A3020;
+      --t3:  #7A5840;
+      --t4:  #A08060;
 
-      --text-primary:     #1C0D06;
-      --text-secondary:   #4A3020;
-      --text-muted:       #7A5840;
-      --border:           #D4B880;
-      --border-light:     #E8D5A8;
-      --white:            #FDF9F0;
+      /* Borders */
+      --b1:  #D4B880;
+      --b2:  #E8D5A8;
+      --b3:  #F0E4C0;
 
-      --font-display: 'Cormorant Garamond', Georgia, serif;
-      --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+      /* Type */
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'DM Sans', system-ui, sans-serif;
 
-      --radius-xs:   6px;
-      --radius-sm:   10px;
-      --radius-md:   16px;
-      --radius-lg:   24px;
-      --radius-xl:   32px;
-      --radius-full: 9999px;
+      /* Radii */
+      --r-sm: 8px;
+      --r-md: 14px;
+      --r-lg: 20px;
+      --r-xl: 28px;
+      --r-full: 9999px;
 
-      --shadow-sm:  0 1px 4px rgba(26,18,8,0.06);
-      --shadow-md:  0 4px 16px rgba(26,18,8,0.08);
-      --shadow-lg:  0 8px 40px rgba(26,18,8,0.12);
-      --shadow-xl:  0 20px 60px rgba(26,18,8,0.16);
+      /* Shadows */
+      --s-sm: 0 1px 3px rgba(28,13,6,.06);
+      --s-md: 0 4px 16px rgba(28,13,6,.09);
+      --s-lg: 0 8px 40px rgba(28,13,6,.13);
     }
 
-    /* ============================================
+    /* ─────────────────────────────────────────
        RESET & BASE
-    ============================================ */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
     body {
-      font-family: var(--font-body);
-      background: var(--cream);
-      color: var(--text-primary);
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--t1);
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    img { max-width: 100%; display: block; }
-    a { text-decoration: none; color: inherit; }
-    button { font-family: inherit; }
+    img  { max-width: 100%; display: block; }
+    a    { text-decoration: none; color: inherit; }
+    button, input { font-family: inherit; }
 
-    /* ============================================
-       ANNOUNCEMENT BAR
-    ============================================ */
-    .announcement-bar {
-      background: var(--green-forest);
-      color: var(--cream-light);
-      text-align: center;
-      padding: 10px 24px;
-      font-size: 13.5px;
-      font-weight: 500;
-      letter-spacing: 0.005em;
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
 
-    .announcement-bar strong { color: var(--green-highlight); }
-
-    .announcement-bar a {
-      color: var(--green-highlight);
-      font-weight: 600;
-      border-bottom: 1px solid rgba(245,192,0,0.4);
-      transition: border-color 0.2s;
-    }
-
-    .announcement-bar a:hover { border-color: var(--green-highlight); }
-
-    /* ============================================
-       NAVIGATION
-    ============================================ */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      background: rgba(248, 242, 226, 0.94);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .nav-inner {
+    /* ─────────────────────────────────────────
+       LAYOUT UTILITIES
+    ───────────────────────────────────────── */
+    .wrap {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 68px;
-      gap: 24px;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--green-forest);
-      letter-spacing: -0.03em;
-      white-space: nowrap;
-    }
-
-    .logo-mark {
-      width: 38px;
-      height: 38px;
-      background: var(--green-deep);
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--green-highlight);
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      flex-shrink: 0;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 14.5px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      transition: color 0.2s;
-      white-space: nowrap;
-    }
-
-    .nav-links a:hover { color: var(--green-deep); }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    /* ============================================
-       BUTTONS
-    ============================================ */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 22px;
-      border-radius: var(--radius-full);
-      font-family: var(--font-body);
-      font-size: 14.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      letter-spacing: 0.005em;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: var(--green-deep);
-      color: var(--cream-light);
-    }
-
-    .btn-primary:hover {
-      background: var(--green-forest);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(61, 30, 10, 0.32);
-    }
-
-    .btn-accent {
-      background: var(--green-highlight);
-      color: var(--green-forest);
-    }
-
-    .btn-accent:hover {
-      background: #D9A900;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(245, 192, 0, 0.5);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--green-deep);
-      border: 1.5px solid var(--border);
-    }
-
-    .btn-ghost:hover {
-      background: var(--cream-dark);
-      border-color: var(--green-mid);
-    }
-
-    .btn-outline-light {
-      background: transparent;
-      color: var(--cream-light);
-      border: 1.5px solid rgba(254, 252, 248, 0.3);
-    }
-
-    .btn-outline-light:hover {
-      background: rgba(254, 252, 248, 0.08);
-      border-color: rgba(254, 252, 248, 0.5);
-    }
-
-    .btn-lg {
-      padding: 15px 32px;
-      font-size: 16px;
-    }
-
-    .btn-full { width: 100%; }
-
-    /* ============================================
-       HERO
-    ============================================ */
-    .hero {
-      position: relative;
-      padding: 88px 28px 96px;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    /* Organic blobs */
-    .hero-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero-blob-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, var(--green-highlight) 0%, transparent 70%);
-      opacity: 0.07;
-      top: -200px; right: -150px;
-    }
-
-    .hero-blob-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, var(--green-leaf) 0%, transparent 70%);
-      opacity: 0.09;
-      bottom: -100px; left: -120px;
-    }
-
-    .hero-blob-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, var(--earth-warm) 0%, transparent 70%);
-      opacity: 0.05;
-      top: 40%; left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 820px;
-      margin: 0 auto;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--cream-dark);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
-      padding: 6px 16px 6px 10px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--green-deep);
-      margin-bottom: 36px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--green-highlight);
-      border-radius: 50%;
-      animation: pulse 2.2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(1.4); }
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(48px, 9vw, 100px);
-      font-weight: 600;
-      line-height: 1.02;
-      letter-spacing: -0.035em;
-      color: var(--text-primary);
-      margin-bottom: 28px;
-    }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--green-mid);
-    }
-
-    .hero-sub {
-      font-size: clamp(16px, 2.2vw, 20px);
-      color: var(--text-secondary);
-      max-width: 560px;
-      margin: 0 auto 52px;
-      font-weight: 400;
-      line-height: 1.65;
-    }
-
-    .hero-form {
-      display: flex;
-      gap: 10px;
-      max-width: 500px;
-      margin: 0 auto 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .input {
-      flex: 1;
-      min-width: 220px;
-      padding: 14px 22px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-full);
-      font-family: var(--font-body);
-      font-size: 15px;
-      background: var(--white);
-      color: var(--text-primary);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .input::placeholder { color: var(--text-muted); }
-
-    .input:focus {
-      border-color: var(--green-mid);
-      box-shadow: 0 0 0 3px rgba(122, 61, 24, 0.14);
-    }
-
-    .hero-note {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .hero-stats {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0;
-      margin-top: 72px;
-      padding-top: 56px;
-      border-top: 1px solid var(--border-light);
-    }
-
-    .stat {
-      text-align: center;
-      padding: 0 36px;
-      border-right: 1px solid var(--border-light);
-    }
-
-    .stat:last-child { border-right: none; }
-
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 700;
-      color: var(--green-deep);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* ============================================
-       TRUSTED BY
-    ============================================ */
-    .trusted {
-      background: var(--cream-dark);
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-      padding: 40px 28px;
-      text-align: center;
-    }
-
-    .trusted-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-    }
-
-    .trusted-logos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 40px 56px;
-    }
-
-    .trusted-logo {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-muted);
-      opacity: 0.5;
-      letter-spacing: -0.02em;
-      transition: opacity 0.2s;
-      cursor: default;
-    }
-
-    .trusted-logo:hover { opacity: 0.85; }
-
-    /* ============================================
-       SECTION SCAFFOLD
-    ============================================ */
     .section {
-      padding: 100px 28px;
+      padding: 96px 28px;
     }
 
     .section-inner {
@@ -479,508 +114,1009 @@
       margin: 0 auto;
     }
 
-    .section-eyebrow {
+    /* ─────────────────────────────────────────
+       TYPOGRAPHY HELPERS
+    ───────────────────────────────────────── */
+    .eyebrow {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--green-mid);
+      color: var(--chestnut);
+      display: block;
       margin-bottom: 14px;
     }
 
-    .section-heading {
-      font-family: var(--font-display);
-      font-size: clamp(34px, 5vw, 58px);
+    .display {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5.5vw, 64px);
       font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.025em;
-      color: var(--text-primary);
-      margin-bottom: 18px;
+      line-height: 1.07;
+      letter-spacing: -.025em;
+      color: var(--t1);
     }
 
-    .section-heading em {
-      font-style: italic;
-      color: var(--green-mid);
+    .display em { font-style: italic; color: var(--chestnut); }
+
+    .display-xl {
+      font-family: var(--serif);
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: -.035em;
     }
 
-    .section-body {
-      font-size: 17.5px;
-      color: var(--text-secondary);
+    .display-xl em { font-style: italic; color: var(--chestnut); }
+
+    .lead {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--t2);
       line-height: 1.65;
-      max-width: 560px;
     }
 
-    .text-center { text-align: center; }
-    .mx-auto { margin-left: auto; margin-right: auto; }
-
-    /* ============================================
-       PROBLEM / DARK SECTION
-    ============================================ */
-    .problem {
-      background: var(--green-forest);
-      padding: 100px 28px;
-    }
-
-    .problem .section-eyebrow { color: var(--green-highlight); }
-    .problem .section-heading { color: var(--cream-light); }
-    .problem .section-body    { color: rgba(254,252,248,0.65); }
-
-    .problem-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-
-    .problem-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .problem-card {
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-      background: rgba(254,252,248,0.055);
-      border: 1px solid rgba(254,252,248,0.09);
-      border-radius: var(--radius-md);
-      padding: 22px 24px;
-      transition: background 0.2s;
-    }
-
-    .problem-card:hover {
-      background: rgba(254,252,248,0.085);
-    }
-
-    .problem-card-icon {
-      font-size: 26px;
-      flex-shrink: 0;
-      line-height: 1;
-      margin-top: 2px;
-    }
-
-    .problem-card-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--cream-light);
-      margin-bottom: 4px;
-    }
-
-    .problem-card-body {
-      font-size: 13.5px;
-      color: rgba(254,252,248,0.55);
-      line-height: 1.55;
-    }
-
-    /* ============================================
-       HOW IT WORKS
-    ============================================ */
-    .how { background: var(--white); }
-
-    .how-header {
-      text-align: center;
-      margin-bottom: 72px;
-    }
-
-    .how-header .section-body { margin: 0 auto; }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      position: relative;
-    }
-
-    .step {
-      background: var(--cream-light);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-xl);
-      padding: 44px 36px 40px;
-      text-align: center;
-      position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .step:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .step-connector {
-      position: absolute;
-      top: 48px;
-      right: -28px;
-      width: 28px;
-      display: flex;
+    /* ─────────────────────────────────────────
+       BUTTONS
+    ───────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--green-highlight);
-      font-size: 22px;
-      font-weight: 700;
-      z-index: 1;
-    }
-
-    .step:last-child .step-connector { display: none; }
-
-    .step-num {
-      width: 58px;
-      height: 58px;
-      background: var(--green-deep);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--cream-light);
-      margin: 0 auto 28px;
-    }
-
-    .step-title {
-      font-family: var(--font-display);
-      font-size: 26px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
-
-    .step-text {
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--r-full);
       font-size: 14.5px;
-      color: var(--text-muted);
-      line-height: 1.6;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+      border: none;
+      white-space: nowrap;
+      letter-spacing: .01em;
     }
 
-    .step-chip {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 5px 14px;
-      background: var(--green-subtle);
-      color: var(--green-deep);
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+    .btn-saffron {
+      background: var(--saffron);
+      color: var(--walnut);
+    }
+    .btn-saffron:hover {
+      background: var(--saffron-dk);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(245,192,0,.45);
     }
 
-    /* ============================================
-       COVERAGE PACKAGES
-    ============================================ */
-    .packages { background: var(--cream); }
-
-    .packages-header {
-      text-align: center;
-      margin-bottom: 60px;
+    .btn-dark {
+      background: var(--brown);
+      color: var(--dough);
+    }
+    .btn-dark:hover {
+      background: var(--walnut);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(42,21,8,.3);
     }
 
-    .packages-header .section-body { margin: 0 auto; }
-
-    .packages-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+    .btn-outline {
+      background: transparent;
+      color: var(--brown);
+      border: 1.5px solid var(--b1);
+    }
+    .btn-outline:hover {
+      background: var(--parchment);
+      border-color: var(--chestnut);
     }
 
-    .pkg {
-      background: var(--white);
-      border: 1.5px solid var(--border-light);
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      transition: transform 0.22s, box-shadow 0.22s;
+    .btn-outline-light {
+      background: transparent;
+      color: var(--ivory);
+      border: 1.5px solid rgba(248,242,226,.25);
+    }
+    .btn-outline-light:hover {
+      background: rgba(248,242,226,.09);
+      border-color: rgba(248,242,226,.45);
     }
 
-    .pkg:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-    }
+    .btn-lg { padding: 15px 34px; font-size: 16px; }
+    .btn-xl { padding: 18px 44px; font-size: 17px; }
+    .btn-full { width: 100%; }
 
-    .pkg.featured {
-      border-color: var(--green-deep);
-      box-shadow: 0 0 0 1px var(--green-deep), var(--shadow-md);
-    }
-
-    .pkg-header {
-      padding: 32px 28px 26px;
-      background: var(--cream-dark);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pkg.featured .pkg-header {
-      background: var(--green-deep);
-    }
-
-    .pkg-deco {
-      position: absolute;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: var(--green-leaf);
-      opacity: 0.12;
-      right: -24px;
-      top: -24px;
-    }
-
-    .pkg-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      background: var(--green-highlight);
-      color: var(--green-forest);
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .pkg-name {
-      font-family: var(--font-display);
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 8px;
-      color: var(--text-primary);
-      position: relative;
-      z-index: 1;
-    }
-
-    .pkg.featured .pkg-name { color: var(--cream-light); }
-
-    .pkg-tagline {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      position: relative;
-      z-index: 1;
-    }
-
-    .pkg.featured .pkg-tagline { color: rgba(254,252,248,0.65); }
-
-    .pkg-body {
-      padding: 26px 28px 28px;
-    }
-
-    .pkg-policies-label {
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .tag-cloud {
-      display: flex;
-      flex-wrap: wrap;
+    /* ─────────────────────────────────────────
+       BADGES & CHIPS
+    ───────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
       gap: 7px;
+      padding: 5px 14px 5px 10px;
+      background: var(--parchment);
+      border: 1px solid var(--b1);
+      border-radius: var(--r-full);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brown);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--saffron);
+      border-radius: 50%;
+      animation: blink 2.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.4; transform:scale(1.5); }
+    }
+
+    /* Policy chips */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 13px;
+      border-radius: var(--r-full);
+      font-size: 12.5px;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 1.5px solid transparent;
+      transition: all .15s;
+    }
+
+    .chip-must {
+      background: var(--saffron);
+      color: var(--walnut);
+    }
+
+    .chip-rec {
+      background: transparent;
+      color: var(--saffron);
+      border-color: rgba(245,192,0,.45);
+    }
+
+    .chip-dark {
+      background: var(--parchment);
+      color: var(--brown);
+      border-color: var(--b2);
+    }
+    .chip-dark:hover {
+      background: var(--brown);
+      color: var(--dough);
+      border-color: var(--brown);
+    }
+
+    /* ─────────────────────────────────────────
+       ANNOUNCEMENT BAR
+    ───────────────────────────────────────── */
+    .ann {
+      background: var(--walnut);
+      color: rgba(248,242,226,.75);
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .ann strong { color: var(--saffron); }
+
+    .ann a {
+      color: var(--saffron);
+      font-weight: 700;
+      border-bottom: 1px solid rgba(245,192,0,.35);
+      transition: border-color .2s;
+    }
+    .ann a:hover { border-color: var(--saffron); }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION
+    ───────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(248,242,226,.93);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--b2);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 66px;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--walnut);
+      letter-spacing: -.03em;
+      white-space: nowrap;
+    }
+
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--brown);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--saffron);
+      letter-spacing: -.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--t2);
+      transition: color .18s;
+    }
+    .nav-links a:hover { color: var(--brown); }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      padding: 90px 28px 100px;
+      overflow: hidden;
+    }
+
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(50px, 8.5vw, 98px);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: -.035em;
+      color: var(--t1);
       margin-bottom: 26px;
     }
 
-    .policy-chip {
-      padding: 5px 13px;
-      background: var(--cream-dark);
-      color: var(--green-deep);
-      border-radius: var(--radius-full);
-      font-size: 12.5px;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
+    .hero h1 em { font-style: italic; color: var(--chestnut); }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--t2);
+      line-height: 1.65;
+      max-width: 580px;
+      margin: 0 auto 48px;
     }
 
-    .policy-chip:hover {
-      background: var(--green-deep);
-      color: var(--cream-light);
-      border-color: var(--green-deep);
-    }
-
-    /* ============================================
-       COMPARISON
-    ============================================ */
-    .comparison-section { background: var(--cream-dark); }
-
-    .comparison-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      margin-top: 56px;
-    }
-
-    .comp-card {
-      border-radius: var(--radius-xl);
-      padding: 44px;
-      border: 1.5px solid;
-    }
-
-    .comp-card.legacy {
-      background: #F7EDDA;
-      border-color: #DFC49A;
-    }
-
-    .comp-card.gnocchi-card {
-      background: var(--green-deep);
-      border-color: var(--green-mid);
-    }
-
-    .comp-pill {
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      margin-bottom: 22px;
-    }
-
-    .legacy .comp-pill    { background: #E8C89A; color: #6B3010; }
-    .gnocchi-card .comp-pill { background: var(--green-highlight); color: var(--green-forest); }
-
-    .comp-title {
-      font-family: var(--font-display);
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 28px;
-    }
-
-    .legacy .comp-title        { color: var(--text-primary); }
-    .gnocchi-card .comp-title  { color: var(--cream-light); }
-
-    .comp-list {
-      list-style: none;
+    .hero-ctas {
       display: flex;
-      flex-direction: column;
-      gap: 13px;
-    }
-
-    .comp-list li {
-      display: flex;
-      align-items: flex-start;
       gap: 12px;
-      font-size: 14.5px;
-      line-height: 1.5;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
     }
 
-    .legacy .comp-list li        { color: var(--text-secondary); }
-    .gnocchi-card .comp-list li  { color: rgba(254,252,248,0.82); }
-
-    .comp-icon {
-      width: 21px;
-      height: 21px;
-      border-radius: 50%;
+    /* Stage preview pills */
+    .stage-preview {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      background: rgba(253,249,240,.7);
+      border: 1px solid var(--b2);
+      border-radius: var(--r-xl);
+      backdrop-filter: blur(8px);
     }
 
-    .comp-icon.no  { background: #F4C2AA; color: #B03010; }
-    .comp-icon.yes { background: var(--green-highlight); color: var(--green-forest); }
+    .stage-preview-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--t3);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
 
-    /* ============================================
-       FEATURES
-    ============================================ */
-    .features { background: var(--white); }
+    .stage-pill {
+      padding: 5px 14px;
+      background: var(--parchment);
+      border: 1px solid var(--b1);
+      border-radius: var(--r-full);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--brown);
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .stage-pill:hover, .stage-pill.active {
+      background: var(--brown);
+      color: var(--dough);
+      border-color: var(--brown);
+    }
 
-    .features-header {
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 60px;
+      padding-top: 52px;
+      border-top: 1px solid var(--b2);
+      gap: 0;
+    }
+
+    .hstat {
       text-align: center;
-      margin-bottom: 64px;
+      padding: 0 32px;
+      border-right: 1px solid var(--b2);
     }
+    .hstat:last-child { border-right: none; }
+
+    .hstat-val {
+      font-family: var(--serif);
+      font-size: clamp(30px, 4.5vw, 46px);
+      font-weight: 700;
+      color: var(--brown);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .hstat-label {
+      font-size: 12.5px;
+      color: var(--t3);
+      font-weight: 500;
+    }
+
+    /* ─────────────────────────────────────────
+       TRUST BAR
+    ───────────────────────────────────────── */
+    .trust {
+      background: var(--parchment);
+      border-top: 1px solid var(--b2);
+      border-bottom: 1px solid var(--b2);
+      padding: 36px 28px;
+      text-align: center;
+    }
+
+    .trust-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--t3);
+      margin-bottom: 22px;
+    }
+
+    .trust-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 36px 52px;
+    }
+
+    .trust-logo {
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--t3);
+      opacity: .5;
+      letter-spacing: -.02em;
+      transition: opacity .2s;
+    }
+    .trust-logo:hover { opacity: .85; }
+
+    /* ─────────────────────────────────────────
+       STAGE SELECTOR  (dark section)
+    ───────────────────────────────────────── */
+    .stage-section {
+      background: var(--walnut);
+      padding: 96px 28px;
+    }
+
+    .stage-section .eyebrow { color: var(--saffron); }
+
+    .stage-section .display em { color: var(--saffron); }
+    .stage-section .display { color: var(--ivory); }
+
+    .stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 52px;
+      flex-wrap: wrap;
+    }
+
+    .stage-header-text { max-width: 560px; }
+
+    .stage-header-note {
+      font-size: 14px;
+      color: rgba(248,242,226,.5);
+      max-width: 240px;
+      text-align: right;
+    }
+
+    /* Tab bar */
+    .stage-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 6px;
+      background: rgba(248,242,226,.06);
+      border: 1px solid rgba(248,242,226,.1);
+      border-radius: var(--r-xl);
+      margin-bottom: 32px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .stage-tabs::-webkit-scrollbar { display: none; }
+
+    .stage-tab {
+      padding: 10px 22px;
+      border-radius: var(--r-lg);
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(248,242,226,.55);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .stage-tab:hover { color: rgba(248,242,226,.85); }
+    .stage-tab.active {
+      background: var(--saffron);
+      color: var(--walnut);
+    }
+
+    /* Stage panel */
+    .stage-panel {
+      background: rgba(248,242,226,.05);
+      border: 1px solid rgba(248,242,226,.1);
+      border-radius: var(--r-xl);
+      padding: 44px 48px;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .stage-panel.fading {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .stage-panel-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 36px;
+    }
+
+    .stage-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .stage-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: rgba(248,242,226,.55);
+    }
+
+    .stage-meta-item svg { opacity: .6; }
+
+    .stage-tagline {
+      font-size: 15px;
+      color: rgba(248,242,226,.65);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .stage-price-box {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .stage-price-val {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--saffron);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stage-price-note {
+      font-size: 12px;
+      color: rgba(248,242,226,.4);
+    }
+
+    .stage-policies-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(248,242,226,.4);
+      margin-bottom: 12px;
+    }
+
+    .stage-policies { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+
+    .stage-rec-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(245,192,0,.5);
+      margin: 16px 0 10px;
+    }
+
+    .stage-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(248,242,226,.08);
+      flex-wrap: wrap;
+    }
+
+    .stage-bottom-note {
+      font-size: 13px;
+      color: rgba(248,242,226,.4);
+    }
+
+    /* ─────────────────────────────────────────
+       INDUSTRY VERTICAL SELECTOR
+    ───────────────────────────────────────── */
+    .industry-section { background: var(--dough); }
+
+    .industry-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .industry-header .lead { margin: 0 auto; max-width: 540px; }
+
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 0;
+    }
+
+    .ind-card {
+      background: var(--ivory);
+      border: 1.5px solid var(--b2);
+      border-radius: var(--r-lg);
+      padding: 26px 24px;
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+    }
+    .ind-card:hover {
+      border-color: var(--b1);
+      transform: translateY(-2px);
+      box-shadow: var(--s-md);
+    }
+    .ind-card.active {
+      border-color: var(--brown);
+      background: var(--dough);
+      box-shadow: 0 0 0 1px var(--brown), var(--s-md);
+    }
+
+    .ind-card-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    .ind-card-label {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--t1);
+      margin-bottom: 6px;
+    }
+
+    .ind-card-hint {
+      font-size: 13px;
+      color: var(--t3);
+      line-height: 1.5;
+    }
+
+    .ind-card-arrow {
+      position: absolute;
+      top: 22px; right: 20px;
+      font-size: 16px;
+      color: var(--b1);
+      transition: all .2s;
+    }
+    .ind-card:hover .ind-card-arrow, .ind-card.active .ind-card-arrow {
+      color: var(--saffron);
+      transform: translateX(3px);
+    }
+
+    /* Industry detail panel */
+    .ind-panel {
+      margin-top: 14px;
+      background: var(--brown);
+      border-radius: var(--r-xl);
+      padding: 44px 48px;
+      display: none;
+      animation: slideDown .25s ease;
+    }
+
+    .ind-panel.visible { display: block; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .ind-panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .ind-panel-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(248,242,226,.4);
+      margin-bottom: 16px;
+    }
+
+    .ind-risk-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ind-risk-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 14px;
+      color: rgba(248,242,226,.75);
+      line-height: 1.4;
+    }
+
+    .ind-risk-list li::before {
+      content: '›';
+      color: var(--saffron);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+
+    .ind-policy-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+
+    .ind-note {
+      font-size: 13px;
+      color: rgba(248,242,226,.45);
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    /* ─────────────────────────────────────────
+       SCALING TIMELINE
+    ───────────────────────────────────────── */
+    .scale-section { background: var(--parchment); }
+
+    .scale-header { text-align: center; margin-bottom: 64px; }
+    .scale-header .lead { max-width: 520px; margin: 0 auto; }
+
+    .scale-track {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .scale-track::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--saffron) 0%, var(--caramel) 40%, var(--b1) 100%);
+      z-index: 0;
+    }
+
+    .scale-node {
+      position: relative;
+      z-index: 1;
+      padding: 0 16px;
+    }
+
+    .scale-dot-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .scale-dot {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--brown);
+      border: 3px solid var(--parchment);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dough);
+      box-shadow: 0 0 0 3px var(--b1);
+    }
+
+    .scale-node:first-child .scale-dot { background: var(--saffron); color: var(--walnut); }
+
+    .scale-node-label {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--t1);
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .scale-node-sub {
+      font-size: 12px;
+      color: var(--t3);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .scale-policies {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .scale-policy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--t2);
+      padding: 8px 12px;
+      background: var(--dough);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--b3);
+    }
+
+    .scale-policy-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .scale-policy-new .scale-policy-dot { background: var(--saffron); }
+    .scale-policy .scale-policy-dot { background: var(--b1); }
+
+    .scale-policy-new {
+      border-color: rgba(245,192,0,.3);
+      background: rgba(245,192,0,.06);
+    }
+
+    .scale-price {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--chestnut);
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    /* ─────────────────────────────────────────
+       FEATURES  (why Gnocchi)
+    ───────────────────────────────────────── */
+    .features-section { background: var(--dough); }
+
+    .features-header { text-align: center; margin-bottom: 60px; }
 
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
+      gap: 22px;
     }
 
     .feat {
       padding: 34px;
-      background: var(--cream-light);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg);
-      transition: all 0.2s;
+      background: var(--ivory);
+      border: 1px solid var(--b2);
+      border-radius: var(--r-xl);
+      transition: all .2s;
     }
-
     .feat:hover {
-      border-color: var(--green-leaf);
+      border-color: var(--b1);
       transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--s-md);
     }
 
     .feat-icon {
-      width: 54px;
-      height: 54px;
-      background: var(--green-subtle);
-      border-radius: var(--radius-md);
+      width: 52px; height: 52px;
+      background: var(--saffron-lt);
+      border-radius: var(--r-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
-      margin-bottom: 22px;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
 
     .feat-title {
-      font-family: var(--font-display);
+      font-family: var(--serif);
       font-size: 22px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--t1);
+      margin-bottom: 9px;
+    }
+
+    .feat-body {
+      font-size: 14.5px;
+      color: var(--t3);
+      line-height: 1.65;
+    }
+
+    /* ─────────────────────────────────────────
+       PROCESS  (3 steps)
+    ───────────────────────────────────────── */
+    .process-section { background: var(--ivory); }
+
+    .process-header { text-align: center; margin-bottom: 64px; }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 16.67%;
+      right: 16.67%;
+      height: 1.5px;
+      background: linear-gradient(90deg, var(--saffron), var(--b2));
+    }
+
+    .proc-step {
+      text-align: center;
+      padding: 0 32px 44px;
+    }
+
+    .proc-num {
+      width: 56px; height: 56px;
+      background: var(--brown);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dough);
+      margin: 0 auto 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .proc-step:first-child .proc-num { background: var(--saffron); color: var(--walnut); }
+
+    .proc-title {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--t1);
       margin-bottom: 10px;
     }
 
-    .feat-text {
+    .proc-body {
       font-size: 14.5px;
-      color: var(--text-muted);
+      color: var(--t3);
       line-height: 1.6;
     }
 
-    /* ============================================
-       TESTIMONIALS
-    ============================================ */
-    .testimonials { background: var(--cream); }
-
-    .testimonials-header {
-      text-align: center;
-      margin-bottom: 64px;
+    .proc-chip {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 5px 14px;
+      background: var(--saffron-lt);
+      color: var(--brown);
+      border-radius: var(--r-full);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
     }
 
-    .testimonials-grid {
+    /* ─────────────────────────────────────────
+       TESTIMONIALS
+    ───────────────────────────────────────── */
+    .testi-section { background: var(--parchment); }
+
+    .testi-header { text-align: center; margin-bottom: 56px; }
+
+    .testi-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+      gap: 20px;
     }
 
-    .testi {
-      background: var(--white);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-xl);
-      padding: 36px;
+    .testi-card {
+      background: var(--dough);
+      border: 1px solid var(--b2);
+      border-radius: var(--r-xl);
+      padding: 34px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      transition: box-shadow 0.2s;
+      gap: 22px;
+      transition: box-shadow .2s;
     }
-
-    .testi:hover { box-shadow: var(--shadow-md); }
+    .testi-card:hover { box-shadow: var(--s-md); }
 
     .testi-stars {
       display: flex;
-      gap: 3px;
-      color: var(--green-highlight);
-      font-size: 15px;
+      gap: 2px;
+      color: var(--saffron);
+      font-size: 14px;
     }
 
     .testi-quote {
-      font-family: var(--font-display);
+      font-family: var(--serif);
       font-size: 18px;
       font-style: italic;
-      color: var(--text-primary);
+      color: var(--t1);
       line-height: 1.65;
       flex: 1;
     }
@@ -988,59 +1124,46 @@
     .testi-author {
       display: flex;
       align-items: center;
-      gap: 13px;
-      border-top: 1px solid var(--border-light);
-      padding-top: 20px;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px solid var(--b2);
     }
 
-    .author-av {
-      width: 42px;
-      height: 42px;
+    .testi-av {
+      width: 40px; height: 40px;
       border-radius: 50%;
-      background: var(--green-pale);
+      background: var(--wheat);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-display);
+      font-family: var(--serif);
       font-weight: 700;
-      font-size: 17px;
-      color: var(--green-deep);
+      font-size: 16px;
+      color: var(--brown);
       flex-shrink: 0;
     }
 
-    .author-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 2px;
-    }
+    .testi-name { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 1px; }
+    .testi-role { font-size: 12px; color: var(--t3); }
 
-    .author-role {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* ============================================
+    /* ─────────────────────────────────────────
        FAQ
-    ============================================ */
-    .faq-section { background: var(--cream-dark); }
+    ───────────────────────────────────────── */
+    .faq-section { background: var(--ivory); }
 
-    .faq-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
+    .faq-header { text-align: center; margin-bottom: 52px; }
 
     .faq-list {
-      max-width: 740px;
+      max-width: 760px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
     }
 
     .faq-item {
-      background: var(--white);
-      border-radius: var(--radius-md);
+      background: var(--dough);
+      border-radius: var(--r-md);
       overflow: hidden;
     }
 
@@ -1050,62 +1173,58 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      padding: 22px 28px;
+      padding: 20px 26px;
       background: none;
       border: none;
       cursor: pointer;
       font-size: 15.5px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--t1);
       text-align: left;
-      transition: background 0.15s;
+      transition: background .15s;
     }
+    .faq-btn:hover { background: var(--parchment); }
 
-    .faq-btn:hover { background: var(--cream-light); }
-
-    .faq-toggle {
-      width: 26px;
-      height: 26px;
+    .faq-icon {
+      width: 26px; height: 26px;
       border-radius: 50%;
-      background: var(--cream-dark);
+      background: var(--parchment);
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
       font-size: 16px;
       font-weight: 400;
-      transition: transform 0.25s, background 0.2s, color 0.2s;
-      color: var(--text-secondary);
+      flex-shrink: 0;
+      color: var(--t2);
+      transition: transform .25s, background .2s, color .2s;
     }
-
-    .faq-item.open .faq-toggle {
+    .faq-item.open .faq-icon {
       transform: rotate(45deg);
-      background: var(--green-deep);
-      color: var(--cream-light);
+      background: var(--brown);
+      color: var(--dough);
     }
 
     .faq-panel {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
+      transition: max-height .3s ease;
     }
-
-    .faq-item.open .faq-panel { max-height: 240px; }
+    .faq-item.open .faq-panel { max-height: 260px; }
 
     .faq-body {
-      padding: 4px 28px 24px;
+      padding: 0 26px 22px;
       font-size: 15px;
-      color: var(--text-secondary);
+      color: var(--t2);
       line-height: 1.65;
     }
 
-    /* ============================================
-       FINAL CTA
-    ============================================ */
+    /* ─────────────────────────────────────────
+       FINAL CTA  → Typeform
+    ───────────────────────────────────────── */
     .cta-section {
-      background: var(--green-forest);
+      background: var(--walnut);
+      padding: 112px 28px;
       text-align: center;
-      padding: 120px 28px;
       position: relative;
       overflow: hidden;
     }
@@ -1113,142 +1232,154 @@
     .cta-blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
+      filter: blur(100px);
       pointer-events: none;
-    }
-
-    .cta-blob-1 {
-      width: 500px; height: 500px;
-      background: var(--green-highlight);
-      opacity: 0.07;
-      top: -150px; right: -100px;
-    }
-
-    .cta-blob-2 {
-      width: 400px; height: 400px;
-      background: var(--green-leaf);
-      opacity: 0.08;
-      bottom: -100px; left: -80px;
     }
 
     .cta-inner {
       position: relative;
       z-index: 1;
-      max-width: 620px;
+      max-width: 640px;
       margin: 0 auto;
     }
 
-    .cta-section .section-eyebrow { color: var(--green-highlight); margin-bottom: 14px; display: block; }
+    .cta-section .eyebrow { color: var(--saffron); margin-bottom: 16px; }
 
     .cta-title {
-      font-family: var(--font-display);
-      font-size: clamp(42px, 7vw, 78px);
+      font-family: var(--serif);
+      font-size: clamp(42px, 7vw, 80px);
       font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--cream-light);
+      line-height: 1.07;
+      letter-spacing: -.03em;
+      color: var(--ivory);
       margin-bottom: 22px;
     }
-
-    .cta-title em {
-      font-style: italic;
-      color: var(--green-highlight);
-    }
+    .cta-title em { font-style: italic; color: var(--saffron); }
 
     .cta-sub {
       font-size: 17px;
-      color: rgba(254,252,248,0.62);
+      color: rgba(248,242,226,.58);
       margin-bottom: 48px;
       line-height: 1.65;
     }
 
-    .cta-form {
-      display: flex;
-      gap: 10px;
-      max-width: 460px;
-      margin: 0 auto 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .input-dark {
-      flex: 1;
-      min-width: 210px;
-      padding: 14px 22px;
-      border: 1.5px solid rgba(254,252,248,0.18);
-      border-radius: var(--radius-full);
-      font-family: var(--font-body);
-      font-size: 15px;
-      background: rgba(254,252,248,0.07);
-      color: var(--cream-light);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .input-dark::placeholder { color: rgba(254,252,248,0.38); }
-
-    .input-dark:focus {
-      border-color: var(--green-highlight);
-      box-shadow: 0 0 0 3px rgba(184,209,54,0.15);
-    }
-
-    .cta-note {
-      font-size: 12.5px;
-      color: rgba(254,252,248,0.36);
-    }
-
-    /* ============================================
-       FOOTER
-    ============================================ */
-    footer {
-      background: var(--earth-dark);
-      color: rgba(254,252,248,0.55);
-      padding: 72px 28px 44px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2.2fr 1fr 1fr 1fr;
-      gap: 56px;
-      padding-bottom: 52px;
-      border-bottom: 1px solid rgba(254,252,248,0.08);
-      margin-bottom: 36px;
-    }
-
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 28px;
+    .cta-typeform-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 44px;
+      background: var(--saffron);
+      color: var(--walnut);
+      border-radius: var(--r-full);
+      font-size: 17px;
       font-weight: 700;
-      color: var(--cream-light);
-      letter-spacing: -0.03em;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      letter-spacing: .01em;
+      text-decoration: none;
+    }
+    .cta-typeform-btn:hover {
+      background: var(--saffron-dk);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(245,192,0,.5);
+    }
+
+    .cta-arrow {
+      width: 32px; height: 32px;
+      background: rgba(42,21,8,.15);
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      font-size: 16px;
+      transition: transform .2s;
+    }
+    .cta-typeform-btn:hover .cta-arrow { transform: translateX(3px); }
+
+    .cta-form-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: rgba(248,242,226,.32);
+    }
+
+    .cta-questions {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(248,242,226,.08);
+    }
+
+    .cta-questions-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(248,242,226,.3);
       margin-bottom: 14px;
     }
 
-    .footer-logo .logo-mark {
-      background: var(--green-deep);
+    .cta-q-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .cta-q-pill {
+      padding: 5px 14px;
+      background: rgba(248,242,226,.07);
+      border: 1px solid rgba(248,242,226,.12);
+      border-radius: var(--r-full);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: rgba(248,242,226,.5);
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .footer {
+      background: var(--espresso);
+      color: rgba(248,242,226,.5);
+      padding: 72px 28px 44px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 52px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(248,242,226,.07);
+      margin-bottom: 32px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ivory);
+      letter-spacing: -.03em;
+      margin-bottom: 14px;
     }
 
     .footer-desc {
       font-size: 14px;
       line-height: 1.65;
-      max-width: 250px;
-      color: rgba(254,252,248,0.48);
+      color: rgba(248,242,226,.42);
+      max-width: 240px;
     }
 
     .footer-col-title {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
       text-transform: uppercase;
-      color: rgba(254,252,248,0.35);
+      color: rgba(248,242,226,.3);
       margin-bottom: 18px;
     }
 
@@ -1261,862 +1392,1025 @@
 
     .footer-links a {
       font-size: 14px;
-      color: rgba(254,252,248,0.55);
-      transition: color 0.2s;
+      color: rgba(248,242,226,.5);
+      transition: color .2s;
     }
-
-    .footer-links a:hover { color: var(--cream-light); }
+    .footer-links a:hover { color: var(--ivory); }
 
     .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 14px;
       font-size: 12.5px;
-      color: rgba(254,252,248,0.32);
+      color: rgba(248,242,226,.28);
     }
 
-    .footer-legal {
-      display: flex;
-      gap: 22px;
-    }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { color: rgba(248,242,226,.28); transition: color .2s; }
+    .footer-legal a:hover { color: rgba(248,242,226,.6); }
 
-    .footer-legal a {
-      color: rgba(254,252,248,0.32);
-      transition: color 0.2s;
-    }
-
-    .footer-legal a:hover { color: rgba(254,252,248,0.6); }
-
-    /* ============================================
+    /* ─────────────────────────────────────────
        SCROLL REVEAL
-    ============================================ */
+    ───────────────────────────────────────── */
     .reveal {
       opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
     }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* Hero entrance */
+    @keyframes up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    .hero-kicker  { animation: up .55s .05s ease both; }
+    .hero h1      { animation: up .65s .15s ease both; }
+    .hero-sub     { animation: up .65s .25s ease both; }
+    .hero-ctas    { animation: up .6s  .35s ease both; }
+    .stage-preview{ animation: up .6s  .42s ease both; }
+    .hero-stats   { animation: up .6s  .5s  ease both; }
 
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-
-    /* Hero entrance animation */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-badge   { animation: fadeUp 0.6s 0.05s ease both; }
-    .hero h1      { animation: fadeUp 0.7s 0.15s ease both; }
-    .hero-sub     { animation: fadeUp 0.7s 0.25s ease both; }
-    .hero-form    { animation: fadeUp 0.7s 0.35s ease both; }
-    .hero-note    { animation: fadeUp 0.6s 0.42s ease both; }
-    .hero-stats   { animation: fadeUp 0.7s 0.5s ease both; }
-
-    /* ============================================
+    /* ─────────────────────────────────────────
        RESPONSIVE
-    ============================================ */
-    @media (max-width: 900px) {
-      .problem-layout   { grid-template-columns: 1fr; gap: 44px; }
-      .steps            { grid-template-columns: 1fr; }
-      .step-connector   { display: none; }
-      .packages-grid    { grid-template-columns: 1fr; }
-      .comparison-layout{ grid-template-columns: 1fr; }
-      .features-grid    { grid-template-columns: repeat(2, 1fr); }
-      .testimonials-grid{ grid-template-columns: 1fr; }
-      .footer-top       { grid-template-columns: 1fr 1fr; gap: 36px; }
-      .footer-brand-col { grid-column: 1 / -1; }
+    ───────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .stage-panel-top { grid-template-columns: 1fr; }
+      .stage-price-box { text-align: left; }
+      .industry-grid   { grid-template-columns: repeat(2, 1fr); }
+      .ind-panel-grid  { grid-template-columns: 1fr 1fr; }
+      .scale-track     { grid-template-columns: 1fr 1fr; }
+      .scale-track::before { display: none; }
+      .features-grid   { grid-template-columns: repeat(2, 1fr); }
+      .process-steps   { grid-template-columns: 1fr; }
+      .process-steps::before { display: none; }
+      .testi-grid      { grid-template-columns: 1fr; }
+      .footer-grid     { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .footer-brand-col{ grid-column: 1 / -1; }
     }
 
-    @media (max-width: 600px) {
-      .nav-links    { display: none; }
-      .section      { padding: 72px 20px; }
-      .hero         { padding: 64px 20px 72px; }
-      .hero-stats   { gap: 20px; flex-direction: column; align-items: center; }
-      .stat         { border-right: none; border-bottom: 1px solid var(--border-light); padding: 20px 0; width: 100%; }
-      .stat:last-child { border-bottom: none; }
-      .features-grid{ grid-template-columns: 1fr; }
-      .footer-top   { grid-template-columns: 1fr; }
-      .comp-card    { padding: 30px 26px; }
-      .footer-bottom{ flex-direction: column; text-align: center; }
-      .problem      { padding: 72px 20px; }
-    }
-
-    @media (max-width: 400px) {
-      .hero h1 { font-size: 40px; }
+    @media (max-width: 680px) {
+      .nav-links        { display: none; }
+      .section          { padding: 72px 20px; }
+      .hero             { padding: 64px 20px 80px; }
+      .industry-grid    { grid-template-columns: 1fr; }
+      .ind-panel-grid   { grid-template-columns: 1fr; }
+      .ind-panel        { padding: 28px 24px; }
+      .stage-panel      { padding: 28px 24px; }
+      .features-grid    { grid-template-columns: 1fr; }
+      .scale-track      { grid-template-columns: 1fr; }
+      .hero-stats       { flex-direction: column; align-items: center; }
+      .hstat            { border-right: none; border-bottom: 1px solid var(--b2); padding: 18px 0; width: 100%; }
+      .hstat:last-child { border-bottom: none; }
+      .footer-grid      { grid-template-columns: 1fr; }
+      .footer-bottom    { flex-direction: column; text-align: center; }
+      .stage-header     { flex-direction: column; }
+      .stage-header-note{ text-align: left; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ===========================
+  <!-- ─────────────────────────────────────────
        ANNOUNCEMENT BAR
-  =========================== -->
-  <div class="announcement-bar">
-    🌿 Gnocchi is launching soon &mdash; <a href="#waitlist">Secure your early access &rarr;</a>
+  ───────────────────────────────────────── -->
+  <div class="ann">
+    🍝 Early access for UK founders is now open &mdash;
+    <a href="#waitlist">Secure your spot &rarr;</a>
   </div>
 
-  <!-- ===========================
+  <!-- ─────────────────────────────────────────
        NAVIGATION
-  =========================== -->
-  <nav role="navigation" aria-label="Main">
-    <div class="nav-inner">
+  ───────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="wrap nav-wrap">
       <a href="/" class="logo" aria-label="Gnocchi home">
         <div class="logo-mark" aria-hidden="true">G</div>
         Gnocchi
       </a>
 
       <ul class="nav-links" role="list">
-        <li><a href="#coverage">Coverage</a></li>
-        <li><a href="#how-it-works">How it works</a></li>
-        <li><a href="#why-us">Why us</a></li>
+        <li><a href="#stage-coverage">Coverage</a></li>
+        <li><a href="#industry">By vertical</a></li>
+        <li><a href="#process">How it works</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
 
       <div class="nav-right">
-        <a href="#waitlist" class="btn btn-primary">Join waitlist</a>
+        <a href="#waitlist" class="btn btn-saffron">Join the waitlist</a>
       </div>
     </div>
   </nav>
 
-  <!-- ===========================
+  <!-- ─────────────────────────────────────────
        HERO
-  =========================== -->
-  <header class="hero" id="home">
-    <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
-    <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
-    <div class="hero-blob hero-blob-3" aria-hidden="true"></div>
+  ───────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-blob" style="width:560px;height:560px;background:radial-gradient(circle,#F5C000,transparent 70%);opacity:.06;top:-180px;right:-120px;" aria-hidden="true"></div>
+    <div class="hero-blob" style="width:460px;height:460px;background:radial-gradient(circle,#B06828,transparent 70%);opacity:.07;bottom:-80px;left:-100px;" aria-hidden="true"></div>
 
     <div class="hero-inner">
-      <div class="hero-badge" role="status">
-        <span class="badge-dot" aria-hidden="true"></span>
-        Now accepting early applications
+      <div class="hero-kicker">
+        <div class="badge">
+          <span class="badge-dot" aria-hidden="true"></span>
+          Now accepting early access
+        </div>
       </div>
 
-      <h1>
-        Insurance that grows<br>
-        <em>with your startup</em>
-      </h1>
+      <h1>Insurance built<br>for your <em>stage</em></h1>
 
       <p class="hero-sub">
-        Tailored business coverage for founders and SMEs. Get a quote in minutes &mdash; not weeks. No brokers, no jargon, just protection that fits.
+        Startup and SME coverage packaged by funding round, team size, and industry vertical. You only pay for what your company actually needs&nbsp;&mdash; right now.
       </p>
 
-      <form class="hero-form" id="waitlist" onsubmit="handleWaitlist(event)" novalidate>
-        <label for="hero-email" class="sr-only">Email address</label>
-        <input
-          id="hero-email"
-          type="email"
-          class="input"
-          placeholder="you@startup.com"
-          required
-          autocomplete="email"
-          aria-label="Your work email"
-        >
-        <button type="submit" class="btn btn-accent btn-lg">
+      <div class="hero-ctas">
+        <a href="#waitlist" class="btn btn-saffron btn-lg" id="hero-waitlist-btn">
           Join the waitlist &rarr;
-        </button>
-      </form>
+        </a>
+        <a href="#stage-coverage" class="btn btn-outline btn-lg">
+          Explore coverage &darr;
+        </a>
+      </div>
 
-      <p class="hero-note">No credit card required &middot; Join 2,400+ founders already on the list</p>
+      <div class="stage-preview" role="navigation" aria-label="Coverage stages">
+        <span class="stage-preview-label">Covers</span>
+        <button class="stage-pill active" onclick="scrollToStage('pre-seed')">Pre-Seed</button>
+        <button class="stage-pill" onclick="scrollToStage('seed')">Seed</button>
+        <button class="stage-pill" onclick="scrollToStage('series-a')">Series A</button>
+        <button class="stage-pill" onclick="scrollToStage('series-b')">Series B+</button>
+        <button class="stage-pill" onclick="scrollToStage('sme')">Established SME</button>
+      </div>
 
-      <div class="hero-stats" role="list" aria-label="Key stats">
-        <div class="stat" role="listitem">
-          <div class="stat-value">5 min</div>
-          <div class="stat-label">Average time to quote</div>
+      <div class="hero-stats" role="list" aria-label="Key figures">
+        <div class="hstat" role="listitem">
+          <div class="hstat-val">5 min</div>
+          <div class="hstat-label">Average to quote</div>
         </div>
-        <div class="stat" role="listitem">
-          <div class="stat-value">&pound;0</div>
-          <div class="stat-label">Broker fees, ever</div>
+        <div class="hstat" role="listitem">
+          <div class="hstat-val">&pound;0</div>
+          <div class="hstat-label">Broker fees</div>
         </div>
-        <div class="stat" role="listitem">
-          <div class="stat-value">9+</div>
-          <div class="stat-label">Policy types available</div>
+        <div class="hstat" role="listitem">
+          <div class="hstat-val">9+</div>
+          <div class="hstat-label">Policy types</div>
         </div>
-        <div class="stat" role="listitem">
-          <div class="stat-value">A-rated</div>
-          <div class="stat-label">Insurance carriers</div>
+        <div class="hstat" role="listitem">
+          <div class="hstat-val">A-rated</div>
+          <div class="hstat-label">Carrier partners</div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ===========================
-       TRUSTED BY
-  =========================== -->
-  <div class="trusted" role="region" aria-label="Trusted by">
-    <p class="trusted-label">Built for founders at</p>
-    <div class="trusted-logos">
-      <span class="trusted-logo">Seedcamp</span>
-      <span class="trusted-logo">Y&nbsp;Combinator</span>
-      <span class="trusted-logo">Techstars</span>
-      <span class="trusted-logo">Founder&nbsp;Factory</span>
-      <span class="trusted-logo">Antler</span>
+  <!-- ─────────────────────────────────────────
+       TRUST BAR
+  ───────────────────────────────────────── -->
+  <div class="trust">
+    <p class="trust-label">Built for founders from</p>
+    <div class="trust-logos">
+      <span class="trust-logo">Seedcamp</span>
+      <span class="trust-logo">Y&nbsp;Combinator</span>
+      <span class="trust-logo">Techstars</span>
+      <span class="trust-logo">Founder&nbsp;Factory</span>
+      <span class="trust-logo">Antler</span>
+      <span class="trust-logo">Entrepreneur&nbsp;First</span>
     </div>
   </div>
 
-  <!-- ===========================
-       PROBLEM
-  =========================== -->
-  <section class="problem" aria-labelledby="problem-heading">
-    <div class="section-inner">
-      <div class="problem-layout">
+  <!-- ─────────────────────────────────────────
+       STAGE COVERAGE SELECTOR  (interactive)
+  ───────────────────────────────────────── -->
+  <section class="stage-section" id="stage-coverage" aria-labelledby="stage-heading">
+    <div class="section-inner wrap">
 
-        <div class="reveal">
-          <p class="section-eyebrow">The Problem</p>
-          <h2 class="section-heading" id="problem-heading">
-            Insurance wasn&rsquo;t<br>
-            <em>built for you</em>
+      <div class="stage-header reveal">
+        <div class="stage-header-text">
+          <span class="eyebrow">Coverage by stage</span>
+          <h2 class="display" id="stage-heading">
+            Built for every<br><em>stage of growth</em>
           </h2>
-          <p class="section-body" style="margin-top: 18px;">
-            Traditional insurers treat every business the same. Weeks of paperwork, opaque pricing, and policies engineered for enterprises &mdash; not the team of 12 shipping v2.0.
-          </p>
         </div>
-
-        <div class="problem-cards">
-          <div class="problem-card reveal reveal-delay-1">
-            <div class="problem-card-icon" aria-hidden="true">⏳</div>
-            <div>
-              <div class="problem-card-title">Weeks of waiting</div>
-              <div class="problem-card-body">Legacy underwriting cycles run 2&ndash;6 weeks. You&rsquo;re closing a round &mdash; not waiting for a broker to call back.</div>
-            </div>
-          </div>
-          <div class="problem-card reveal reveal-delay-2">
-            <div class="problem-card-icon" aria-hidden="true">📄</div>
-            <div>
-              <div class="problem-card-title">Walls of jargon</div>
-              <div class="problem-card-body">Policy documents engineered for lawyers. You shouldn&rsquo;t need a solicitor to understand what you&rsquo;re buying.</div>
-            </div>
-          </div>
-          <div class="problem-card reveal reveal-delay-3">
-            <div class="problem-card-icon" aria-hidden="true">🏷️</div>
-            <div>
-              <div class="problem-card-title">One-size-fits-none</div>
-              <div class="problem-card-body">Generic coverage built for large enterprises. Pre-seed teams have different risks than a FTSE 250 &mdash; your policy should reflect that.</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       HOW IT WORKS
-  =========================== -->
-  <section class="section how" id="how-it-works" aria-labelledby="how-heading">
-    <div class="section-inner">
-
-      <div class="how-header reveal">
-        <p class="section-eyebrow">How it works</p>
-        <h2 class="section-heading" id="how-heading">
-          Covered in <em>three steps</em>
-        </h2>
-        <p class="section-body">
-          From first click to active policy, faster than your morning standup.
+        <p class="stage-header-note">
+          Select your current stage to see the exact policies we recommend — and why.
         </p>
       </div>
 
-      <div class="steps" role="list">
-        <div class="step reveal" role="listitem">
-          <div class="step-connector" aria-hidden="true">&rarr;</div>
-          <div class="step-num" aria-label="Step 1">01</div>
-          <div class="step-title">Tell us about you</div>
-          <p class="step-text">Answer a few straightforward questions about your company, team, and what you build. No broker call. No lengthy form.</p>
-          <span class="step-chip">~2 minutes</span>
-        </div>
+      <div class="stage-tabs reveal" role="tablist" aria-label="Funding stages" id="stage-tabs">
+        <button class="stage-tab active" role="tab" aria-selected="true"  data-stage="pre-seed">Pre-Seed</button>
+        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="seed">Seed</button>
+        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="series-a">Series A</button>
+        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="series-b">Series B+</button>
+        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="sme">Established SME</button>
+      </div>
 
-        <div class="step reveal reveal-delay-1" role="listitem">
-          <div class="step-connector" aria-hidden="true">&rarr;</div>
-          <div class="step-num" aria-label="Step 2">02</div>
-          <div class="step-title">Get your tailored quote</div>
-          <p class="step-text">Our AI-powered engine generates precise coverage in seconds. Transparent pricing. No hidden extras. You see the full picture immediately.</p>
-          <span class="step-chip">Instant</span>
-        </div>
-
-        <div class="step reveal reveal-delay-2" role="listitem">
-          <div class="step-num" aria-label="Step 3">03</div>
-          <div class="step-title">Get covered &amp; move on</div>
-          <p class="step-text">Pay, receive your Certificate of Insurance immediately, and get back to building. Manage everything from a single dashboard as your company scales.</p>
-          <span class="step-chip">Same day</span>
-        </div>
+      <div class="stage-panel reveal" id="stage-panel" aria-live="polite">
+        <!-- Rendered by JS -->
       </div>
 
     </div>
   </section>
 
-  <!-- ===========================
-       COVERAGE PACKAGES
-  =========================== -->
-  <section class="section packages" id="coverage" aria-labelledby="packages-heading">
+  <!-- ─────────────────────────────────────────
+       INDUSTRY VERTICAL SELECTOR  (interactive)
+  ───────────────────────────────────────── -->
+  <section class="section industry-section" id="industry" aria-labelledby="industry-heading">
     <div class="section-inner">
 
-      <div class="packages-header reveal">
-        <p class="section-eyebrow">Coverage</p>
-        <h2 class="section-heading" id="packages-heading">
-          Built for <em>every stage</em>
+      <div class="industry-header reveal">
+        <span class="eyebrow">By vertical</span>
+        <h2 class="display" id="industry-heading" style="margin-bottom:16px;">
+          Tailored to your <em>industry</em>
         </h2>
-        <p class="section-body">
-          From your first cheque to your next funding round, we&rsquo;ve designed packages for every phase of growth.
+        <p class="lead">
+          Different verticals carry different risks. Click your industry to see the policies that matter most.
         </p>
       </div>
 
-      <div class="packages-grid">
-
-        <!-- Pre-Seed -->
-        <div class="pkg reveal">
-          <div class="pkg-header">
-            <div class="pkg-deco" aria-hidden="true"></div>
-            <div class="pkg-badge">Pre-Seed &amp; Seed</div>
-            <div class="pkg-name">Founder</div>
-            <div class="pkg-tagline">Core protection for you and your product</div>
-          </div>
-          <div class="pkg-body">
-            <div class="pkg-policies-label">Policies included</div>
-            <div class="tag-cloud">
-              <button class="policy-chip" aria-label="Public Liability — learn more">Public Liability</button>
-              <button class="policy-chip" aria-label="D&O — learn more">D&amp;O</button>
-              <button class="policy-chip" aria-label="Tech E&O — learn more">Tech E&amp;O</button>
-              <button class="policy-chip" aria-label="Cyber — learn more">Cyber</button>
-            </div>
-            <a href="#waitlist" class="btn btn-ghost btn-full">Get a quote instantly &nearr;</a>
-          </div>
-        </div>
-
-        <!-- Series A — Featured -->
-        <div class="pkg featured reveal reveal-delay-1">
-          <div class="pkg-header">
-            <div class="pkg-deco" aria-hidden="true"></div>
-            <div class="pkg-badge">Most popular</div>
-            <div class="pkg-name">Growth</div>
-            <div class="pkg-tagline">Protects you, your board, and helps close bigger deals</div>
-          </div>
-          <div class="pkg-body">
-            <div class="pkg-policies-label">Policies included</div>
-            <div class="tag-cloud">
-              <button class="policy-chip">Public Liability</button>
-              <button class="policy-chip">D&amp;O</button>
-              <button class="policy-chip">Tech E&amp;O</button>
-              <button class="policy-chip">Cyber</button>
-              <button class="policy-chip">Media</button>
-              <button class="policy-chip">EPLI</button>
-            </div>
-            <a href="#waitlist" class="btn btn-accent btn-full">Get a quote instantly &nearr;</a>
-          </div>
-        </div>
-
-        <!-- Custom -->
-        <div class="pkg reveal reveal-delay-2">
-          <div class="pkg-header">
-            <div class="pkg-deco" aria-hidden="true"></div>
-            <div class="pkg-badge">Series B+</div>
-            <div class="pkg-name">Custom</div>
-            <div class="pkg-tagline">Know exactly what you need? Pick and mix.</div>
-          </div>
-          <div class="pkg-body">
-            <div class="pkg-policies-label">All available policies</div>
-            <div class="tag-cloud">
-              <button class="policy-chip">Public Liability</button>
-              <button class="policy-chip">D&amp;O</button>
-              <button class="policy-chip">Tech E&amp;O</button>
-              <button class="policy-chip">Cyber</button>
-              <button class="policy-chip">Fiduciary</button>
-              <button class="policy-chip">Media</button>
-              <button class="policy-chip">EPLI</button>
-              <button class="policy-chip">HNOA</button>
-              <button class="policy-chip">+ more</button>
-            </div>
-            <a href="#waitlist" class="btn btn-ghost btn-full">Talk to us &nearr;</a>
-          </div>
-        </div>
-
+      <div class="industry-grid" id="ind-grid">
+        <!-- Rendered by JS -->
       </div>
 
-      <p style="text-align: center; font-size: 13.5px; color: var(--text-muted); margin-top: 12px;">
-        &circledI; Click any policy to see what it covers
-      </p>
+      <div class="ind-panel" id="ind-panel" aria-live="polite">
+        <!-- Rendered by JS when a card is selected -->
+      </div>
 
     </div>
   </section>
 
-  <!-- ===========================
-       COMPARISON
-  =========================== -->
-  <section class="section comparison-section" id="why-us" aria-labelledby="why-heading">
+  <!-- ─────────────────────────────────────────
+       COVERAGE SCALING TIMELINE
+  ───────────────────────────────────────── -->
+  <section class="section scale-section" aria-labelledby="scale-heading">
     <div class="section-inner">
 
-      <div class="reveal">
-        <p class="section-eyebrow">Our advantage</p>
-        <h2 class="section-heading" id="why-heading">
-          Insurance <em>reimagined</em><br>for modern business
+      <div class="scale-header reveal">
+        <span class="eyebrow">How it scales</span>
+        <h2 class="display" id="scale-heading" style="margin-bottom:16px;">
+          Your coverage <em>grows with you</em>
         </h2>
+        <p class="lead">
+          Start with the essentials, unlock more as your company hits new milestones.
+        </p>
       </div>
 
-      <div class="comparison-layout">
-
-        <div class="comp-card legacy reveal">
-          <span class="comp-pill">Legacy insurers</span>
-          <div class="comp-title">The old way</div>
-          <ul class="comp-list" role="list">
-            <li><span class="comp-icon no" aria-hidden="true">&#10005;</span>2&ndash;6 week underwriting cycle</li>
-            <li><span class="comp-icon no" aria-hidden="true">&#10005;</span>Broker reviews &amp; manual adjustments</li>
-            <li><span class="comp-icon no" aria-hidden="true">&#10005;</span>Opaque, confusing pricing</li>
-            <li><span class="comp-icon no" aria-hidden="true">&#10005;</span>Generic one-size-fits-all policies</li>
-            <li><span class="comp-icon no" aria-hidden="true">&#10005;</span>Paper-heavy claims process</li>
-            <li><span class="comp-icon no" aria-hidden="true">&#10005;</span>Coverage doesn&rsquo;t adapt as you scale</li>
-          </ul>
+      <div class="scale-track">
+        <div class="scale-node reveal">
+          <div class="scale-dot-wrap"><div class="scale-dot">1</div></div>
+          <div class="scale-node-label">Pre-Seed</div>
+          <div class="scale-node-sub">1–10 people · Pre-revenue</div>
+          <div class="scale-policies">
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Public Liability</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Directors &amp; Officers</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Cyber Essentials</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Prof. Indemnity</div>
+          </div>
+          <div class="scale-price">From &pound;99/mo</div>
         </div>
 
-        <div class="comp-card gnocchi-card reveal reveal-delay-1">
-          <span class="comp-pill">Gnocchi</span>
-          <div class="comp-title">The Gnocchi way</div>
-          <ul class="comp-list" role="list">
-            <li><span class="comp-icon yes" aria-hidden="true">&#10003;</span>Quote in under 5 minutes</li>
-            <li><span class="comp-icon yes" aria-hidden="true">&#10003;</span>No brokers &mdash; direct coverage</li>
-            <li><span class="comp-icon yes" aria-hidden="true">&#10003;</span>Transparent, instant pricing</li>
-            <li><span class="comp-icon yes" aria-hidden="true">&#10003;</span>Modular policies built for your stage</li>
-            <li><span class="comp-icon yes" aria-hidden="true">&#10003;</span>Digital-first claims &amp; support</li>
-            <li><span class="comp-icon yes" aria-hidden="true">&#10003;</span>Scales seamlessly with your team</li>
-          </ul>
+        <div class="scale-node reveal reveal-d1">
+          <div class="scale-dot-wrap"><div class="scale-dot">2</div></div>
+          <div class="scale-node-label">Seed</div>
+          <div class="scale-node-sub">5–30 people · to £3M</div>
+          <div class="scale-policies">
+            <div class="scale-policy"><span class="scale-policy-dot"></span>Public Liability</div>
+            <div class="scale-policy"><span class="scale-policy-dot"></span>D&amp;O</div>
+            <div class="scale-policy"><span class="scale-policy-dot"></span>Prof. Indemnity</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Tech E&amp;O</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>EPLI</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Cyber (Enhanced)</div>
+          </div>
+          <div class="scale-price">From &pound;280/mo</div>
         </div>
 
+        <div class="scale-node reveal reveal-d2">
+          <div class="scale-dot-wrap"><div class="scale-dot">3</div></div>
+          <div class="scale-node-label">Series A</div>
+          <div class="scale-node-sub">30–120 people · to £20M</div>
+          <div class="scale-policies">
+            <div class="scale-policy"><span class="scale-policy-dot"></span>Full D&amp;O Suite</div>
+            <div class="scale-policy"><span class="scale-policy-dot"></span>Cyber</div>
+            <div class="scale-policy"><span class="scale-policy-dot"></span>EPLI</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Media Liability</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Fiduciary</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>HNOA</div>
+          </div>
+          <div class="scale-price">From &pound;650/mo</div>
+        </div>
+
+        <div class="scale-node reveal reveal-d3">
+          <div class="scale-dot-wrap"><div class="scale-dot">4</div></div>
+          <div class="scale-node-label">Series B+</div>
+          <div class="scale-node-sub">120+ people · £20M+</div>
+          <div class="scale-policies">
+            <div class="scale-policy"><span class="scale-policy-dot"></span>Complete Suite</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Commercial Crime</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>High-Limit Cyber</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Run-off Cover</div>
+            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Custom Limits</div>
+          </div>
+          <div class="scale-price">Custom pricing</div>
+        </div>
       </div>
+
     </div>
   </section>
 
-  <!-- ===========================
-       FEATURES
-  =========================== -->
-  <section class="section features" aria-labelledby="features-heading">
+  <!-- ─────────────────────────────────────────
+       WHY GNOCCHI  (features)
+  ───────────────────────────────────────── -->
+  <section class="section features-section" aria-labelledby="feat-heading">
     <div class="section-inner">
 
       <div class="features-header reveal">
-        <p class="section-eyebrow">What makes us different</p>
-        <h2 class="section-heading" id="features-heading">
-          Built for <em>founders</em>,<br>by founders
-        </h2>
+        <span class="eyebrow">Why Gnocchi</span>
+        <h2 class="display" id="feat-heading">Built for founders,<br><em>by founders</em></h2>
       </div>
 
       <div class="features-grid">
         <div class="feat reveal">
           <div class="feat-icon" aria-hidden="true">⚡</div>
-          <div class="feat-title">Instant Quotes</div>
-          <p class="feat-text">Our AI underwriting engine generates accurate quotes in seconds &mdash; no waiting, no back-and-forth with a middleman.</p>
+          <div class="feat-title">Quote in 5 minutes</div>
+          <p class="feat-body">Our AI underwriting engine generates accurate, tailored quotes instantly. No broker call, no 3-week wait, no back-and-forth.</p>
         </div>
-        <div class="feat reveal reveal-delay-1">
-          <div class="feat-icon" aria-hidden="true">🌱</div>
-          <div class="feat-title">Grows With You</div>
-          <p class="feat-text">Start with core coverage, add policies at each milestone. Your insurance evolves as your company does &mdash; automatically.</p>
+        <div class="feat reveal reveal-d1">
+          <div class="feat-icon" aria-hidden="true">🎯</div>
+          <div class="feat-title">Stage-matched coverage</div>
+          <p class="feat-body">Pre-seed companies don't need the same coverage as a Series B. We package policies around your actual risk profile today.</p>
         </div>
-        <div class="feat reveal reveal-delay-2">
+        <div class="feat reveal reveal-d2">
           <div class="feat-icon" aria-hidden="true">🔍</div>
-          <div class="feat-title">No Hidden Fees</div>
-          <p class="feat-text">Zero broker commissions. Zero setup fees. What you see is what you pay &mdash; always. We make money when you&rsquo;re protected, not from you.</p>
+          <div class="feat-title">Transparent pricing</div>
+          <p class="feat-body">Zero broker commission, zero setup fees. What you see is what you pay — we earn when you're protected, not from you.</p>
         </div>
         <div class="feat reveal">
+          <div class="feat-icon" aria-hidden="true">🌱</div>
+          <div class="feat-title">Grows automatically</div>
+          <p class="feat-body">Add policies at each milestone from your dashboard. Your insurance evolves as you hit new funding rounds or team sizes.</p>
+        </div>
+        <div class="feat reveal reveal-d1">
           <div class="feat-icon" aria-hidden="true">🛡️</div>
-          <div class="feat-title">A-Rated Carriers</div>
-          <p class="feat-text">Backed by the world&rsquo;s most trusted insurance carriers. Coverage that enterprise clients, investors, and acquirers recognise.</p>
+          <div class="feat-title">A-rated carriers</div>
+          <p class="feat-body">Backed by the world's most trusted carriers. Coverage your board, investors, and enterprise clients actually recognise.</p>
         </div>
-        <div class="feat reveal reveal-delay-1">
-          <div class="feat-icon" aria-hidden="true">📱</div>
-          <div class="feat-title">One Dashboard</div>
-          <p class="feat-text">All your policies, certificates, and claims in one beautiful interface. Share with your CFO, bookkeeper, or legal team instantly.</p>
-        </div>
-        <div class="feat reveal reveal-delay-2">
+        <div class="feat reveal reveal-d2">
           <div class="feat-icon" aria-hidden="true">🤝</div>
-          <div class="feat-title">Founder-First Support</div>
-          <p class="feat-text">Real humans who understand startups. Our team has founded companies too &mdash; we speak your language and move at your speed.</p>
+          <div class="feat-title">Founder-first support</div>
+          <p class="feat-body">Real humans who understand the startup journey. Our team has been through funding rounds too — we speak your language.</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- ===========================
-       TESTIMONIALS
-  =========================== -->
-  <section class="section testimonials" aria-labelledby="testi-heading">
+  <!-- ─────────────────────────────────────────
+       PROCESS  (3 steps)
+  ───────────────────────────────────────── -->
+  <section class="section process-section" id="process" aria-labelledby="proc-heading">
     <div class="section-inner">
 
-      <div class="testimonials-header reveal">
-        <p class="section-eyebrow">What founders say</p>
-        <h2 class="section-heading" id="testi-heading">
-          Trusted by <em>builders</em>
+      <div class="process-header reveal">
+        <span class="eyebrow">How it works</span>
+        <h2 class="display" id="proc-heading">
+          Covered in <em>three steps</em>
         </h2>
+        <p class="lead" style="max-width:480px;margin:.8em auto 0;">From first click to Certificate of Insurance — faster than your morning standup.</p>
       </div>
 
-      <div class="testimonials-grid">
-
-        <div class="testi reveal">
-          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
-          <blockquote class="testi-quote">
-            &ldquo;I sorted our D&amp;O and Cyber coverage in literally 8 minutes. Every other insurer I tried wanted a 45-minute call and three days of back-and-forth.&rdquo;
-          </blockquote>
-          <div class="testi-author">
-            <div class="author-av" aria-hidden="true">SL</div>
-            <div>
-              <div class="author-name">Sarah L.</div>
-              <div class="author-role">CEO, Series A SaaS &middot; London</div>
-            </div>
-          </div>
+      <div class="process-steps">
+        <div class="proc-step reveal">
+          <div class="proc-num" aria-label="Step 1">01</div>
+          <div class="proc-title">Tell us about you</div>
+          <p class="proc-body">Answer a short set of questions about your company, team, and what you build. No call, no broker, no long forms.</p>
+          <span class="proc-chip">~2 minutes</span>
         </div>
-
-        <div class="testi reveal reveal-delay-1">
-          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
-          <blockquote class="testi-quote">
-            &ldquo;Our investors required proof of D&amp;O before closing. Gnocchi had us covered and the certificate in hand the same day. That&rsquo;s simply not possible with traditional insurers.&rdquo;
-          </blockquote>
-          <div class="testi-author">
-            <div class="author-av" aria-hidden="true">JM</div>
-            <div>
-              <div class="author-name">James M.</div>
-              <div class="author-role">CTO, Fintech Startup &middot; Edinburgh</div>
-            </div>
-          </div>
+        <div class="proc-step reveal reveal-d1">
+          <div class="proc-num" aria-label="Step 2">02</div>
+          <div class="proc-title">Get your tailored quote</div>
+          <p class="proc-body">Our engine generates stage-matched coverage instantly. Transparent pricing, no hidden extras — you see everything up front.</p>
+          <span class="proc-chip">Instant</span>
         </div>
-
-        <div class="testi reveal reveal-delay-2">
-          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
-          <blockquote class="testi-quote">
-            &ldquo;Finally, business insurance that doesn&rsquo;t make me feel like I need a solicitor in the room. The modular approach is exactly right for early-stage companies.&rdquo;
-          </blockquote>
-          <div class="testi-author">
-            <div class="author-av" aria-hidden="true">AP</div>
-            <div>
-              <div class="author-name">Amara P.</div>
-              <div class="author-role">Founder, Climate Tech &middot; Manchester</div>
-            </div>
-          </div>
+        <div class="proc-step reveal reveal-d2">
+          <div class="proc-num" aria-label="Step 3">03</div>
+          <div class="proc-title">Get covered &amp; move on</div>
+          <p class="proc-body">Pay, receive your Certificate of Insurance immediately, and get back to building. Manage everything from one dashboard.</p>
+          <span class="proc-chip">Same day</span>
         </div>
-
       </div>
+
     </div>
   </section>
 
-  <!-- ===========================
+  <!-- ─────────────────────────────────────────
+       TESTIMONIALS
+  ───────────────────────────────────────── -->
+  <section class="section testi-section" aria-labelledby="testi-heading">
+    <div class="section-inner">
+
+      <div class="testi-header reveal">
+        <span class="eyebrow">What founders say</span>
+        <h2 class="display" id="testi-heading">Trusted by <em>builders</em></h2>
+      </div>
+
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+          <blockquote class="testi-quote">
+            &ldquo;I sorted our D&amp;O and Cyber in 8 minutes. Every other insurer wanted a 45-minute call and three days of back-and-forth.&rdquo;
+          </blockquote>
+          <div class="testi-author">
+            <div class="testi-av" aria-hidden="true">SL</div>
+            <div>
+              <div class="testi-name">Sarah L.</div>
+              <div class="testi-role">CEO, Series A SaaS &middot; London</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card reveal reveal-d1">
+          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+          <blockquote class="testi-quote">
+            &ldquo;Investors required D&amp;O proof before close. Gnocchi had us covered and the certificate in hand same day. Not possible with a traditional insurer.&rdquo;
+          </blockquote>
+          <div class="testi-author">
+            <div class="testi-av" aria-hidden="true">JM</div>
+            <div>
+              <div class="testi-name">James M.</div>
+              <div class="testi-role">CTO, Fintech &middot; Edinburgh</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card reveal reveal-d2">
+          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+          <blockquote class="testi-quote">
+            &ldquo;The stage-based approach is exactly right for early companies. We didn't need a full enterprise suite — we needed the right four policies.&rdquo;
+          </blockquote>
+          <div class="testi-author">
+            <div class="testi-av" aria-hidden="true">AP</div>
+            <div>
+              <div class="testi-name">Amara P.</div>
+              <div class="testi-role">Founder, Climate Tech &middot; Manchester</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
        FAQ
-  =========================== -->
+  ───────────────────────────────────────── -->
   <section class="section faq-section" id="faq" aria-labelledby="faq-heading">
     <div class="section-inner">
 
       <div class="faq-header reveal">
-        <p class="section-eyebrow">FAQ</p>
-        <h2 class="section-heading" id="faq-heading">Common <em>questions</em></h2>
+        <span class="eyebrow">FAQ</span>
+        <h2 class="display" id="faq-heading">Common <em>questions</em></h2>
       </div>
 
-      <div class="faq-list" role="list">
+      <div class="faq-list">
 
-        <div class="faq-item" role="listitem">
+        <div class="faq-item reveal">
           <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            What types of businesses does Gnocchi cover?
-            <span class="faq-toggle" aria-hidden="true">+</span>
+            How is coverage packaged by stage?
+            <span class="faq-icon" aria-hidden="true">+</span>
           </button>
-          <div class="faq-panel" role="region">
-            <div class="faq-body">
-              Gnocchi is built for startups and SMEs &mdash; from solo founders to teams of 200. We specialise in technology companies, SaaS, fintech, healthtech, climate tech, and professional services firms across the UK.
-            </div>
-          </div>
+          <div class="faq-panel"><div class="faq-body">
+            Each stage has a curated set of must-have and recommended policies based on the typical risk profile at that point in a company's life. Pre-seed focuses on core founder protection; Seed adds investor and team coverage; Series A adds enterprise-readiness. You can always customise.
+          </div></div>
         </div>
 
-        <div class="faq-item" role="listitem">
+        <div class="faq-item reveal reveal-d1">
           <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            How quickly can I get insured?
-            <span class="faq-toggle" aria-hidden="true">+</span>
+            What types of businesses do you cover?
+            <span class="faq-icon" aria-hidden="true">+</span>
           </button>
-          <div class="faq-panel" role="region">
-            <div class="faq-body">
-              Most businesses get a quote in under 5 minutes and complete their policy the same day. You receive your Certificate of Insurance immediately after payment &mdash; no waiting, no follow-up required.
-            </div>
-          </div>
+          <div class="faq-panel"><div class="faq-body">
+            We cover UK-registered startups and SMEs across all tech verticals — SaaS, Fintech, Healthtech, Climate/Deeptech, E-commerce, and professional services. From solo founders to teams of 200+.
+          </div></div>
         </div>
 
-        <div class="faq-item" role="listitem">
+        <div class="faq-item reveal">
           <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            Do I need a broker?
-            <span class="faq-toggle" aria-hidden="true">+</span>
+            How quickly can I get covered?
+            <span class="faq-icon" aria-hidden="true">+</span>
           </button>
-          <div class="faq-panel" role="region">
-            <div class="faq-body">
-              No. Gnocchi is fully direct-to-business. We cut out the broker middleman entirely, which means lower prices, a faster experience, and no commission bias in the coverage we recommend.
-            </div>
-          </div>
+          <div class="faq-panel"><div class="faq-body">
+            Most businesses complete their application and get a quote in under 5 minutes. Policies are issued the same day. Your Certificate of Insurance arrives immediately after payment.
+          </div></div>
         </div>
 
-        <div class="faq-item" role="listitem">
+        <div class="faq-item reveal reveal-d1">
           <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            Can I change my coverage as my company grows?
-            <span class="faq-toggle" aria-hidden="true">+</span>
+            Can I upgrade my coverage when I raise?
+            <span class="faq-icon" aria-hidden="true">+</span>
           </button>
-          <div class="faq-panel" role="region">
-            <div class="faq-body">
-              Absolutely. Gnocchi is designed to grow with you. Add new policy types, increase limits, or adjust coverage at any time from your dashboard &mdash; no paperwork, no phone calls needed.
-            </div>
-          </div>
+          <div class="faq-panel"><div class="faq-body">
+            Yes — from your dashboard, at any time. No paperwork, no phone calls. Add new policy types, increase limits, or switch stages as your company grows. Coverage adjusts to your new risk profile automatically.
+          </div></div>
         </div>
 
-        <div class="faq-item" role="listitem">
+        <div class="faq-item reveal">
           <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
             Which carriers back Gnocchi policies?
-            <span class="faq-toggle" aria-hidden="true">+</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
           </button>
-          <div class="faq-panel" role="region">
-            <div class="faq-body">
-              We partner exclusively with A-rated global carriers. Your coverage is underwritten by names that institutional investors, enterprise clients, and acquirers recognise and trust.
-            </div>
-          </div>
+          <div class="faq-panel"><div class="faq-body">
+            We partner exclusively with A-rated global insurance carriers. Your coverage is underwritten by names that institutional investors, enterprise clients, and acquirers recognise and trust.
+          </div></div>
         </div>
 
-        <div class="faq-item" role="listitem">
+        <div class="faq-item reveal reveal-d1">
           <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            What happens when I need to make a claim?
-            <span class="faq-toggle" aria-hidden="true">+</span>
+            Do you have broker fees?
+            <span class="faq-icon" aria-hidden="true">+</span>
           </button>
-          <div class="faq-panel" role="region">
-            <div class="faq-body">
-              Claims are submitted digitally through your Gnocchi dashboard. Our team &mdash; real humans, fast response &mdash; guides you through the entire process. No phone trees, no fax machines, no weeks of silence.
-            </div>
-          </div>
+          <div class="faq-panel"><div class="faq-body">
+            None. Gnocchi is direct-to-business. We cut out the broker middleman entirely, which means lower prices and no commission bias in what we recommend. We earn a margin built into the carrier price — never a separate fee from you.
+          </div></div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ===========================
-       FINAL CTA
-  =========================== -->
-  <section class="cta-section" aria-labelledby="cta-heading">
-    <div class="cta-blob cta-blob-1" aria-hidden="true"></div>
-    <div class="cta-blob cta-blob-2" aria-hidden="true"></div>
+  <!-- ─────────────────────────────────────────
+       FINAL CTA  → Typeform waitlist
+  ───────────────────────────────────────── -->
+  <section class="cta-section" id="waitlist" aria-labelledby="cta-heading">
+    <div class="cta-blob" style="width:500px;height:500px;background:var(--saffron);opacity:.06;top:-150px;right:-100px;" aria-hidden="true"></div>
+    <div class="cta-blob" style="width:400px;height:400px;background:var(--caramel);opacity:.07;bottom:-80px;left:-80px;" aria-hidden="true"></div>
 
     <div class="cta-inner reveal">
-      <span class="section-eyebrow">Get early access</span>
+      <span class="eyebrow" style="color:var(--saffron);">Join the waitlist</span>
+
       <h2 class="cta-title" id="cta-heading">
-        Stop waiting.<br>
-        <em>Start protected.</em>
+        Stop waiting.<br><em>Start protected.</em>
       </h2>
+
       <p class="cta-sub">
         Join 2,400+ founders who&rsquo;ve already secured their spot. We&rsquo;re onboarding in batches &mdash; early applicants get priority access and founding-member pricing.
       </p>
 
-      <form class="cta-form" onsubmit="handleWaitlist(event)" novalidate>
-        <label for="cta-email" class="sr-only">Email address</label>
-        <input
-          id="cta-email"
-          type="email"
-          class="input-dark"
-          placeholder="you@startup.com"
-          required
-          autocomplete="email"
-        >
-        <button type="submit" class="btn btn-accent btn-lg">
-          Join the waitlist &rarr;
-        </button>
-      </form>
+      <!--
+        ↓ TYPEFORM BUTTON — replace href with your actual Typeform URL
+        Format: https://WORKSPACE.typeform.com/to/FORM_ID
+      -->
+      <a
+        href="https://form.typeform.com/to/REPLACE_WITH_YOUR_FORM_ID"
+        class="cta-typeform-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Join the Gnocchi waitlist — opens Typeform"
+      >
+        Apply for early access
+        <span class="cta-arrow" aria-hidden="true">→</span>
+      </a>
 
-      <p class="cta-note">Free to join &middot; No credit card &middot; Unsubscribe any time</p>
+      <p class="cta-form-note">
+        Takes 2 minutes &middot; No credit card &middot; UK businesses only (for now)
+      </p>
+
+      <div class="cta-questions">
+        <p class="cta-questions-label">We&rsquo;ll ask you about</p>
+        <div class="cta-q-pills">
+          <span class="cta-q-pill">Company type</span>
+          <span class="cta-q-pill">Team size</span>
+          <span class="cta-q-pill">Annual revenue</span>
+          <span class="cta-q-pill">Funding stage</span>
+          <span class="cta-q-pill">Coverage interests</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ===========================
+  <!-- ─────────────────────────────────────────
        FOOTER
-  =========================== -->
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <div class="footer-top">
+  ───────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-grid">
 
-        <div class="footer-brand-col">
-          <div class="footer-logo">
-            <div class="logo-mark" aria-hidden="true">G</div>
-            Gnocchi
-          </div>
-          <p class="footer-desc">
-            Startup insurance, tailored to your needs, fast and easy. Built for founders who move fast and need protection that keeps up.
-          </p>
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <div class="logo-mark" aria-hidden="true">G</div>
+          Gnocchi
         </div>
-
-        <div>
-          <div class="footer-col-title">Product</div>
-          <ul class="footer-links" role="list">
-            <li><a href="#coverage">Coverage</a></li>
-            <li><a href="#how-it-works">How it works</a></li>
-            <li><a href="#waitlist">Get a quote</a></li>
-            <li><a href="#">Pricing</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div class="footer-col-title">Company</div>
-          <ul class="footer-links" role="list">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Press</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div class="footer-col-title">Support</div>
-          <ul class="footer-links" role="list">
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Claims</a></li>
-            <li><a href="#">Status</a></li>
-          </ul>
-        </div>
-
+        <p class="footer-desc">
+          Startup and SME insurance, packaged by stage and tailored to your vertical. Built for founders who move fast.
+        </p>
       </div>
 
-      <div class="footer-bottom">
-        <span>&copy; 2025 Gnocchi Insurance Ltd. All rights reserved. FCA authorised &amp; regulated.</span>
-        <div class="footer-legal">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Cookies</a>
-          <a href="#">IPID</a>
-        </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#stage-coverage">Coverage</a></li>
+          <li><a href="#industry">By vertical</a></li>
+          <li><a href="#process">How it works</a></li>
+          <li><a href="#waitlist">Get a quote</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Claims</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2025 Gnocchi Insurance Ltd. FCA authorised &amp; regulated. Registered in England &amp; Wales.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+        <a href="#">IPID</a>
       </div>
     </div>
   </footer>
 
-  <!-- Screen reader utility -->
-  <style>
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
-  </style>
-
+  <!-- ─────────────────────────────────────────
+       JAVASCRIPT
+  ───────────────────────────────────────── -->
   <script>
-    /* ----------------------------------------
-       FAQ accordion
-    ---------------------------------------- */
-    function toggleFaq(btn) {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
+    /* ══════════════════════════════════════
+       TYPEFORM URL  — replace this value
+    ══════════════════════════════════════ */
+    const TYPEFORM_URL = 'https://form.typeform.com/to/REPLACE_WITH_YOUR_FORM_ID';
 
-      // Close all
+    // Wire every waitlist button to the Typeform URL
+    document.querySelectorAll('[href="#waitlist"], #hero-waitlist-btn').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        window.open(TYPEFORM_URL, '_blank', 'noopener,noreferrer');
+      });
+    });
+
+    /* ══════════════════════════════════════
+       STAGE DATA
+    ══════════════════════════════════════ */
+    const STAGES = {
+      'pre-seed': {
+        title:     'Pre-Seed & Early Stage',
+        team:      '1–10 people',
+        revenue:   'Pre-revenue to £500k ARR',
+        tagline:   'Core founder protection to get you off the ground safely. Cover the essentials without overpaying for policies you don\'t yet need.',
+        must:      ['Public Liability', 'Directors & Officers', 'Cyber Essentials', 'Professional Indemnity'],
+        rec:       ['Tech E&O', 'IP Protection'],
+        price:     'From £99',
+        priceNote: 'per month · scales with headcount',
+        cta:       'Get my Pre-Seed quote',
+      },
+      'seed': {
+        title:     'Seed Stage',
+        team:      '5–30 people',
+        revenue:   '£250k – £3M ARR',
+        tagline:   'Investor-ready policies that satisfy due diligence, protect your growing team, and help you close enterprise contracts.',
+        must:      ['Public Liability', 'D&O', 'Cyber (Enhanced)', 'Professional Indemnity', 'Tech E&O', 'EPLI'],
+        rec:       ['Media Liability', 'Fiduciary'],
+        price:     'From £280',
+        priceNote: 'per month · per-employee pricing available',
+        cta:       'Get my Seed quote',
+      },
+      'series-a': {
+        title:     'Series A',
+        team:      '30–120 people',
+        revenue:   '£3M – £20M ARR',
+        tagline:   'Full-suite protection for enterprise sales, board accountability, and a team that\'s growing fast. Everything you need to close big deals.',
+        must:      ['D&O (Full Suite)', 'Cyber (Enterprise)', 'Tech E&O', 'Professional Indemnity', 'EPLI', 'Media Liability'],
+        rec:       ['Fiduciary', 'HNOA', 'Commercial Property'],
+        price:     'From £650',
+        priceNote: 'per month · bespoke to your risk profile',
+        cta:       'Get my Series A quote',
+      },
+      'series-b': {
+        title:     'Series B & Beyond',
+        team:      '120+ people',
+        revenue:   '£20M+ ARR',
+        tagline:   'Complex, bespoke coverage for high-growth companies approaching IPO, M&A, or international expansion.',
+        must:      ['Full D&O Suite', 'Cyber (High Limit)', 'EPLI', 'Fiduciary', 'Tech E&O', 'Commercial Crime'],
+        rec:       ['Product Liability', 'Custom Limits', 'Run-off Cover'],
+        price:     'Custom pricing',
+        priceNote: 'dedicated account manager included',
+        cta:       'Talk to our team',
+      },
+      'sme': {
+        title:     'Established SME',
+        team:      'Any size',
+        revenue:   'Any revenue stage',
+        tagline:   'Traditional business coverage, reimagined for modern SMEs. No broker, no wait, no jargon — just straight-forward protection.',
+        must:      ['Public Liability', "Employer's Liability", 'Professional Indemnity', 'Business Interruption'],
+        rec:       ['Cyber', 'Commercial Property', 'D&O'],
+        price:     'From £180',
+        priceNote: 'per month · package discounts available',
+        cta:       'Get my SME quote',
+      },
+    };
+
+    /* ══════════════════════════════════════
+       INDUSTRY DATA
+    ══════════════════════════════════════ */
+    const INDUSTRIES = {
+      saas: {
+        icon: '⚡', label: 'SaaS & Software',
+        hint: 'Tech products, B2B tools, dev platforms',
+        risks: ['Data breaches & service downtime', 'Software errors & product failures', 'IP and licensing disputes', 'Customer contract liability'],
+        policies: ['Cyber', 'Tech E&O', 'D&O', 'Prof. Indemnity'],
+        note: 'Cyber and Tech E&O are critical for any software business handling customer data.',
+      },
+      fintech: {
+        icon: '🏦', label: 'Fintech & Payments',
+        hint: 'Lending, payments, wealth, crypto, RegTech',
+        risks: ['FCA regulatory action', 'Financial crime & fraud exposure', 'Client data breaches', 'Mis-selling or advice claims'],
+        policies: ['Prof. Indemnity', 'D&O', 'Cyber', 'Fiduciary'],
+        note: 'Regulatory risk is the #1 concern for fintech. Professional Indemnity and D&O are non-negotiable.',
+      },
+      healthtech: {
+        icon: '🩺', label: 'Healthtech & BioTech',
+        hint: 'Digital health, diagnostics, biotech, med devices',
+        risks: ['Patient data breaches (GDPR/ICO)', 'Medical device product liability', 'Clinical & R&D failures', 'Regulatory compliance claims'],
+        policies: ['Cyber', 'Product Liability', 'Prof. Indemnity', 'D&O'],
+        note: 'Product Liability and Cyber are non-negotiable for companies touching health data or devices.',
+      },
+      climate: {
+        icon: '🌱', label: 'Climate & Deeptech',
+        hint: 'CleanTech, energy, hardware, advanced manufacturing',
+        risks: ['Product liability claims', 'Environmental and regulatory risk', 'R&D project failure', 'Hardware & IP disputes'],
+        policies: ['D&O', 'Prof. Indemnity', 'Product Liability', 'Cyber'],
+        note: 'D&O protection is increasingly important as scrutiny on green claims intensifies.',
+      },
+      ecommerce: {
+        icon: '📦', label: 'E-commerce & Retail',
+        hint: 'DTC brands, marketplaces, subscription, fulfilment',
+        risks: ['Product liability claims', 'Cyber fraud & payment theft', 'Business interruption', 'Supply chain failure'],
+        policies: ['Product Liability', 'Cyber', 'Public Liability', 'Bus. Interruption'],
+        note: 'Product Liability and Business Interruption are the core risks for any product-led company.',
+      },
+      agency: {
+        icon: '🎯', label: 'Agency & Pro Services',
+        hint: 'Consultancies, agencies, legal, accounting, HR',
+        risks: ['Professional advice errors', 'Employment disputes (EPLI)', 'Client data breaches', 'Contract & IP failures'],
+        policies: ['Prof. Indemnity', 'D&O', 'Cyber', 'EPLI'],
+        note: 'Professional Indemnity is the bedrock policy for any advice or service-based business.',
+      },
+    };
+
+    /* ══════════════════════════════════════
+       STAGE SELECTOR
+    ══════════════════════════════════════ */
+    let currentStage = 'pre-seed';
+
+    function renderStagePanel(key) {
+      const s = STAGES[key];
+      const panel = document.getElementById('stage-panel');
+
+      const mustChips = s.must.map(p => `<span class="chip chip-must">${p}</span>`).join('');
+      const recChips  = s.rec.map(p =>  `<span class="chip chip-rec">${p}</span>`).join('');
+
+      panel.innerHTML = `
+        <div class="stage-panel-top">
+          <div>
+            <h3 style="font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:600;color:var(--ivory);letter-spacing:-.02em;margin-bottom:10px;">${s.title}</h3>
+            <div class="stage-meta">
+              <span class="stage-meta-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                ${s.team}
+              </span>
+              <span class="stage-meta-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                ${s.revenue}
+              </span>
+            </div>
+            <p class="stage-tagline" style="margin-top:14px;">${s.tagline}</p>
+          </div>
+          <div class="stage-price-box">
+            <div class="stage-price-val">${s.price}</div>
+            <div class="stage-price-note">${s.priceNote}</div>
+          </div>
+        </div>
+
+        <div class="stage-policies-label">Must-have policies</div>
+        <div class="stage-policies">${mustChips}</div>
+
+        <div class="stage-rec-label">Recommended adds</div>
+        <div class="stage-policies">${recChips}</div>
+
+        <div class="stage-bottom">
+          <p class="stage-bottom-note">All policies can be customised. Pricing adjusts to your headcount and risk profile.</p>
+          <a href="${TYPEFORM_URL}" target="_blank" rel="noopener" class="btn btn-saffron btn-lg"
+             onclick="event.preventDefault(); window.open(TYPEFORM_URL,'_blank','noopener,noreferrer')">
+            ${s.cta} &rarr;
+          </a>
+        </div>
+      `;
+    }
+
+    function selectStage(key) {
+      if (key === currentStage) return;
+      currentStage = key;
+
+      // Update tabs
+      document.querySelectorAll('.stage-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.stage === key);
+        t.setAttribute('aria-selected', t.dataset.stage === key);
+      });
+
+      // Animate out → update → animate in
+      const panel = document.getElementById('stage-panel');
+      panel.classList.add('fading');
+      setTimeout(() => {
+        renderStagePanel(key);
+        panel.classList.remove('fading');
+      }, 240);
+    }
+
+    // Wire tabs
+    document.querySelectorAll('.stage-tab').forEach(btn => {
+      btn.addEventListener('click', () => selectStage(btn.dataset.stage));
+    });
+
+    // Hero stage pills scroll + select
+    function scrollToStage(key) {
+      selectStage(key);
+      document.getElementById('stage-coverage').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Init
+    renderStagePanel('pre-seed');
+
+    /* ══════════════════════════════════════
+       INDUSTRY SELECTOR
+    ══════════════════════════════════════ */
+    let currentIndustry = null;
+
+    function renderIndustryGrid() {
+      const grid = document.getElementById('ind-grid');
+      grid.innerHTML = Object.entries(INDUSTRIES).map(([key, ind]) => `
+        <div class="ind-card ${key === currentIndustry ? 'active' : ''}"
+             onclick="selectIndustry('${key}')"
+             role="button"
+             tabindex="0"
+             aria-pressed="${key === currentIndustry}"
+             onkeydown="if(event.key==='Enter'||event.key===' '){selectIndustry('${key}')}"
+        >
+          <div class="ind-card-arrow" aria-hidden="true">→</div>
+          <div class="ind-card-icon" aria-hidden="true">${ind.icon}</div>
+          <div class="ind-card-label">${ind.label}</div>
+          <div class="ind-card-hint">${ind.hint}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderIndustryPanel(key) {
+      const ind = INDUSTRIES[key];
+      const panel = document.getElementById('ind-panel');
+
+      const riskItems = ind.risks.map(r => `<li>${r}</li>`).join('');
+      const polChips  = ind.policies.map(p => `<span class="chip chip-must">${p}</span>`).join('');
+
+      panel.innerHTML = `
+        <div class="ind-panel-grid">
+          <div>
+            <div class="ind-panel-col-title">Top risks for ${ind.label}</div>
+            <ul class="ind-risk-list">${riskItems}</ul>
+          </div>
+          <div>
+            <div class="ind-panel-col-title">Priority policies</div>
+            <div class="ind-policy-chips">${polChips}</div>
+            <p class="ind-note">${ind.note}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-end;">
+            <p style="font-size:14px;color:rgba(248,242,226,.55);margin-bottom:20px;text-align:right;">
+              Get coverage tailored specifically for ${ind.label} companies.
+            </p>
+            <a href="${TYPEFORM_URL}" target="_blank" rel="noopener"
+               class="btn btn-saffron btn-lg"
+               onclick="event.preventDefault(); window.open(TYPEFORM_URL,'_blank','noopener,noreferrer')">
+              Get ${ind.label} quote &rarr;
+            </a>
+          </div>
+        </div>
+      `;
+
+      panel.classList.add('visible');
+    }
+
+    function selectIndustry(key) {
+      if (key === currentIndustry) {
+        // Toggle off
+        currentIndustry = null;
+        document.getElementById('ind-panel').classList.remove('visible');
+        document.getElementById('ind-panel').innerHTML = '';
+        renderIndustryGrid();
+        return;
+      }
+      currentIndustry = key;
+      renderIndustryGrid();
+      renderIndustryPanel(key);
+    }
+
+    renderIndustryGrid();
+
+    /* ══════════════════════════════════════
+       FAQ ACCORDION
+    ══════════════════════════════════════ */
+    function toggleFaq(btn) {
+      const item   = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
       document.querySelectorAll('.faq-item').forEach(i => {
         i.classList.remove('open');
         i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
       });
-
-      // Open clicked item if it was closed
       if (!isOpen) {
         item.classList.add('open');
         btn.setAttribute('aria-expanded', 'true');
       }
     }
 
-    /* ----------------------------------------
-       Scroll reveal
-    ---------------------------------------- */
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
+    /* ══════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════ */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -28px 0px' });
 
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    /* ----------------------------------------
-       Waitlist form handler
-    ---------------------------------------- */
-    function handleWaitlist(e) {
-      e.preventDefault();
-      const form   = e.target;
-      const input  = form.querySelector('input[type="email"]');
-      const btn    = form.querySelector('button[type="submit"]');
-      const email  = input.value.trim();
-
-      if (!email) return;
-
-      // Optimistic UI
-      const original = btn.textContent;
-      btn.textContent = '✓ You\'re on the list!';
-      btn.disabled    = true;
-      input.disabled  = true;
-      btn.style.background = '#3D1E0A';
-
-      // Reset after 3.5s
-      setTimeout(() => {
-        btn.textContent     = original;
-        btn.disabled        = false;
-        input.disabled      = false;
-        input.value         = '';
-        btn.style.background = '';
-      }, 3500);
-    }
-
-    /* ----------------------------------------
-       Policy chip tooltip (simple)
-    ---------------------------------------- */
-    const policyInfo = {
-      'Public Liability': 'Covers claims made by third parties for bodily injury or property damage caused by your business.',
-      'D&O':              'Directors & Officers — protects your leadership team from personal liability for business decisions.',
-      'Tech E&O':         'Technology Errors & Omissions — covers claims arising from mistakes or failures in your software or services.',
-      'Cyber':            'Covers data breaches, ransomware attacks, and cyber incidents including response costs.',
-      'Media':            'Covers defamation, copyright infringement, and other media-related claims.',
-      'EPLI':             'Employment Practices Liability — covers claims of discrimination, wrongful termination, or harassment.',
-      'Fiduciary':        'Protects against claims of mismanagement of employee benefit plans.',
-      'HNOA':             'Hired & Non-Owned Auto — covers vehicles used for business but not owned by your company.',
-      '+ more':           'We offer additional specialist policies. Talk to us to find the right fit.',
+    /* ══════════════════════════════════════
+       POLICY TOOLTIP  (on industry chips)
+    ══════════════════════════════════════ */
+    const POLICY_DEFS = {
+      'Cyber':             'Covers data breaches, ransomware, and cyber incidents including response and notification costs.',
+      'D&O':               'Directors & Officers — protects leadership from personal liability for business decisions.',
+      'Tech E&O':          'Technology Errors & Omissions — covers claims from mistakes or failures in your software/services.',
+      'Prof. Indemnity':   'Covers claims arising from professional advice errors, omissions, or negligent work.',
+      'Public Liability':  'Covers third-party claims for bodily injury or property damage caused by your business.',
+      'EPLI':              'Employment Practices Liability — covers wrongful termination, discrimination, or harassment claims.',
+      'Product Liability': 'Covers injury or damage claims caused by products your company makes or sells.',
+      'Fiduciary':         'Protects against mismanagement of employee benefit plans or pension schemes.',
+      'Media Liability':   'Covers defamation, copyright infringement, and other media-related liability.',
+      'Bus. Interruption': 'Covers lost revenue and operating expenses if your business is forced to stop operating.',
     };
 
-    // Simple tooltip on click
-    document.querySelectorAll('.policy-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const key  = chip.textContent.replace(/ /g, ' ').trim();
-        const info = policyInfo[key];
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('chip')) {
+        const key  = e.target.textContent.trim();
+        const info = POLICY_DEFS[key];
         if (!info) return;
 
-        // Remove existing tooltips
         document.querySelectorAll('.chip-tooltip').forEach(t => t.remove());
 
-        const tooltip = document.createElement('div');
-        tooltip.className = 'chip-tooltip';
-        tooltip.textContent = info;
-        Object.assign(tooltip.style, {
-          position:     'fixed',
-          background:   'var(--green-forest)',
-          color:        'var(--cream-light)',
-          padding:      '10px 16px',
+        const tip = document.createElement('div');
+        tip.className = 'chip-tooltip';
+        tip.textContent = info;
+        Object.assign(tip.style, {
+          position: 'fixed',
+          background: 'var(--walnut)',
+          color: 'var(--ivory)',
+          padding: '10px 16px',
           borderRadius: '10px',
-          fontSize:     '13.5px',
-          lineHeight:   '1.55',
-          maxWidth:     '280px',
-          zIndex:       '9999',
-          boxShadow:    '0 8px 24px rgba(0,0,0,0.2)',
-          pointerEvents:'none',
+          fontSize: '13px',
+          lineHeight: '1.5',
+          maxWidth: '260px',
+          zIndex: '9999',
+          boxShadow: '0 8px 24px rgba(0,0,0,.25)',
+          pointerEvents: 'none',
+          border: '1px solid rgba(248,242,226,.1)',
         });
-        document.body.appendChild(tooltip);
+        document.body.appendChild(tip);
 
-        const rect   = chip.getBoundingClientRect();
-        const tH     = tooltip.offsetHeight;
-        tooltip.style.left = Math.min(rect.left, window.innerWidth - 296) + 'px';
-        tooltip.style.top  = (rect.top - tH - 8 + window.scrollY) + 'px';
+        const rect = e.target.getBoundingClientRect();
+        tip.style.left = Math.min(rect.left, window.innerWidth - 276) + 'px';
+        tip.style.top  = (rect.top - tip.offsetHeight - 8 + window.scrollY) + 'px';
 
-        // Auto-dismiss
-        setTimeout(() => tooltip.remove(), 3200);
-        document.addEventListener('click', () => tooltip.remove(), { once: true });
-      });
+        setTimeout(() => tip.remove(), 3000);
+        document.addEventListener('click', () => tip.remove(), { once: true });
+      }
     });
   </script>
 
