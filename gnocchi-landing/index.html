@@ -3,2416 +3,1157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gnocchi — Startup & SME Insurance for Every Stage</title>
-  <meta name="description" content="Business insurance packaged by funding stage and industry vertical. Tailored coverage that scales with your company. No brokers. Quote in 5 minutes.">
-
-  <!--
-    TYPEFORM INTEGRATION
-    Replace the TYPEFORM_URL constant in the <script> section with your actual Typeform URL.
-    Suggested Typeform questions:
-      1. What type of company do you run? (SaaS/Tech, Fintech, Healthtech, Climate/Deeptech, E-commerce, Agency/Services, Other)
-      2. How many employees do you have? (1–5, 6–25, 26–100, 100+)
-      3. What is your annual revenue? (Pre-revenue, £0–250k, £250k–2M, £2M–15M, £15M+)
-      4. What is your funding stage? (Pre-Seed, Seed, Series A, Series B+, Bootstrapped / Established SME)
-      5. Which types of insurance are you most interested in? (multi-select: D&O, Cyber, Tech E&O, Professional Indemnity, Public Liability, EPLI, Other)
-  -->
-
+  <title>Gnocchi — AI-Powered Business Insurance</title>
+  <meta name="description" content="Describe your business, get an instant AI-generated insurance advisory. Coverage tailored to your stage, sector and risk profile.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* ─────────────────────────────────────────
-       DESIGN TOKENS
-    ───────────────────────────────────────── */
+    /* ── TOKENS ── */
     :root {
-      /* Surfaces */
-      --ivory:       #F8F2E2;
-      --dough:       #FDF9F0;
-      --parchment:   #EFE2C4;
-      --wheat:       #E0CDA0;
-
-      /* Brand darks */
-      --espresso:    #1C0D06;
-      --walnut:      #2A1508;
-      --brown:       #3D1E0A;
-      --chestnut:    #7A3D18;
-      --caramel:     #B06828;
-
-      /* Pop accent — saffron */
-      --saffron:     #F5C000;
-      --saffron-dk:  #D9A900;
-      --saffron-lt:  #FDF0B0;
-
-      /* Text */
-      --t1:  #1C0D06;
-      --t2:  #4A3020;
-      --t3:  #7A5840;
-      --t4:  #A08060;
-
-      /* Borders */
-      --b1:  #D4B880;
-      --b2:  #E8D5A8;
-      --b3:  #F0E4C0;
-
-      /* Type */
-      --serif: 'Cormorant Garamond', Georgia, serif;
-      --sans:  'DM Sans', system-ui, sans-serif;
-
-      /* Radii */
-      --r-sm: 8px;
-      --r-md: 14px;
-      --r-lg: 20px;
-      --r-xl: 28px;
-      --r-full: 9999px;
-
-      /* Shadows */
-      --s-sm: 0 1px 3px rgba(28,13,6,.06);
-      --s-md: 0 4px 16px rgba(28,13,6,.09);
-      --s-lg: 0 8px 40px rgba(28,13,6,.13);
+      --bg:        #060D0D;
+      --bg2:       #0A1616;
+      --bg3:       #0E1E1E;
+      --card:      #101C1C;
+      --card2:     #142424;
+      --border:    rgba(0,210,185,0.10);
+      --border-hi: rgba(0,210,185,0.28);
+      --teal:      #00D2B9;
+      --teal-dk:   #00A896;
+      --teal-lt:   #70FFEE;
+      --teal-glow: rgba(0,210,185,0.12);
+      --sky:       #38BDF8;
+      --cream:     #EDE8DB;
+      --cream2:    #C4BDB0;
+      --white:     #FFFFFF;
+      --text:      #DCE8E5;
+      --text2:     #7A9A96;
+      --text3:     #4A6460;
+      --red:       #FF6B6B;
+      --font:      'Manrope', system-ui, sans-serif;
+      --r-sm:      8px;
+      --r-md:      14px;
+      --r-lg:      20px;
+      --r-xl:      28px;
     }
 
-    /* ─────────────────────────────────────────
-       RESET & BASE
-    ───────────────────────────────────────── */
+    /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-
     body {
-      font-family: var(--sans);
-      background: var(--ivory);
-      color: var(--t1);
-      line-height: 1.6;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
     }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
 
-    img  { max-width: 100%; display: block; }
-    a    { text-decoration: none; color: inherit; }
-    button, input { font-family: inherit; }
-
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
-    }
-
-    /* ─────────────────────────────────────────
-       LAYOUT UTILITIES
-    ───────────────────────────────────────── */
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 28px;
-    }
-
-    .section {
-      padding: 96px 28px;
-    }
-
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* ─────────────────────────────────────────
-       TYPOGRAPHY HELPERS
-    ───────────────────────────────────────── */
-    .eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--chestnut);
-      display: block;
-      margin-bottom: 14px;
-    }
-
-    .display {
-      font-family: var(--serif);
-      font-size: clamp(36px, 5.5vw, 64px);
-      font-weight: 600;
-      line-height: 1.07;
-      letter-spacing: -.025em;
-      color: var(--t1);
-    }
-
-    .display em { font-style: italic; color: var(--chestnut); }
-
-    .display-xl {
-      font-family: var(--serif);
-      font-size: clamp(48px, 8vw, 96px);
-      font-weight: 600;
-      line-height: 1.02;
-      letter-spacing: -.035em;
-    }
-
-    .display-xl em { font-style: italic; color: var(--chestnut); }
-
-    .lead {
-      font-size: clamp(16px, 2vw, 19px);
-      color: var(--t2);
-      line-height: 1.65;
-    }
-
-    /* ─────────────────────────────────────────
-       BUTTONS
-    ───────────────────────────────────────── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: var(--r-full);
-      font-size: 14.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .2s ease;
-      border: none;
-      white-space: nowrap;
-      letter-spacing: .01em;
-    }
-
-    .btn-saffron {
-      background: var(--saffron);
-      color: var(--walnut);
-    }
-    .btn-saffron:hover {
-      background: var(--saffron-dk);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 22px rgba(245,192,0,.45);
-    }
-
-    .btn-dark {
-      background: var(--brown);
-      color: var(--dough);
-    }
-    .btn-dark:hover {
-      background: var(--walnut);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(42,21,8,.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--brown);
-      border: 1.5px solid var(--b1);
-    }
-    .btn-outline:hover {
-      background: var(--parchment);
-      border-color: var(--chestnut);
-    }
-
-    .btn-outline-light {
-      background: transparent;
-      color: var(--ivory);
-      border: 1.5px solid rgba(248,242,226,.25);
-    }
-    .btn-outline-light:hover {
-      background: rgba(248,242,226,.09);
-      border-color: rgba(248,242,226,.45);
-    }
-
-    .btn-lg { padding: 15px 34px; font-size: 16px; }
-    .btn-xl { padding: 18px 44px; font-size: 17px; }
-    .btn-full { width: 100%; }
-
-    /* ─────────────────────────────────────────
-       BADGES & CHIPS
-    ───────────────────────────────────────── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 5px 14px 5px 10px;
-      background: var(--parchment);
-      border: 1px solid var(--b1);
-      border-radius: var(--r-full);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--brown);
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .badge-dot {
-      width: 6px; height: 6px;
-      background: var(--saffron);
-      border-radius: 50%;
-      animation: blink 2.2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes blink {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:.4; transform:scale(1.5); }
-    }
-
-    /* Policy chips */
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 5px 13px;
-      border-radius: var(--r-full);
-      font-size: 12.5px;
-      font-weight: 600;
-      white-space: nowrap;
-      border: 1.5px solid transparent;
-      transition: all .15s;
-    }
-
-    .chip-must {
-      background: var(--saffron);
-      color: var(--walnut);
-    }
-
-    .chip-rec {
-      background: transparent;
-      color: var(--saffron);
-      border-color: rgba(245,192,0,.45);
-    }
-
-    .chip-dark {
-      background: var(--parchment);
-      color: var(--brown);
-      border-color: var(--b2);
-    }
-    .chip-dark:hover {
-      background: var(--brown);
-      color: var(--dough);
-      border-color: var(--brown);
-    }
-
-    /* ─────────────────────────────────────────
-       ANNOUNCEMENT BAR
-    ───────────────────────────────────────── */
-    .ann {
-      background: var(--walnut);
-      color: rgba(248,242,226,.75);
-      text-align: center;
-      padding: 10px 24px;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .ann strong { color: var(--saffron); }
-
-    .ann a {
-      color: var(--saffron);
-      font-weight: 700;
-      border-bottom: 1px solid rgba(245,192,0,.35);
-      transition: border-color .2s;
-    }
-    .ann a:hover { border-color: var(--saffron); }
-
-    /* ─────────────────────────────────────────
-       NAVIGATION
-    ───────────────────────────────────────── */
+    /* ── NAV ── */
     .nav {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      background: rgba(248,242,226,.93);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--b2);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 4vw, 3rem);
+      height: 64px;
+      background: rgba(6,13,13,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
     }
-
-    .nav-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 66px;
-      gap: 20px;
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.25rem; font-weight: 800; color: var(--white);
+      letter-spacing: -0.02em;
     }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-family: var(--serif);
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--walnut);
-      letter-spacing: -.03em;
-      white-space: nowrap;
+    .nav-logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
     }
-
-    .logo-mark {
-      width: 36px; height: 36px;
-      background: var(--brown);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--saffron);
-      letter-spacing: -.04em;
-    }
-
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
+      display: flex; align-items: center; gap: 2rem;
       list-style: none;
     }
-
     .nav-links a {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--t2);
-      transition: color .18s;
+      font-size: 0.875rem; font-weight: 500; color: var(--text2);
+      transition: color 0.2s;
     }
-    .nav-links a:hover { color: var(--brown); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .btn-ghost {
+      padding: 0.5rem 1.125rem;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: var(--r-md);
+      color: var(--text); font-size: 0.875rem; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { background: var(--teal-glow); border-color: var(--teal); color: var(--teal); }
+    .btn-teal {
+      padding: 0.5rem 1.25rem;
+      background: var(--teal);
+      border-radius: var(--r-md);
+      color: var(--bg); font-size: 0.875rem; font-weight: 700;
+      transition: all 0.2s; border: none;
+      box-shadow: 0 0 20px rgba(0,210,185,0.25);
+    }
+    .btn-teal:hover { background: var(--teal-lt); box-shadow: 0 0 30px rgba(0,210,185,0.4); }
 
-    .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-
-    /* ─────────────────────────────────────────
-       HERO
-    ───────────────────────────────────────── */
+    /* ── HERO ── */
     .hero {
-      position: relative;
-      padding: 90px 28px 100px;
-      overflow: hidden;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 80px clamp(1.5rem, 4vw, 3rem) 4rem;
+      position: relative; overflow: hidden;
     }
-
-    .hero-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,210,185,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(56,189,248,0.06) 0%, transparent 60%);
       pointer-events: none;
-      z-index: 0;
     }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 760px;
-      margin: 0 auto;
-      text-align: center;
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.375rem 0.875rem;
+      background: rgba(0,210,185,0.08);
+      border: 1px solid rgba(0,210,185,0.25);
+      border-radius: 999px;
+      font-size: 0.75rem; font-weight: 600; color: var(--teal);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 1.75rem;
     }
-
-    .hero-kicker {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 32px;
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s ease-in-out infinite;
     }
-
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
     .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(50px, 8.5vw, 98px);
-      font-weight: 600;
-      line-height: 1.02;
-      letter-spacing: -.035em;
-      color: var(--t1);
-      margin-bottom: 26px;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.03em;
+      text-align: center; color: var(--white);
+      max-width: 820px; margin-bottom: 1.25rem;
     }
-
-    .hero h1 em { font-style: italic; color: var(--chestnut); }
-
+    .hero h1 .grad {
+      background: linear-gradient(90deg, var(--teal) 0%, var(--sky) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero-sub {
-      font-size: clamp(16px, 2vw, 19px);
-      color: var(--t2);
-      line-height: 1.65;
-      max-width: 580px;
-      margin: 0 auto 48px;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      font-weight: 400; color: var(--text2);
+      text-align: center; max-width: 560px; line-height: 1.7;
+      margin-bottom: 3rem;
     }
 
-    .hero-ctas {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 52px;
-    }
-
-    /* Stage preview pills */
-    .stage-preview {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      padding: 16px 20px;
-      background: rgba(253,249,240,.7);
-      border: 1px solid var(--b2);
+    /* ── CHAT WIDGET ── */
+    .chat-wrap {
+      width: 100%; max-width: 780px;
+      background: var(--card);
+      border: 1px solid var(--border-hi);
       border-radius: var(--r-xl);
-      backdrop-filter: blur(8px);
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,210,185,0.08), 0 32px 80px rgba(0,0,0,0.5);
     }
-
-    .stage-preview-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--t3);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      margin-right: 4px;
+    .chat-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1.125rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--card2);
     }
-
-    .stage-pill {
-      padding: 5px 14px;
-      background: var(--parchment);
-      border: 1px solid var(--b1);
-      border-radius: var(--r-full);
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--brown);
-      cursor: pointer;
-      transition: all .18s;
+    .chat-header-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
     }
-    .stage-pill:hover, .stage-pill.active {
-      background: var(--brown);
-      color: var(--dough);
-      border-color: var(--brown);
+    .chat-header-info { flex: 1; }
+    .chat-header-name {
+      font-size: 0.875rem; font-weight: 700; color: var(--white);
     }
-
-    /* Hero stats */
-    .hero-stats {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 60px;
-      padding-top: 52px;
-      border-top: 1px solid var(--b2);
-      gap: 0;
+    .chat-header-status {
+      font-size: 0.75rem; color: var(--teal); display: flex; align-items: center; gap: 0.35rem;
     }
-
-    .hstat {
-      text-align: center;
-      padding: 0 32px;
-      border-right: 1px solid var(--b2);
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+      display: inline-block; animation: pulse 2s infinite;
     }
-    .hstat:last-child { border-right: none; }
-
-    .hstat-val {
-      font-family: var(--serif);
-      font-size: clamp(30px, 4.5vw, 46px);
-      font-weight: 700;
-      color: var(--brown);
-      line-height: 1;
-      margin-bottom: 5px;
+    .chat-api-btn {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(0,210,185,0.06);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 0.75rem; font-weight: 600; color: var(--text2);
+      cursor: pointer; transition: all 0.2s;
     }
+    .chat-api-btn:hover { border-color: var(--border-hi); color: var(--teal); }
+    .chat-api-btn.has-key { color: var(--teal); border-color: rgba(0,210,185,0.25); }
 
-    .hstat-label {
-      font-size: 12.5px;
-      color: var(--t3);
-      font-weight: 500;
+    .chat-messages {
+      min-height: 320px; max-height: 440px;
+      overflow-y: auto; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      scroll-behavior: smooth;
     }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
 
-    /* ─────────────────────────────────────────
-       TRUST BAR
-    ───────────────────────────────────────── */
-    .trust {
-      background: var(--parchment);
-      border-top: 1px solid var(--b2);
-      border-bottom: 1px solid var(--b2);
-      padding: 36px 28px;
-      text-align: center;
-    }
-
-    .trust-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--t3);
-      margin-bottom: 22px;
-    }
-
-    .trust-logos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 36px 52px;
-    }
-
-    .trust-logo {
-      font-family: var(--serif);
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--t3);
-      opacity: .5;
-      letter-spacing: -.02em;
-      transition: opacity .2s;
-    }
-    .trust-logo:hover { opacity: .85; }
-
-    /* ─────────────────────────────────────────
-       STAGE SELECTOR  (dark section)
-    ───────────────────────────────────────── */
-    .stage-section {
-      background: var(--walnut);
-      padding: 96px 28px;
-    }
-
-    .stage-section .eyebrow { color: var(--saffron); }
-
-    .stage-section .display em { color: var(--saffron); }
-    .stage-section .display { color: var(--ivory); }
-
-    .stage-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 32px;
-      margin-bottom: 52px;
-      flex-wrap: wrap;
-    }
-
-    .stage-header-text { max-width: 560px; }
-
-    .stage-header-note {
-      font-size: 14px;
-      color: rgba(248,242,226,.5);
-      max-width: 240px;
-      text-align: right;
-    }
-
-    /* Tab bar */
-    .stage-tabs {
-      display: flex;
-      gap: 6px;
-      padding: 6px;
-      background: rgba(248,242,226,.06);
-      border: 1px solid rgba(248,242,226,.1);
-      border-radius: var(--r-xl);
-      margin-bottom: 32px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .stage-tabs::-webkit-scrollbar { display: none; }
-
-    .stage-tab {
-      padding: 10px 22px;
-      border-radius: var(--r-lg);
-      font-size: 14px;
-      font-weight: 600;
-      color: rgba(248,242,226,.55);
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: all .2s;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .stage-tab:hover { color: rgba(248,242,226,.85); }
-    .stage-tab.active {
-      background: var(--saffron);
-      color: var(--walnut);
-    }
-
-    /* Stage panel */
-    .stage-panel {
-      background: rgba(248,242,226,.05);
-      border: 1px solid rgba(248,242,226,.1);
-      border-radius: var(--r-xl);
-      padding: 44px 48px;
-      transition: opacity .25s ease, transform .25s ease;
-    }
-
-    .stage-panel.fading {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-
-    .stage-panel-top {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 32px;
-      align-items: start;
-      margin-bottom: 36px;
-    }
-
-    .stage-meta {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .stage-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: rgba(248,242,226,.55);
-    }
-
-    .stage-meta-item svg { opacity: .6; }
-
-    .stage-tagline {
-      font-size: 15px;
-      color: rgba(248,242,226,.65);
-      line-height: 1.6;
-      max-width: 480px;
-    }
-
-    .stage-price-box {
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .stage-price-val {
-      font-family: var(--serif);
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--saffron);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .stage-price-note {
-      font-size: 12px;
-      color: rgba(248,242,226,.4);
-    }
-
-    .stage-policies-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(248,242,226,.4);
-      margin-bottom: 12px;
-    }
-
-    .stage-policies { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-
-    .stage-rec-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(245,192,0,.5);
-      margin: 16px 0 10px;
-    }
-
-    .stage-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin-top: 32px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(248,242,226,.08);
-      flex-wrap: wrap;
-    }
-
-    .stage-bottom-note {
-      font-size: 13px;
-      color: rgba(248,242,226,.4);
-    }
-
-    /* ─────────────────────────────────────────
-       INDUSTRY VERTICAL SELECTOR
-    ───────────────────────────────────────── */
-    .industry-section { background: var(--dough); }
-
-    .industry-header {
-      text-align: center;
-      margin-bottom: 52px;
-    }
-
-    .industry-header .lead { margin: 0 auto; max-width: 540px; }
-
-    .industry-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 0;
-    }
-
-    .ind-card {
-      background: var(--ivory);
-      border: 1.5px solid var(--b2);
-      border-radius: var(--r-lg);
-      padding: 26px 24px;
-      cursor: pointer;
-      transition: all .2s;
-      position: relative;
-    }
-    .ind-card:hover {
-      border-color: var(--b1);
-      transform: translateY(-2px);
-      box-shadow: var(--s-md);
-    }
-    .ind-card.active {
-      border-color: var(--brown);
-      background: var(--dough);
-      box-shadow: 0 0 0 1px var(--brown), var(--s-md);
-    }
-
-    .ind-card-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
-      line-height: 1;
-    }
-
-    .ind-card-label {
-      font-family: var(--serif);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--t1);
-      margin-bottom: 6px;
-    }
-
-    .ind-card-hint {
-      font-size: 13px;
-      color: var(--t3);
-      line-height: 1.5;
-    }
-
-    .ind-card-arrow {
-      position: absolute;
-      top: 22px; right: 20px;
-      font-size: 16px;
-      color: var(--b1);
-      transition: all .2s;
-    }
-    .ind-card:hover .ind-card-arrow, .ind-card.active .ind-card-arrow {
-      color: var(--saffron);
-      transform: translateX(3px);
-    }
-
-    /* Industry detail panel */
-    .ind-panel {
-      margin-top: 14px;
-      background: var(--brown);
-      border-radius: var(--r-xl);
-      padding: 44px 48px;
-      display: none;
-      animation: slideDown .25s ease;
-    }
-
-    .ind-panel.visible { display: block; }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
+    .msg { display: flex; gap: 0.75rem; align-items: flex-start; animation: msgIn 0.3s ease; }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    .ind-panel-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 40px;
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
     }
-
-    .ind-panel-col-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(248,242,226,.4);
-      margin-bottom: 16px;
+    .msg.ai .msg-avatar {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+      color: var(--bg);
     }
-
-    .ind-risk-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .msg.user .msg-avatar {
+      background: var(--card2); border: 1px solid var(--border-hi);
+      color: var(--text2);
     }
-
-    .ind-risk-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      font-size: 14px;
-      color: rgba(248,242,226,.75);
-      line-height: 1.4;
+    .msg-bubble {
+      max-width: 85%; padding: 0.875rem 1.125rem;
+      border-radius: 16px; font-size: 0.9rem; line-height: 1.65;
     }
-
-    .ind-risk-list li::before {
-      content: '›';
-      color: var(--saffron);
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.2;
-      flex-shrink: 0;
+    .msg.ai .msg-bubble {
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); border-radius: 4px 16px 16px 16px;
     }
-
-    .ind-policy-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-
-    .ind-note {
-      font-size: 13px;
-      color: rgba(248,242,226,.45);
-      line-height: 1.55;
-      font-style: italic;
+    .msg.user .msg-bubble {
+      background: var(--teal); color: var(--bg); font-weight: 500;
+      border-radius: 16px 4px 16px 16px;
     }
-
-    /* ─────────────────────────────────────────
-       SCALING TIMELINE
-    ───────────────────────────────────────── */
-    .scale-section { background: var(--parchment); }
-
-    .scale-header { text-align: center; margin-bottom: 64px; }
-    .scale-header .lead { max-width: 520px; margin: 0 auto; }
-
-    .scale-track {
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
+    .msg-bubble strong { color: var(--teal-lt); font-weight: 700; }
+    .msg.user .msg-bubble strong { color: var(--bg); }
+    .msg-bubble .section-label {
+      display: block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--teal); margin-top: 0.875rem; margin-bottom: 0.25rem;
     }
-
-    .scale-track::before {
-      content: '';
-      position: absolute;
-      top: 22px;
-      left: 12.5%;
-      right: 12.5%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--saffron) 0%, var(--caramel) 40%, var(--b1) 100%);
-      z-index: 0;
-    }
-
-    .scale-node {
-      position: relative;
-      z-index: 1;
-      padding: 0 16px;
-    }
-
-    .scale-dot-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .scale-dot {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: var(--brown);
-      border: 3px solid var(--parchment);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--dough);
-      box-shadow: 0 0 0 3px var(--b1);
-    }
-
-    .scale-node:first-child .scale-dot { background: var(--saffron); color: var(--walnut); }
-
-    .scale-node-label {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--t1);
-      margin-bottom: 6px;
-      text-align: center;
-    }
-
-    .scale-node-sub {
-      font-size: 12px;
-      color: var(--t3);
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .scale-policies {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .scale-policy {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--t2);
-      padding: 8px 12px;
-      background: var(--dough);
+    .msg-bubble ul { padding-left: 1.2rem; margin: 0.25rem 0; }
+    .msg-bubble li { margin: 0.2rem 0; }
+    .msg-bubble .price-tag {
+      display: inline-block; margin-top: 0.75rem;
+      padding: 0.375rem 0.875rem;
+      background: rgba(0,210,185,0.12); border: 1px solid rgba(0,210,185,0.25);
       border-radius: var(--r-sm);
-      border: 1px solid var(--b3);
+      font-size: 0.875rem; font-weight: 700; color: var(--teal-lt);
     }
 
-    .scale-policy-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    /* typing dots */
+    .typing-indicator {
+      display: flex; gap: 5px; align-items: center;
+      padding: 0.875rem 1.125rem;
+    }
+    .typing-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--teal); opacity: 0.5;
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40%           { transform: translateY(-6px); opacity: 1; }
     }
 
-    .scale-policy-new .scale-policy-dot { background: var(--saffron); }
-    .scale-policy .scale-policy-dot { background: var(--b1); }
-
-    .scale-policy-new {
-      border-color: rgba(245,192,0,.3);
-      background: rgba(245,192,0,.06);
+    .chat-chips-row {
+      padding: 0 1.5rem 1rem;
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
     }
-
-    .scale-price {
-      font-family: var(--serif);
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--chestnut);
-      text-align: center;
-      margin-top: 18px;
+    .chip {
+      padding: 0.4rem 0.875rem;
+      background: rgba(0,210,185,0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.8rem; font-weight: 500; color: var(--text2);
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
     }
+    .chip:hover { background: var(--teal-glow); border-color: var(--border-hi); color: var(--teal); }
 
-    /* ─────────────────────────────────────────
-       FEATURES  (why Gnocchi)
-    ───────────────────────────────────────── */
-    .features-section { background: var(--dough); }
-
-    .features-header { text-align: center; margin-bottom: 60px; }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+    .chat-input-row {
+      display: flex; align-items: flex-end; gap: 0.75rem;
+      padding: 1rem 1.5rem 1.25rem;
+      border-top: 1px solid var(--border);
     }
-
-    .feat {
-      padding: 34px;
-      background: var(--ivory);
-      border: 1px solid var(--b2);
-      border-radius: var(--r-xl);
-      transition: all .2s;
-    }
-    .feat:hover {
-      border-color: var(--b1);
-      transform: translateY(-3px);
-      box-shadow: var(--s-md);
-    }
-
-    .feat-icon {
-      width: 52px; height: 52px;
-      background: var(--saffron-lt);
-      border-radius: var(--r-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .feat-title {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--t1);
-      margin-bottom: 9px;
-    }
-
-    .feat-body {
-      font-size: 14.5px;
-      color: var(--t3);
-      line-height: 1.65;
-    }
-
-    /* ─────────────────────────────────────────
-       PROCESS  (3 steps)
-    ───────────────────────────────────────── */
-    .process-section { background: var(--ivory); }
-
-    .process-header { text-align: center; margin-bottom: 64px; }
-
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      position: relative;
-    }
-
-    .process-steps::before {
-      content: '';
-      position: absolute;
-      top: 28px;
-      left: 16.67%;
-      right: 16.67%;
-      height: 1.5px;
-      background: linear-gradient(90deg, var(--saffron), var(--b2));
-    }
-
-    .proc-step {
-      text-align: center;
-      padding: 0 32px 44px;
-    }
-
-    .proc-num {
-      width: 56px; height: 56px;
-      background: var(--brown);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--dough);
-      margin: 0 auto 24px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .proc-step:first-child .proc-num { background: var(--saffron); color: var(--walnut); }
-
-    .proc-title {
-      font-family: var(--serif);
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--t1);
-      margin-bottom: 10px;
-    }
-
-    .proc-body {
-      font-size: 14.5px;
-      color: var(--t3);
-      line-height: 1.6;
-    }
-
-    .proc-chip {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 5px 14px;
-      background: var(--saffron-lt);
-      color: var(--brown);
-      border-radius: var(--r-full);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .04em;
-    }
-
-    /* ─────────────────────────────────────────
-       TESTIMONIALS
-    ───────────────────────────────────────── */
-    .testi-section { background: var(--parchment); }
-
-    .testi-header { text-align: center; margin-bottom: 56px; }
-
-    .testi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .testi-card {
-      background: var(--dough);
-      border: 1px solid var(--b2);
-      border-radius: var(--r-xl);
-      padding: 34px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      transition: box-shadow .2s;
-    }
-    .testi-card:hover { box-shadow: var(--s-md); }
-
-    .testi-stars {
-      display: flex;
-      gap: 2px;
-      color: var(--saffron);
-      font-size: 14px;
-    }
-
-    .testi-quote {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-style: italic;
-      color: var(--t1);
-      line-height: 1.65;
+    .chat-input {
       flex: 1;
-    }
-
-    .testi-author {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-top: 18px;
-      border-top: 1px solid var(--b2);
-    }
-
-    .testi-av {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: var(--wheat);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--brown);
-      flex-shrink: 0;
-    }
-
-    .testi-name { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 1px; }
-    .testi-role { font-size: 12px; color: var(--t3); }
-
-    /* ─────────────────────────────────────────
-       FAQ
-    ───────────────────────────────────────── */
-    .faq-section { background: var(--ivory); }
-
-    .faq-header { text-align: center; margin-bottom: 52px; }
-
-    .faq-list {
-      max-width: 760px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .faq-item {
-      background: var(--dough);
+      background: var(--bg3); border: 1px solid var(--border);
       border-radius: var(--r-md);
-      overflow: hidden;
+      padding: 0.75rem 1rem;
+      font-family: var(--font); font-size: 0.9rem; color: var(--text);
+      resize: none; min-height: 44px; max-height: 140px;
+      line-height: 1.5; transition: border-color 0.2s;
+      overflow-y: auto;
+    }
+    .chat-input::placeholder { color: var(--text3); }
+    .chat-input:focus { outline: none; border-color: var(--border-hi); }
+    .send-btn {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--teal); color: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+      transition: all 0.2s; box-shadow: 0 0 16px rgba(0,210,185,0.3);
+    }
+    .send-btn:hover { background: var(--teal-lt); transform: scale(1.05); }
+    .send-btn:disabled { opacity: 0.4; transform: none; pointer-events: none; }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      margin-top: 2.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--text3); font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      animation: fadeDown 2s ease-in-out infinite;
+    }
+    @keyframes fadeDown {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50%       { opacity: 0.9; transform: translateY(4px); }
     }
 
-    .faq-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 20px 26px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 15.5px;
-      font-weight: 600;
-      color: var(--t1);
-      text-align: left;
-      transition: background .15s;
+    /* ── MARQUEE ── */
+    .marquee-section {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 1.5rem 0; overflow: hidden;
+      background: var(--bg2);
     }
-    .faq-btn:hover { background: var(--parchment); }
+    .marquee-track {
+      display: flex; gap: 3rem; align-items: center;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); white-space: nowrap;
+    }
+    .marquee-item span { color: var(--text2); }
 
-    .faq-icon {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: var(--parchment);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 400;
-      flex-shrink: 0;
-      color: var(--t2);
-      transition: transform .25s, background .2s, color .2s;
+    /* ── SECTIONS ── */
+    .section {
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem);
+      max-width: 1200px; margin: 0 auto;
     }
-    .faq-item.open .faq-icon {
-      transform: rotate(45deg);
-      background: var(--brown);
-      color: var(--dough);
+    .section-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 1.25rem;
     }
-
-    .faq-panel {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .3s ease;
+    .section-label::before {
+      content: ''; display: block;
+      width: 20px; height: 2px; background: var(--teal);
     }
-    .faq-item.open .faq-panel { max-height: 260px; }
-
-    .faq-body {
-      padding: 0 26px 22px;
-      font-size: 15px;
-      color: var(--t2);
-      line-height: 1.65;
+    .section h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800;
+      letter-spacing: -0.025em; line-height: 1.15; color: var(--white);
+      max-width: 600px; margin-bottom: 1rem;
     }
-
-    /* ─────────────────────────────────────────
-       FINAL CTA  → Typeform
-    ───────────────────────────────────────── */
-    .cta-section {
-      background: var(--walnut);
-      padding: 112px 28px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    .section h2 .grad {
+      background: linear-gradient(90deg, var(--teal) 0%, var(--sky) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--text2); line-height: 1.7;
+      max-width: 500px; margin-bottom: 3.5rem;
     }
 
-    .cta-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      pointer-events: none;
-    }
-
-    .cta-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-
-    .cta-section .eyebrow { color: var(--saffron); margin-bottom: 16px; }
-
-    .cta-title {
-      font-family: var(--serif);
-      font-size: clamp(42px, 7vw, 80px);
-      font-weight: 600;
-      line-height: 1.07;
-      letter-spacing: -.03em;
-      color: var(--ivory);
-      margin-bottom: 22px;
-    }
-    .cta-title em { font-style: italic; color: var(--saffron); }
-
-    .cta-sub {
-      font-size: 17px;
-      color: rgba(248,242,226,.58);
-      margin-bottom: 48px;
-      line-height: 1.65;
-    }
-
-    .cta-typeform-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 44px;
-      background: var(--saffron);
-      color: var(--walnut);
-      border-radius: var(--r-full);
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      border: none;
-      transition: all .2s;
-      letter-spacing: .01em;
-      text-decoration: none;
-    }
-    .cta-typeform-btn:hover {
-      background: var(--saffron-dk);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 32px rgba(245,192,0,.5);
-    }
-
-    .cta-arrow {
-      width: 32px; height: 32px;
-      background: rgba(42,21,8,.15);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      transition: transform .2s;
-    }
-    .cta-typeform-btn:hover .cta-arrow { transform: translateX(3px); }
-
-    .cta-form-note {
-      margin-top: 18px;
-      font-size: 13px;
-      color: rgba(248,242,226,.32);
-    }
-
-    .cta-questions {
-      margin-top: 40px;
-      padding-top: 32px;
-      border-top: 1px solid rgba(248,242,226,.08);
-    }
-
-    .cta-questions-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(248,242,226,.3);
-      margin-bottom: 14px;
-    }
-
-    .cta-q-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-    }
-
-    .cta-q-pill {
-      padding: 5px 14px;
-      background: rgba(248,242,226,.07);
-      border: 1px solid rgba(248,242,226,.12);
-      border-radius: var(--r-full);
-      font-size: 12.5px;
-      font-weight: 500;
-      color: rgba(248,242,226,.5);
-    }
-
-    /* ─────────────────────────────────────────
-       FOOTER
-    ───────────────────────────────────────── */
-    .footer {
-      background: var(--espresso);
-      color: rgba(248,242,226,.5);
-      padding: 72px 28px 44px;
-    }
-
-    .footer-grid {
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 52px;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-bottom: 48px;
-      border-bottom: 1px solid rgba(248,242,226,.07);
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 1.5rem;
     }
+    .step-card {
+      padding: 2rem 1.75rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r-lg); position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .step-card:hover {
+      border-color: var(--border-hi);
+      box-shadow: 0 0 30px var(--teal-glow);
+    }
+    .step-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--teal) 50%, transparent 100%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .step-card:hover::before { opacity: 1; }
+    .step-num {
+      font-size: 3rem; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .step-card h3 {
+      font-size: 1.1rem; font-weight: 700; color: var(--white);
+      margin-bottom: 0.625rem;
+    }
+    .step-card p { font-size: 0.9rem; color: var(--text2); line-height: 1.65; }
 
+    /* ── COVERAGE GRID ── */
+    .coverage-section { background: var(--bg2); }
+    .coverage-section .inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem);
+    }
+    .coverage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      gap: 1rem; margin-top: 3rem;
+    }
+    .cov-card {
+      padding: 1.75rem 1.5rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      transition: all 0.3s; cursor: default;
+    }
+    .cov-card:hover {
+      border-color: var(--border-hi); background: var(--card);
+      transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .cov-icon {
+      width: 44px; height: 44px; border-radius: var(--r-sm);
+      background: var(--teal-glow); border: 1px solid var(--border-hi);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; margin-bottom: 1rem;
+    }
+    .cov-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+    .cov-card p  { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 1.25rem; margin-top: 3rem;
+    }
+    .testi-card {
+      padding: 2rem; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--r-lg);
+    }
+    .testi-stars { color: var(--teal); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-quote { font-size: 0.9rem; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem; }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: var(--bg); flex-shrink: 0;
+    }
+    .testi-name { font-size: 0.875rem; font-weight: 700; color: var(--white); }
+    .testi-role { font-size: 0.75rem; color: var(--text2); }
+
+    /* ── FINAL CTA ── */
+    .cta-section {
+      position: relative; overflow: hidden;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0,210,185,0.07) 0%, transparent 70%);
+    }
+    .cta-inner {
+      position: relative; max-width: 760px; margin: 0 auto;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 3rem);
+      text-align: center;
+    }
+    .cta-inner h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800;
+      letter-spacing: -0.025em; color: var(--white); margin-bottom: 1rem;
+    }
+    .cta-inner p { font-size: 1.05rem; color: var(--text2); line-height: 1.7; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-teal-lg {
+      padding: 0.875rem 2.25rem;
+      background: var(--teal); border-radius: var(--r-md);
+      color: var(--bg); font-family: var(--font); font-size: 1rem; font-weight: 700;
+      transition: all 0.2s; border: none;
+      box-shadow: 0 0 30px rgba(0,210,185,0.3);
+    }
+    .btn-teal-lg:hover { background: var(--teal-lt); box-shadow: 0 0 50px rgba(0,210,185,0.5); }
+    .btn-outline-lg {
+      padding: 0.875rem 2.25rem;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: var(--r-md);
+      color: var(--text); font-family: var(--font); font-size: 1rem; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-outline-lg:hover { background: var(--teal-glow); border-color: var(--teal); color: var(--teal); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem clamp(1.5rem, 5vw, 5rem);
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 2rem;
+      justify-content: space-between; align-items: center;
+    }
     .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-family: var(--serif);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--ivory);
-      letter-spacing: -.03em;
-      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 0.625rem;
+      font-size: 1.1rem; font-weight: 800; color: var(--white);
+    }
+    .footer-logo-mark {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+      display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
+    }
+    .footer-copy { font-size: 0.8rem; color: var(--text3); line-height: 1.6; }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.8rem; color: var(--text3); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--teal); }
+    .footer-disclaimer {
+      max-width: 1200px; margin: 1.5rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+      font-size: 0.72rem; color: var(--text3); line-height: 1.6;
     }
 
-    .footer-desc {
-      font-size: 14px;
-      line-height: 1.65;
-      color: rgba(248,242,226,.42);
-      max-width: 240px;
+    /* ── API KEY MODAL ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
     }
-
-    .footer-col-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: rgba(248,242,226,.3);
-      margin-bottom: 18px;
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--card); border: 1px solid var(--border-hi);
+      border-radius: var(--r-xl); padding: 2.5rem;
+      max-width: 480px; width: 100%;
+      transform: translateY(20px); transition: transform 0.2s;
     }
-
-    .footer-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
+    .modal-backdrop.open .modal { transform: translateY(0); }
+    .modal h3 { font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
+    .modal p { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 1.5rem; }
+    .modal-input {
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      font-family: var(--font); font-size: 0.875rem; color: var(--text);
+      margin-bottom: 1rem; transition: border-color 0.2s;
     }
+    .modal-input:focus { outline: none; border-color: var(--border-hi); }
+    .modal-input::placeholder { color: var(--text3); }
+    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .modal-note { font-size: 0.75rem; color: var(--text3); margin-top: 1rem; line-height: 1.6; }
+    .modal-note a { color: var(--teal); }
 
-    .footer-links a {
-      font-size: 14px;
-      color: rgba(248,242,226,.5);
-      transition: color .2s;
+    /* ── UTIL ── */
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .chat-messages { min-height: 260px; max-height: 360px; }
     }
-    .footer-links a:hover { color: var(--ivory); }
-
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 14px;
-      font-size: 12.5px;
-      color: rgba(248,242,226,.28);
-    }
-
-    .footer-legal { display: flex; gap: 20px; }
-    .footer-legal a { color: rgba(248,242,226,.28); transition: color .2s; }
-    .footer-legal a:hover { color: rgba(248,242,226,.6); }
-
-    /* ─────────────────────────────────────────
-       SCROLL REVEAL
-    ───────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-    .reveal-d1 { transition-delay: .1s; }
-    .reveal-d2 { transition-delay: .2s; }
-    .reveal-d3 { transition-delay: .3s; }
-
-    /* Hero entrance */
-    @keyframes up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
-    .hero-kicker  { animation: up .55s .05s ease both; }
-    .hero h1      { animation: up .65s .15s ease both; }
-    .hero-sub     { animation: up .65s .25s ease both; }
-    .hero-ctas    { animation: up .6s  .35s ease both; }
-    .stage-preview{ animation: up .6s  .42s ease both; }
-    .hero-stats   { animation: up .6s  .5s  ease both; }
-
-    /* ─────────────────────────────────────────
-       RESPONSIVE
-    ───────────────────────────────────────── */
-    @media (max-width: 960px) {
-      .stage-panel-top { grid-template-columns: 1fr; }
-      .stage-price-box { text-align: left; }
-      .industry-grid   { grid-template-columns: repeat(2, 1fr); }
-      .ind-panel-grid  { grid-template-columns: 1fr 1fr; }
-      .scale-track     { grid-template-columns: 1fr 1fr; }
-      .scale-track::before { display: none; }
-      .features-grid   { grid-template-columns: repeat(2, 1fr); }
-      .process-steps   { grid-template-columns: 1fr; }
-      .process-steps::before { display: none; }
-      .testi-grid      { grid-template-columns: 1fr; }
-      .footer-grid     { grid-template-columns: 1fr 1fr; gap: 36px; }
-      .footer-brand-col{ grid-column: 1 / -1; }
-    }
-
-    @media (max-width: 680px) {
-      .nav-links        { display: none; }
-      .section          { padding: 72px 20px; }
-      .hero             { padding: 64px 20px 80px; }
-      .industry-grid    { grid-template-columns: 1fr; }
-      .ind-panel-grid   { grid-template-columns: 1fr; }
-      .ind-panel        { padding: 28px 24px; }
-      .stage-panel      { padding: 28px 24px; }
-      .features-grid    { grid-template-columns: 1fr; }
-      .scale-track      { grid-template-columns: 1fr; }
-      .hero-stats       { flex-direction: column; align-items: center; }
-      .hstat            { border-right: none; border-bottom: 1px solid var(--b2); padding: 18px 0; width: 100%; }
-      .hstat:last-child { border-bottom: none; }
-      .footer-grid      { grid-template-columns: 1fr; }
-      .footer-bottom    { flex-direction: column; text-align: center; }
-      .stage-header     { flex-direction: column; }
-      .stage-header-note{ text-align: left; }
+    @media (max-width: 480px) {
+      .chat-chips-row { gap: 0.4rem; }
+      .chip { font-size: 0.72rem; padding: 0.35rem 0.7rem; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- ─────────────────────────────────────────
-       ANNOUNCEMENT BAR
-  ───────────────────────────────────────── -->
-  <div class="ann">
-    🍝 Early access for UK founders is now open &mdash;
-    <a href="#waitlist">Secure your spot &rarr;</a>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">🍝</div>
+    Gnocchi
   </div>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost" onclick="openTypeform()">Sign in</button>
+    <button class="btn-teal" onclick="openTypeform()">Get a quote</button>
+  </div>
+</nav>
 
-  <!-- ─────────────────────────────────────────
-       NAVIGATION
-  ───────────────────────────────────────── -->
-  <nav class="nav">
-    <div class="wrap nav-wrap">
-      <a href="/" class="logo" aria-label="Gnocchi home">
-        <div class="logo-mark" aria-hidden="true">G</div>
-        Gnocchi
-      </a>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="hero-badge-dot"></span> AI-Powered Insurance · Now in beta</div>
+  <h1>Business insurance that<br><span class="grad">actually gets you</span></h1>
+  <p class="hero-sub">Describe your company. Our AI advisor generates a tailored coverage plan with estimated pricing — in seconds, not weeks.</p>
 
-      <ul class="nav-links" role="list">
-        <li><a href="#stage-coverage">Coverage</a></li>
-        <li><a href="#industry">By vertical</a></li>
-        <li><a href="#process">How it works</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
-
-      <div class="nav-right">
-        <a href="#waitlist" class="btn btn-saffron">Join the waitlist</a>
+  <!-- CHAT -->
+  <div class="chat-wrap" id="chat-wrap">
+    <div class="chat-header">
+      <div class="chat-header-icon">🍝</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">Gnocchi Advisor</div>
+        <div class="chat-header-status"><span class="status-dot"></span> Online · responds instantly</div>
       </div>
+      <button class="chat-api-btn" id="api-key-btn" onclick="openApiModal()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="8" cy="8" r="3"/><path d="M10.7 10.7L21 21m-4-4l-2-2"/></svg>
+        <span id="api-btn-label">Add API key</span>
+      </button>
     </div>
-  </nav>
 
-  <!-- ─────────────────────────────────────────
-       HERO
-  ───────────────────────────────────────── -->
-  <header class="hero">
-    <div class="hero-blob" style="width:560px;height:560px;background:radial-gradient(circle,#F5C000,transparent 70%);opacity:.06;top:-180px;right:-120px;" aria-hidden="true"></div>
-    <div class="hero-blob" style="width:460px;height:460px;background:radial-gradient(circle,#B06828,transparent 70%);opacity:.07;bottom:-80px;left:-100px;" aria-hidden="true"></div>
-
-    <div class="hero-inner">
-      <div class="hero-kicker">
-        <div class="badge">
-          <span class="badge-dot" aria-hidden="true"></span>
-          Now accepting early access
-        </div>
-      </div>
-
-      <h1>Insurance built<br>for your <em>stage</em></h1>
-
-      <p class="hero-sub">
-        Startup and SME coverage packaged by funding round, team size, and industry vertical. You only pay for what your company actually needs&nbsp;&mdash; right now.
-      </p>
-
-      <div class="hero-ctas">
-        <a href="#waitlist" class="btn btn-saffron btn-lg" id="hero-waitlist-btn">
-          Join the waitlist &rarr;
-        </a>
-        <a href="#stage-coverage" class="btn btn-outline btn-lg">
-          Explore coverage &darr;
-        </a>
-      </div>
-
-      <div class="stage-preview" role="navigation" aria-label="Coverage stages">
-        <span class="stage-preview-label">Covers</span>
-        <button class="stage-pill active" onclick="scrollToStage('pre-seed')">Pre-Seed</button>
-        <button class="stage-pill" onclick="scrollToStage('seed')">Seed</button>
-        <button class="stage-pill" onclick="scrollToStage('series-a')">Series A</button>
-        <button class="stage-pill" onclick="scrollToStage('series-b')">Series B+</button>
-        <button class="stage-pill" onclick="scrollToStage('sme')">Established SME</button>
-      </div>
-
-      <div class="hero-stats" role="list" aria-label="Key figures">
-        <div class="hstat" role="listitem">
-          <div class="hstat-val">5 min</div>
-          <div class="hstat-label">Average to quote</div>
-        </div>
-        <div class="hstat" role="listitem">
-          <div class="hstat-val">&pound;0</div>
-          <div class="hstat-label">Broker fees</div>
-        </div>
-        <div class="hstat" role="listitem">
-          <div class="hstat-val">9+</div>
-          <div class="hstat-label">Policy types</div>
-        </div>
-        <div class="hstat" role="listitem">
-          <div class="hstat-val">A-rated</div>
-          <div class="hstat-label">Carrier partners</div>
-        </div>
-      </div>
+    <div class="chat-messages" id="chat-messages">
+      <!-- initial message injected by JS -->
     </div>
-  </header>
 
-  <!-- ─────────────────────────────────────────
-       TRUST BAR
-  ───────────────────────────────────────── -->
-  <div class="trust">
-    <p class="trust-label">Built for founders from</p>
-    <div class="trust-logos">
-      <span class="trust-logo">Seedcamp</span>
-      <span class="trust-logo">Y&nbsp;Combinator</span>
-      <span class="trust-logo">Techstars</span>
-      <span class="trust-logo">Founder&nbsp;Factory</span>
-      <span class="trust-logo">Antler</span>
-      <span class="trust-logo">Entrepreneur&nbsp;First</span>
+    <div class="chat-chips-row" id="chips-row">
+      <button class="chip" onclick="useChip(this)">We're a SaaS startup, 8 employees, pre-Series A</button>
+      <button class="chip" onclick="useChip(this)">Fintech startup, 20 people, processing payments</button>
+      <button class="chip" onclick="useChip(this)">E-commerce brand, bootstrapped, £1.2M revenue</button>
+      <button class="chip" onclick="useChip(this)">Climate tech startup, just closed our seed round</button>
+      <button class="chip" onclick="useChip(this)">Digital agency, 12 contractors, client work</button>
+      <button class="chip" onclick="useChip(this)">Healthtech, handling patient data, Series A</button>
+    </div>
+
+    <div class="chat-input-row">
+      <textarea
+        class="chat-input" id="chat-input"
+        placeholder="Describe your company — size, what you do, stage…"
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
     </div>
   </div>
 
-  <!-- ─────────────────────────────────────────
-       STAGE COVERAGE SELECTOR  (interactive)
-  ───────────────────────────────────────── -->
-  <section class="stage-section" id="stage-coverage" aria-labelledby="stage-heading">
-    <div class="section-inner wrap">
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14m-7-7l7 7 7-7"/></svg>
+  </div>
+</section>
 
-      <div class="stage-header reveal">
-        <div class="stage-header-text">
-          <span class="eyebrow">Coverage by stage</span>
-          <h2 class="display" id="stage-heading">
-            Built for every<br><em>stage of growth</em>
-          </h2>
-        </div>
-        <p class="stage-header-note">
-          Select your current stage to see the exact policies we recommend — and why.
-        </p>
+<!-- MARQUEE -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Directors <span>&amp;</span> Officers</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Cyber Liability</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Tech E<span>&amp;</span>O</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Professional Indemnity</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Public Liability</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">IP Protection</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">EPLI</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Key Person</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Directors <span>&amp;</span> Officers</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Cyber Liability</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Tech E<span>&amp;</span>O</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Professional Indemnity</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Public Liability</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">IP Protection</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">EPLI</span>
+    <span class="marquee-item">·</span>
+    <span class="marquee-item">Key Person</span>
+    <span class="marquee-item">·</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section">
+    <div class="section-label">How it works</div>
+    <h2>From description to <span class="grad">coverage plan</span> in seconds</h2>
+    <p class="section-sub">No brokers, no endless forms. Just tell us about your business and we handle the rest.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Describe your business</h3>
+        <p>Tell the Gnocchi AI about your company — what you do, your stage, team size, and any specific risks you're thinking about.</p>
       </div>
-
-      <div class="stage-tabs reveal" role="tablist" aria-label="Funding stages" id="stage-tabs">
-        <button class="stage-tab active" role="tab" aria-selected="true"  data-stage="pre-seed">Pre-Seed</button>
-        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="seed">Seed</button>
-        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="series-a">Series A</button>
-        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="series-b">Series B+</button>
-        <button class="stage-tab"        role="tab" aria-selected="false" data-stage="sme">Established SME</button>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>Get your advisory</h3>
+        <p>Our AI instantly analyses your risk profile and generates a tailored coverage recommendation with estimated pricing.</p>
       </div>
-
-      <div class="stage-panel reveal" id="stage-panel" aria-live="polite">
-        <!-- Rendered by JS -->
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────
-       INDUSTRY VERTICAL SELECTOR  (interactive)
-  ───────────────────────────────────────── -->
-  <section class="section industry-section" id="industry" aria-labelledby="industry-heading">
-    <div class="section-inner">
-
-      <div class="industry-header reveal">
-        <span class="eyebrow">By vertical</span>
-        <h2 class="display" id="industry-heading" style="margin-bottom:16px;">
-          Tailored to your <em>industry</em>
-        </h2>
-        <p class="lead">
-          Different verticals carry different risks. Click your industry to see the policies that matter most.
-        </p>
-      </div>
-
-      <div class="industry-grid" id="ind-grid">
-        <!-- Rendered by JS -->
-      </div>
-
-      <div class="ind-panel" id="ind-panel" aria-live="polite">
-        <!-- Rendered by JS when a card is selected -->
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────
-       COVERAGE SCALING TIMELINE
-  ───────────────────────────────────────── -->
-  <section class="section scale-section" aria-labelledby="scale-heading">
-    <div class="section-inner">
-
-      <div class="scale-header reveal">
-        <span class="eyebrow">How it scales</span>
-        <h2 class="display" id="scale-heading" style="margin-bottom:16px;">
-          Your coverage <em>grows with you</em>
-        </h2>
-        <p class="lead">
-          Start with the essentials, unlock more as your company hits new milestones.
-        </p>
-      </div>
-
-      <div class="scale-track">
-        <div class="scale-node reveal">
-          <div class="scale-dot-wrap"><div class="scale-dot">1</div></div>
-          <div class="scale-node-label">Pre-Seed</div>
-          <div class="scale-node-sub">1–10 people · Pre-revenue</div>
-          <div class="scale-policies">
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Public Liability</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Directors &amp; Officers</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Cyber Essentials</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Prof. Indemnity</div>
-          </div>
-          <div class="scale-price">From &pound;99/mo</div>
-        </div>
-
-        <div class="scale-node reveal reveal-d1">
-          <div class="scale-dot-wrap"><div class="scale-dot">2</div></div>
-          <div class="scale-node-label">Seed</div>
-          <div class="scale-node-sub">5–30 people · to £3M</div>
-          <div class="scale-policies">
-            <div class="scale-policy"><span class="scale-policy-dot"></span>Public Liability</div>
-            <div class="scale-policy"><span class="scale-policy-dot"></span>D&amp;O</div>
-            <div class="scale-policy"><span class="scale-policy-dot"></span>Prof. Indemnity</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Tech E&amp;O</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>EPLI</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Cyber (Enhanced)</div>
-          </div>
-          <div class="scale-price">From &pound;280/mo</div>
-        </div>
-
-        <div class="scale-node reveal reveal-d2">
-          <div class="scale-dot-wrap"><div class="scale-dot">3</div></div>
-          <div class="scale-node-label">Series A</div>
-          <div class="scale-node-sub">30–120 people · to £20M</div>
-          <div class="scale-policies">
-            <div class="scale-policy"><span class="scale-policy-dot"></span>Full D&amp;O Suite</div>
-            <div class="scale-policy"><span class="scale-policy-dot"></span>Cyber</div>
-            <div class="scale-policy"><span class="scale-policy-dot"></span>EPLI</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Media Liability</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Fiduciary</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>HNOA</div>
-          </div>
-          <div class="scale-price">From &pound;650/mo</div>
-        </div>
-
-        <div class="scale-node reveal reveal-d3">
-          <div class="scale-dot-wrap"><div class="scale-dot">4</div></div>
-          <div class="scale-node-label">Series B+</div>
-          <div class="scale-node-sub">120+ people · £20M+</div>
-          <div class="scale-policies">
-            <div class="scale-policy"><span class="scale-policy-dot"></span>Complete Suite</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Commercial Crime</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>High-Limit Cyber</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Run-off Cover</div>
-            <div class="scale-policy scale-policy-new"><span class="scale-policy-dot"></span>Custom Limits</div>
-          </div>
-          <div class="scale-price">Custom pricing</div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────
-       WHY GNOCCHI  (features)
-  ───────────────────────────────────────── -->
-  <section class="section features-section" aria-labelledby="feat-heading">
-    <div class="section-inner">
-
-      <div class="features-header reveal">
-        <span class="eyebrow">Why Gnocchi</span>
-        <h2 class="display" id="feat-heading">Built for founders,<br><em>by founders</em></h2>
-      </div>
-
-      <div class="features-grid">
-        <div class="feat reveal">
-          <div class="feat-icon" aria-hidden="true">⚡</div>
-          <div class="feat-title">Quote in 5 minutes</div>
-          <p class="feat-body">Our AI underwriting engine generates accurate, tailored quotes instantly. No broker call, no 3-week wait, no back-and-forth.</p>
-        </div>
-        <div class="feat reveal reveal-d1">
-          <div class="feat-icon" aria-hidden="true">🎯</div>
-          <div class="feat-title">Stage-matched coverage</div>
-          <p class="feat-body">Pre-seed companies don't need the same coverage as a Series B. We package policies around your actual risk profile today.</p>
-        </div>
-        <div class="feat reveal reveal-d2">
-          <div class="feat-icon" aria-hidden="true">🔍</div>
-          <div class="feat-title">Transparent pricing</div>
-          <p class="feat-body">Zero broker commission, zero setup fees. What you see is what you pay — we earn when you're protected, not from you.</p>
-        </div>
-        <div class="feat reveal">
-          <div class="feat-icon" aria-hidden="true">🌱</div>
-          <div class="feat-title">Grows automatically</div>
-          <p class="feat-body">Add policies at each milestone from your dashboard. Your insurance evolves as you hit new funding rounds or team sizes.</p>
-        </div>
-        <div class="feat reveal reveal-d1">
-          <div class="feat-icon" aria-hidden="true">🛡️</div>
-          <div class="feat-title">A-rated carriers</div>
-          <p class="feat-body">Backed by the world's most trusted carriers. Coverage your board, investors, and enterprise clients actually recognise.</p>
-        </div>
-        <div class="feat reveal reveal-d2">
-          <div class="feat-icon" aria-hidden="true">🤝</div>
-          <div class="feat-title">Founder-first support</div>
-          <p class="feat-body">Real humans who understand the startup journey. Our team has been through funding rounds too — we speak your language.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────
-       PROCESS  (3 steps)
-  ───────────────────────────────────────── -->
-  <section class="section process-section" id="process" aria-labelledby="proc-heading">
-    <div class="section-inner">
-
-      <div class="process-header reveal">
-        <span class="eyebrow">How it works</span>
-        <h2 class="display" id="proc-heading">
-          Covered in <em>three steps</em>
-        </h2>
-        <p class="lead" style="max-width:480px;margin:.8em auto 0;">From first click to Certificate of Insurance — faster than your morning standup.</p>
-      </div>
-
-      <div class="process-steps">
-        <div class="proc-step reveal">
-          <div class="proc-num" aria-label="Step 1">01</div>
-          <div class="proc-title">Tell us about you</div>
-          <p class="proc-body">Answer a short set of questions about your company, team, and what you build. No call, no broker, no long forms.</p>
-          <span class="proc-chip">~2 minutes</span>
-        </div>
-        <div class="proc-step reveal reveal-d1">
-          <div class="proc-num" aria-label="Step 2">02</div>
-          <div class="proc-title">Get your tailored quote</div>
-          <p class="proc-body">Our engine generates stage-matched coverage instantly. Transparent pricing, no hidden extras — you see everything up front.</p>
-          <span class="proc-chip">Instant</span>
-        </div>
-        <div class="proc-step reveal reveal-d2">
-          <div class="proc-num" aria-label="Step 3">03</div>
-          <div class="proc-title">Get covered &amp; move on</div>
-          <p class="proc-body">Pay, receive your Certificate of Insurance immediately, and get back to building. Manage everything from one dashboard.</p>
-          <span class="proc-chip">Same day</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────
-       TESTIMONIALS
-  ───────────────────────────────────────── -->
-  <section class="section testi-section" aria-labelledby="testi-heading">
-    <div class="section-inner">
-
-      <div class="testi-header reveal">
-        <span class="eyebrow">What founders say</span>
-        <h2 class="display" id="testi-heading">Trusted by <em>builders</em></h2>
-      </div>
-
-      <div class="testi-grid">
-        <div class="testi-card reveal">
-          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
-          <blockquote class="testi-quote">
-            &ldquo;I sorted our D&amp;O and Cyber in 8 minutes. Every other insurer wanted a 45-minute call and three days of back-and-forth.&rdquo;
-          </blockquote>
-          <div class="testi-author">
-            <div class="testi-av" aria-hidden="true">SL</div>
-            <div>
-              <div class="testi-name">Sarah L.</div>
-              <div class="testi-role">CEO, Series A SaaS &middot; London</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testi-card reveal reveal-d1">
-          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
-          <blockquote class="testi-quote">
-            &ldquo;Investors required D&amp;O proof before close. Gnocchi had us covered and the certificate in hand same day. Not possible with a traditional insurer.&rdquo;
-          </blockquote>
-          <div class="testi-author">
-            <div class="testi-av" aria-hidden="true">JM</div>
-            <div>
-              <div class="testi-name">James M.</div>
-              <div class="testi-role">CTO, Fintech &middot; Edinburgh</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testi-card reveal reveal-d2">
-          <div class="testi-stars" aria-label="5 stars">★★★★★</div>
-          <blockquote class="testi-quote">
-            &ldquo;The stage-based approach is exactly right for early companies. We didn't need a full enterprise suite — we needed the right four policies.&rdquo;
-          </blockquote>
-          <div class="testi-author">
-            <div class="testi-av" aria-hidden="true">AP</div>
-            <div>
-              <div class="testi-name">Amara P.</div>
-              <div class="testi-role">Founder, Climate Tech &middot; Manchester</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────
-       FAQ
-  ───────────────────────────────────────── -->
-  <section class="section faq-section" id="faq" aria-labelledby="faq-heading">
-    <div class="section-inner">
-
-      <div class="faq-header reveal">
-        <span class="eyebrow">FAQ</span>
-        <h2 class="display" id="faq-heading">Common <em>questions</em></h2>
-      </div>
-
-      <div class="faq-list">
-
-        <div class="faq-item reveal">
-          <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            How is coverage packaged by stage?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-panel"><div class="faq-body">
-            Each stage has a curated set of must-have and recommended policies based on the typical risk profile at that point in a company's life. Pre-seed focuses on core founder protection; Seed adds investor and team coverage; Series A adds enterprise-readiness. You can always customise.
-          </div></div>
-        </div>
-
-        <div class="faq-item reveal reveal-d1">
-          <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            What types of businesses do you cover?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-panel"><div class="faq-body">
-            We cover UK-registered startups and SMEs across all tech verticals — SaaS, Fintech, Healthtech, Climate/Deeptech, E-commerce, and professional services. From solo founders to teams of 200+.
-          </div></div>
-        </div>
-
-        <div class="faq-item reveal">
-          <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            How quickly can I get covered?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-panel"><div class="faq-body">
-            Most businesses complete their application and get a quote in under 5 minutes. Policies are issued the same day. Your Certificate of Insurance arrives immediately after payment.
-          </div></div>
-        </div>
-
-        <div class="faq-item reveal reveal-d1">
-          <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            Can I upgrade my coverage when I raise?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-panel"><div class="faq-body">
-            Yes — from your dashboard, at any time. No paperwork, no phone calls. Add new policy types, increase limits, or switch stages as your company grows. Coverage adjusts to your new risk profile automatically.
-          </div></div>
-        </div>
-
-        <div class="faq-item reveal">
-          <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            Which carriers back Gnocchi policies?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-panel"><div class="faq-body">
-            We partner exclusively with A-rated global insurance carriers. Your coverage is underwritten by names that institutional investors, enterprise clients, and acquirers recognise and trust.
-          </div></div>
-        </div>
-
-        <div class="faq-item reveal reveal-d1">
-          <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-            Do you have broker fees?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-panel"><div class="faq-body">
-            None. Gnocchi is direct-to-business. We cut out the broker middleman entirely, which means lower prices and no commission bias in what we recommend. We earn a margin built into the carrier price — never a separate fee from you.
-          </div></div>
-        </div>
-
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Lock in your cover</h3>
+        <p>Confirm your details and get bound coverage in minutes. Your policy scales as you grow — no rebrokering required.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ─────────────────────────────────────────
-       FINAL CTA  → Typeform waitlist
-  ───────────────────────────────────────── -->
-  <section class="cta-section" id="waitlist" aria-labelledby="cta-heading">
-    <div class="cta-blob" style="width:500px;height:500px;background:var(--saffron);opacity:.06;top:-150px;right:-100px;" aria-hidden="true"></div>
-    <div class="cta-blob" style="width:400px;height:400px;background:var(--caramel);opacity:.07;bottom:-80px;left:-80px;" aria-hidden="true"></div>
-
-    <div class="cta-inner reveal">
-      <span class="eyebrow" style="color:var(--saffron);">Join the waitlist</span>
-
-      <h2 class="cta-title" id="cta-heading">
-        Stop waiting.<br><em>Start protected.</em>
-      </h2>
-
-      <p class="cta-sub">
-        Join 2,400+ founders who&rsquo;ve already secured their spot. We&rsquo;re onboarding in batches &mdash; early applicants get priority access and founding-member pricing.
-      </p>
-
-      <!--
-        ↓ TYPEFORM BUTTON — replace href with your actual Typeform URL
-        Format: https://WORKSPACE.typeform.com/to/FORM_ID
-      -->
-      <a
-        href="https://form.typeform.com/to/REPLACE_WITH_YOUR_FORM_ID"
-        class="cta-typeform-btn"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Join the Gnocchi waitlist — opens Typeform"
-      >
-        Apply for early access
-        <span class="cta-arrow" aria-hidden="true">→</span>
-      </a>
-
-      <p class="cta-form-note">
-        Takes 2 minutes &middot; No credit card &middot; UK businesses only (for now)
-      </p>
-
-      <div class="cta-questions">
-        <p class="cta-questions-label">We&rsquo;ll ask you about</p>
-        <div class="cta-q-pills">
-          <span class="cta-q-pill">Company type</span>
-          <span class="cta-q-pill">Team size</span>
-          <span class="cta-q-pill">Annual revenue</span>
-          <span class="cta-q-pill">Funding stage</span>
-          <span class="cta-q-pill">Coverage interests</span>
-        </div>
+<!-- COVERAGE -->
+<section id="coverage" class="coverage-section">
+  <div class="coverage-section inner">
+    <div class="section-label">Coverage</div>
+    <h2>Everything your business needs, <span class="grad">nothing it doesn't</span></h2>
+    <p class="section-sub">From a solo founder to a scaling Series B, Gnocchi packages coverage for every stage.</p>
+    <div class="coverage-grid">
+      <div class="cov-card">
+        <div class="cov-icon">🛡️</div>
+        <h4>Directors &amp; Officers</h4>
+        <p>Protect founders and executives from personal liability for business decisions.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">🔐</div>
+        <h4>Cyber Liability</h4>
+        <p>First and third-party coverage for data breaches, ransomware and cyber events.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">⚙️</div>
+        <h4>Tech E&amp;O</h4>
+        <p>Covers claims from technology failures, bugs, or missed deliverables in your product.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">📋</div>
+        <h4>Professional Indemnity</h4>
+        <p>For advice-based businesses and consultants facing professional negligence claims.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">🌍</div>
+        <h4>Public Liability</h4>
+        <p>Third-party injury and property damage — essential for any customer-facing business.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">💡</div>
+        <h4>IP Protection</h4>
+        <p>Defend your patents, trademarks and trade secrets from infringement claims.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">🤝</div>
+        <h4>EPLI</h4>
+        <p>Employment Practices Liability for claims of discrimination, harassment or wrongful termination.</p>
+      </div>
+      <div class="cov-card">
+        <div class="cov-icon">🔑</div>
+        <h4>Key Person</h4>
+        <p>Business continuity protection if a critical team member is unable to work.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ─────────────────────────────────────────
-       FOOTER
-  ───────────────────────────────────────── -->
-  <footer class="footer">
-    <div class="footer-grid">
-
-      <div class="footer-brand-col">
-        <div class="footer-logo">
-          <div class="logo-mark" aria-hidden="true">G</div>
-          Gnocchi
-        </div>
-        <p class="footer-desc">
-          Startup and SME insurance, packaged by stage and tailored to your vertical. Built for founders who move fast.
-        </p>
-      </div>
-
-      <div>
-        <div class="footer-col-title">Product</div>
-        <ul class="footer-links">
-          <li><a href="#stage-coverage">Coverage</a></li>
-          <li><a href="#industry">By vertical</a></li>
-          <li><a href="#process">How it works</a></li>
-          <li><a href="#waitlist">Get a quote</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <div class="footer-col-title">Company</div>
-        <ul class="footer-links">
-          <li><a href="#">About</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Press</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <div class="footer-col-title">Support</div>
-        <ul class="footer-links">
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Claims</a></li>
-          <li><a href="#">Status</a></li>
-        </ul>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      <span>&copy; 2025 Gnocchi Insurance Ltd. FCA authorised &amp; regulated. Registered in England &amp; Wales.</span>
-      <div class="footer-legal">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Cookies</a>
-        <a href="#">IPID</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ─────────────────────────────────────────
-       JAVASCRIPT
-  ───────────────────────────────────────── -->
-  <script>
-    /* ══════════════════════════════════════
-       TYPEFORM URL  — replace this value
-    ══════════════════════════════════════ */
-    const TYPEFORM_URL = 'https://form.typeform.com/to/REPLACE_WITH_YOUR_FORM_ID';
-
-    // Wire every waitlist button to the Typeform URL
-    document.querySelectorAll('[href="#waitlist"], #hero-waitlist-btn').forEach(el => {
-      el.addEventListener('click', e => {
-        e.preventDefault();
-        window.open(TYPEFORM_URL, '_blank', 'noopener,noreferrer');
-      });
-    });
-
-    /* ══════════════════════════════════════
-       STAGE DATA
-    ══════════════════════════════════════ */
-    const STAGES = {
-      'pre-seed': {
-        title:     'Pre-Seed & Early Stage',
-        team:      '1–10 people',
-        revenue:   'Pre-revenue to £500k ARR',
-        tagline:   'Core founder protection to get you off the ground safely. Cover the essentials without overpaying for policies you don\'t yet need.',
-        must:      ['Public Liability', 'Directors & Officers', 'Cyber Essentials', 'Professional Indemnity'],
-        rec:       ['Tech E&O', 'IP Protection'],
-        price:     'From £99',
-        priceNote: 'per month · scales with headcount',
-        cta:       'Get my Pre-Seed quote',
-      },
-      'seed': {
-        title:     'Seed Stage',
-        team:      '5–30 people',
-        revenue:   '£250k – £3M ARR',
-        tagline:   'Investor-ready policies that satisfy due diligence, protect your growing team, and help you close enterprise contracts.',
-        must:      ['Public Liability', 'D&O', 'Cyber (Enhanced)', 'Professional Indemnity', 'Tech E&O', 'EPLI'],
-        rec:       ['Media Liability', 'Fiduciary'],
-        price:     'From £280',
-        priceNote: 'per month · per-employee pricing available',
-        cta:       'Get my Seed quote',
-      },
-      'series-a': {
-        title:     'Series A',
-        team:      '30–120 people',
-        revenue:   '£3M – £20M ARR',
-        tagline:   'Full-suite protection for enterprise sales, board accountability, and a team that\'s growing fast. Everything you need to close big deals.',
-        must:      ['D&O (Full Suite)', 'Cyber (Enterprise)', 'Tech E&O', 'Professional Indemnity', 'EPLI', 'Media Liability'],
-        rec:       ['Fiduciary', 'HNOA', 'Commercial Property'],
-        price:     'From £650',
-        priceNote: 'per month · bespoke to your risk profile',
-        cta:       'Get my Series A quote',
-      },
-      'series-b': {
-        title:     'Series B & Beyond',
-        team:      '120+ people',
-        revenue:   '£20M+ ARR',
-        tagline:   'Complex, bespoke coverage for high-growth companies approaching IPO, M&A, or international expansion.',
-        must:      ['Full D&O Suite', 'Cyber (High Limit)', 'EPLI', 'Fiduciary', 'Tech E&O', 'Commercial Crime'],
-        rec:       ['Product Liability', 'Custom Limits', 'Run-off Cover'],
-        price:     'Custom pricing',
-        priceNote: 'dedicated account manager included',
-        cta:       'Talk to our team',
-      },
-      'sme': {
-        title:     'Established SME',
-        team:      'Any size',
-        revenue:   'Any revenue stage',
-        tagline:   'Traditional business coverage, reimagined for modern SMEs. No broker, no wait, no jargon — just straight-forward protection.',
-        must:      ['Public Liability', "Employer's Liability", 'Professional Indemnity', 'Business Interruption'],
-        rec:       ['Cyber', 'Commercial Property', 'D&O'],
-        price:     'From £180',
-        priceNote: 'per month · package discounts available',
-        cta:       'Get my SME quote',
-      },
-    };
-
-    /* ══════════════════════════════════════
-       INDUSTRY DATA
-    ══════════════════════════════════════ */
-    const INDUSTRIES = {
-      saas: {
-        icon: '⚡', label: 'SaaS & Software',
-        hint: 'Tech products, B2B tools, dev platforms',
-        risks: ['Data breaches & service downtime', 'Software errors & product failures', 'IP and licensing disputes', 'Customer contract liability'],
-        policies: ['Cyber', 'Tech E&O', 'D&O', 'Prof. Indemnity'],
-        note: 'Cyber and Tech E&O are critical for any software business handling customer data.',
-      },
-      fintech: {
-        icon: '🏦', label: 'Fintech & Payments',
-        hint: 'Lending, payments, wealth, crypto, RegTech',
-        risks: ['FCA regulatory action', 'Financial crime & fraud exposure', 'Client data breaches', 'Mis-selling or advice claims'],
-        policies: ['Prof. Indemnity', 'D&O', 'Cyber', 'Fiduciary'],
-        note: 'Regulatory risk is the #1 concern for fintech. Professional Indemnity and D&O are non-negotiable.',
-      },
-      healthtech: {
-        icon: '🩺', label: 'Healthtech & BioTech',
-        hint: 'Digital health, diagnostics, biotech, med devices',
-        risks: ['Patient data breaches (GDPR/ICO)', 'Medical device product liability', 'Clinical & R&D failures', 'Regulatory compliance claims'],
-        policies: ['Cyber', 'Product Liability', 'Prof. Indemnity', 'D&O'],
-        note: 'Product Liability and Cyber are non-negotiable for companies touching health data or devices.',
-      },
-      climate: {
-        icon: '🌱', label: 'Climate & Deeptech',
-        hint: 'CleanTech, energy, hardware, advanced manufacturing',
-        risks: ['Product liability claims', 'Environmental and regulatory risk', 'R&D project failure', 'Hardware & IP disputes'],
-        policies: ['D&O', 'Prof. Indemnity', 'Product Liability', 'Cyber'],
-        note: 'D&O protection is increasingly important as scrutiny on green claims intensifies.',
-      },
-      ecommerce: {
-        icon: '📦', label: 'E-commerce & Retail',
-        hint: 'DTC brands, marketplaces, subscription, fulfilment',
-        risks: ['Product liability claims', 'Cyber fraud & payment theft', 'Business interruption', 'Supply chain failure'],
-        policies: ['Product Liability', 'Cyber', 'Public Liability', 'Bus. Interruption'],
-        note: 'Product Liability and Business Interruption are the core risks for any product-led company.',
-      },
-      agency: {
-        icon: '🎯', label: 'Agency & Pro Services',
-        hint: 'Consultancies, agencies, legal, accounting, HR',
-        risks: ['Professional advice errors', 'Employment disputes (EPLI)', 'Client data breaches', 'Contract & IP failures'],
-        policies: ['Prof. Indemnity', 'D&O', 'Cyber', 'EPLI'],
-        note: 'Professional Indemnity is the bedrock policy for any advice or service-based business.',
-      },
-    };
-
-    /* ══════════════════════════════════════
-       STAGE SELECTOR
-    ══════════════════════════════════════ */
-    let currentStage = 'pre-seed';
-
-    function renderStagePanel(key) {
-      const s = STAGES[key];
-      const panel = document.getElementById('stage-panel');
-
-      const mustChips = s.must.map(p => `<span class="chip chip-must">${p}</span>`).join('');
-      const recChips  = s.rec.map(p =>  `<span class="chip chip-rec">${p}</span>`).join('');
-
-      panel.innerHTML = `
-        <div class="stage-panel-top">
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section">
+    <div class="section-label">Stories</div>
+    <h2>Founders who <span class="grad">stopped worrying</span></h2>
+    <p class="section-sub">Real companies. Real coverage. Built for the way startups actually work.</p>
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"We had an investor ask about our D&amp;O coverage two days before our seed close. Gnocchi got us sorted same day. Nothing else comes close."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SM</div>
           <div>
-            <h3 style="font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:600;color:var(--ivory);letter-spacing:-.02em;margin-bottom:10px;">${s.title}</h3>
-            <div class="stage-meta">
-              <span class="stage-meta-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                ${s.team}
-              </span>
-              <span class="stage-meta-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                ${s.revenue}
-              </span>
-            </div>
-            <p class="stage-tagline" style="margin-top:14px;">${s.tagline}</p>
-          </div>
-          <div class="stage-price-box">
-            <div class="stage-price-val">${s.price}</div>
-            <div class="stage-price-note">${s.priceNote}</div>
+            <div class="testi-name">Sarah M.</div>
+            <div class="testi-role">CEO, Series A SaaS · London</div>
           </div>
         </div>
-
-        <div class="stage-policies-label">Must-have policies</div>
-        <div class="stage-policies">${mustChips}</div>
-
-        <div class="stage-rec-label">Recommended adds</div>
-        <div class="stage-policies">${recChips}</div>
-
-        <div class="stage-bottom">
-          <p class="stage-bottom-note">All policies can be customised. Pricing adjusts to your headcount and risk profile.</p>
-          <a href="${TYPEFORM_URL}" target="_blank" rel="noopener" class="btn btn-saffron btn-lg"
-             onclick="event.preventDefault(); window.open(TYPEFORM_URL,'_blank','noopener,noreferrer')">
-            ${s.cta} &rarr;
-          </a>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I described our fintech product in three sentences. The AI came back with a full coverage plan that actually matched our risk profile. Honestly shocked by how accurate it was."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JK</div>
+          <div>
+            <div class="testi-name">James K.</div>
+            <div class="testi-role">CTO, Fintech startup · Manchester</div>
+          </div>
         </div>
-      `;
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Every time I tried traditional brokers it took weeks and felt like they didn't understand our business at all. Gnocchi understood us immediately."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AL</div>
+          <div>
+            <div class="testi-name">Amelia L.</div>
+            <div class="testi-role">Founder, Healthtech · Bristol</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="hero-badge" style="margin: 0 auto 1.5rem;"><span class="hero-badge-dot"></span> Join the waitlist</div>
+    <h2>Ready to ditch the <span class="grad">broker chaos</span>?</h2>
+    <p>Join founders who've already got a better way to protect their business. Takes 2 minutes to join the waitlist.</p>
+    <div class="cta-btns">
+      <button class="btn-teal-lg" onclick="openTypeform()">Join the waitlist</button>
+      <button class="btn-outline-lg" onclick="scrollToChat()">Try the AI advisor</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-mark">🍝</div>
+      Gnocchi
+    </div>
+    <nav class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Regulatory</a>
+      <a href="#">Contact</a>
+    </nav>
+    <p class="footer-copy">© 2025 Gnocchi Insurance Ltd. All rights reserved.</p>
+  </div>
+  <p class="footer-disclaimer">
+    Gnocchi Insurance Ltd is an appointed representative of a FCA-authorised insurance intermediary. Coverage subject to underwriting and full policy terms. The AI advisor provides indicative guidance only and does not constitute a binding insurance contract. All quotes are advisory until confirmed in writing.
+  </p>
+</footer>
+
+<!-- API KEY MODAL -->
+<div class="modal-backdrop" id="api-modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3>Connect your Anthropic API key</h3>
+    <p>The Gnocchi AI advisor uses Claude to generate insurance recommendations. Add your Anthropic API key to enable the live chat. Your key is stored only in your browser and never sent to our servers.</p>
+    <input
+      type="password" class="modal-input" id="modal-api-input"
+      placeholder="sk-ant-api03-..."
+      onkeydown="if(event.key==='Enter')saveApiKey()"
+    />
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeApiModal()">Cancel</button>
+      <button class="btn-teal" onclick="saveApiKey()">Save key</button>
+    </div>
+    <p class="modal-note">Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>. For demo/testing only — don't use a production key in a public page.</p>
+  </div>
+</div>
+
+<script>
+  /* ── CONFIG ── */
+  const TYPEFORM_URL = 'https://form.typeform.com/to/REPLACE_WITH_YOUR_FORM_ID';
+
+  const SYSTEM_PROMPT = `You are Gnocchi's AI insurance advisor — a friendly, expert insurance consultant specialising in UK startups and SMEs.
+
+When a user describes their company, analyse their risk profile and provide a concise, structured insurance recommendation.
+
+Format your response using these exact sections (use **Section Title** for headers):
+
+**Risk Assessment**
+2-3 sentences identifying the key risks given their business model, stage and sector.
+
+**Recommended Coverage**
+A bullet list of specific policies they need, with one-line rationale for each. Lead with must-haves, then recommended add-ons.
+
+**Estimated Monthly Cost**
+Give a realistic range based on their stage and size. Use UK market benchmarks.
+Format as: "£X – £Y per month · adjusts with headcount"
+
+**Immediate Priority**
+One or two sentences on what to sort first and why.
+
+Keep responses under 300 words. Be warm, expert, and direct. Avoid jargon. Think like a trusted advisor who gets startups.`;
+
+  /* ── STATE ── */
+  let apiKey = localStorage.getItem('gnocchi_api_key') || '';
+  let isLoading = false;
+  let conversationHistory = [];
+
+  const WELCOME = {
+    role: 'ai',
+    html: `<p>Hi! I'm Gnocchi's AI insurance advisor.</p>
+<p>Tell me about your company — what you do, how many people you have, your funding stage, and any specific risks you're thinking about — and I'll generate a tailored coverage plan with estimated pricing.</p>
+<p style="color:var(--text2);font-size:0.82rem;margin-top:0.75rem">Or pick one of the examples below to see how it works.</p>`
+  };
+
+  /* ── INIT ── */
+  window.addEventListener('DOMContentLoaded', () => {
+    renderWelcome();
+    updateApiBtn();
+  });
+
+  function renderWelcome() {
+    const container = document.getElementById('chat-messages');
+    const el = document.createElement('div');
+    el.className = 'msg ai';
+    el.innerHTML = `
+      <div class="msg-avatar">G</div>
+      <div class="msg-bubble">${WELCOME.html}</div>
+    `;
+    container.appendChild(el);
+  }
+
+  function updateApiBtn() {
+    const btn = document.getElementById('api-key-btn');
+    const label = document.getElementById('api-btn-label');
+    if (apiKey) {
+      label.textContent = 'API key ✓';
+      btn.classList.add('has-key');
+    } else {
+      label.textContent = 'Add API key';
+      btn.classList.remove('has-key');
+    }
+  }
+
+  /* ── SEND ── */
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text || isLoading) return;
+
+    if (!apiKey) {
+      openApiModal();
+      return;
     }
 
-    function selectStage(key) {
-      if (key === currentStage) return;
-      currentStage = key;
+    input.value = '';
+    input.style.height = 'auto';
+    isLoading = true;
+    document.getElementById('send-btn').disabled = true;
 
-      // Update tabs
-      document.querySelectorAll('.stage-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.stage === key);
-        t.setAttribute('aria-selected', t.dataset.stage === key);
+    // Add user message
+    appendUserMsg(text);
+    scrollBottom();
+
+    // Hide chips after first real use
+    document.getElementById('chips-row').style.display = 'none';
+
+    // Add to history
+    conversationHistory.push({ role: 'user', content: text });
+
+    // Show typing
+    const typingEl = appendTyping();
+    scrollBottom();
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1024,
+          stream: true,
+          system: SYSTEM_PROMPT,
+          messages: conversationHistory
+        })
       });
 
-      // Animate out → update → animate in
-      const panel = document.getElementById('stage-panel');
-      panel.classList.add('fading');
-      setTimeout(() => {
-        renderStagePanel(key);
-        panel.classList.remove('fading');
-      }, 240);
-    }
+      typingEl.remove();
 
-    // Wire tabs
-    document.querySelectorAll('.stage-tab').forEach(btn => {
-      btn.addEventListener('click', () => selectStage(btn.dataset.stage));
-    });
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        const msg = err?.error?.message || `API error ${response.status}`;
+        appendErrorMsg(msg);
+      } else {
+        const aiEl = appendAiMsg('');
+        let fullText = '';
 
-    // Hero stage pills scroll + select
-    function scrollToStage(key) {
-      selectStage(key);
-      document.getElementById('stage-coverage').scrollIntoView({ behavior: 'smooth' });
-    }
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-    // Init
-    renderStagePanel('pre-seed');
-
-    /* ══════════════════════════════════════
-       INDUSTRY SELECTOR
-    ══════════════════════════════════════ */
-    let currentIndustry = null;
-
-    function renderIndustryGrid() {
-      const grid = document.getElementById('ind-grid');
-      grid.innerHTML = Object.entries(INDUSTRIES).map(([key, ind]) => `
-        <div class="ind-card ${key === currentIndustry ? 'active' : ''}"
-             onclick="selectIndustry('${key}')"
-             role="button"
-             tabindex="0"
-             aria-pressed="${key === currentIndustry}"
-             onkeydown="if(event.key==='Enter'||event.key===' '){selectIndustry('${key}')}"
-        >
-          <div class="ind-card-arrow" aria-hidden="true">→</div>
-          <div class="ind-card-icon" aria-hidden="true">${ind.icon}</div>
-          <div class="ind-card-label">${ind.label}</div>
-          <div class="ind-card-hint">${ind.hint}</div>
-        </div>
-      `).join('');
-    }
-
-    function renderIndustryPanel(key) {
-      const ind = INDUSTRIES[key];
-      const panel = document.getElementById('ind-panel');
-
-      const riskItems = ind.risks.map(r => `<li>${r}</li>`).join('');
-      const polChips  = ind.policies.map(p => `<span class="chip chip-must">${p}</span>`).join('');
-
-      panel.innerHTML = `
-        <div class="ind-panel-grid">
-          <div>
-            <div class="ind-panel-col-title">Top risks for ${ind.label}</div>
-            <ul class="ind-risk-list">${riskItems}</ul>
-          </div>
-          <div>
-            <div class="ind-panel-col-title">Priority policies</div>
-            <div class="ind-policy-chips">${polChips}</div>
-            <p class="ind-note">${ind.note}</p>
-          </div>
-          <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-end;">
-            <p style="font-size:14px;color:rgba(248,242,226,.55);margin-bottom:20px;text-align:right;">
-              Get coverage tailored specifically for ${ind.label} companies.
-            </p>
-            <a href="${TYPEFORM_URL}" target="_blank" rel="noopener"
-               class="btn btn-saffron btn-lg"
-               onclick="event.preventDefault(); window.open(TYPEFORM_URL,'_blank','noopener,noreferrer')">
-              Get ${ind.label} quote &rarr;
-            </a>
-          </div>
-        </div>
-      `;
-
-      panel.classList.add('visible');
-    }
-
-    function selectIndustry(key) {
-      if (key === currentIndustry) {
-        // Toggle off
-        currentIndustry = null;
-        document.getElementById('ind-panel').classList.remove('visible');
-        document.getElementById('ind-panel').innerHTML = '';
-        renderIndustryGrid();
-        return;
-      }
-      currentIndustry = key;
-      renderIndustryGrid();
-      renderIndustryPanel(key);
-    }
-
-    renderIndustryGrid();
-
-    /* ══════════════════════════════════════
-       FAQ ACCORDION
-    ══════════════════════════════════════ */
-    function toggleFaq(btn) {
-      const item   = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => {
-        i.classList.remove('open');
-        i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
-      });
-      if (!isOpen) {
-        item.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
-      }
-    }
-
-    /* ══════════════════════════════════════
-       SCROLL REVEAL
-    ══════════════════════════════════════ */
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const raw = decoder.decode(value, { stream: true });
+          for (const line of raw.split('\n')) {
+            if (!line.startsWith('data: ')) continue;
+            const data = line.slice(6).trim();
+            if (data === '[DONE]' || !data) continue;
+            try {
+              const ev = JSON.parse(data);
+              if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
+                fullText += ev.delta.text;
+                aiEl.innerHTML = formatAiText(fullText);
+                scrollBottom();
+              }
+            } catch (_) {}
+          }
         }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -28px 0px' });
 
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-    /* ══════════════════════════════════════
-       POLICY TOOLTIP  (on industry chips)
-    ══════════════════════════════════════ */
-    const POLICY_DEFS = {
-      'Cyber':             'Covers data breaches, ransomware, and cyber incidents including response and notification costs.',
-      'D&O':               'Directors & Officers — protects leadership from personal liability for business decisions.',
-      'Tech E&O':          'Technology Errors & Omissions — covers claims from mistakes or failures in your software/services.',
-      'Prof. Indemnity':   'Covers claims arising from professional advice errors, omissions, or negligent work.',
-      'Public Liability':  'Covers third-party claims for bodily injury or property damage caused by your business.',
-      'EPLI':              'Employment Practices Liability — covers wrongful termination, discrimination, or harassment claims.',
-      'Product Liability': 'Covers injury or damage claims caused by products your company makes or sells.',
-      'Fiduciary':         'Protects against mismanagement of employee benefit plans or pension schemes.',
-      'Media Liability':   'Covers defamation, copyright infringement, and other media-related liability.',
-      'Bus. Interruption': 'Covers lost revenue and operating expenses if your business is forced to stop operating.',
-    };
-
-    document.addEventListener('click', e => {
-      if (e.target.classList.contains('chip')) {
-        const key  = e.target.textContent.trim();
-        const info = POLICY_DEFS[key];
-        if (!info) return;
-
-        document.querySelectorAll('.chip-tooltip').forEach(t => t.remove());
-
-        const tip = document.createElement('div');
-        tip.className = 'chip-tooltip';
-        tip.textContent = info;
-        Object.assign(tip.style, {
-          position: 'fixed',
-          background: 'var(--walnut)',
-          color: 'var(--ivory)',
-          padding: '10px 16px',
-          borderRadius: '10px',
-          fontSize: '13px',
-          lineHeight: '1.5',
-          maxWidth: '260px',
-          zIndex: '9999',
-          boxShadow: '0 8px 24px rgba(0,0,0,.25)',
-          pointerEvents: 'none',
-          border: '1px solid rgba(248,242,226,.1)',
-        });
-        document.body.appendChild(tip);
-
-        const rect = e.target.getBoundingClientRect();
-        tip.style.left = Math.min(rect.left, window.innerWidth - 276) + 'px';
-        tip.style.top  = (rect.top - tip.offsetHeight - 8 + window.scrollY) + 'px';
-
-        setTimeout(() => tip.remove(), 3000);
-        document.addEventListener('click', () => tip.remove(), { once: true });
+        conversationHistory.push({ role: 'assistant', content: fullText });
       }
-    });
-  </script>
+    } catch (err) {
+      typingEl?.remove?.();
+      appendErrorMsg(err.message || 'Network error — check your connection');
+    }
 
+    isLoading = false;
+    document.getElementById('send-btn').disabled = false;
+    input.focus();
+  }
+
+  /* ── FORMAT ── */
+  function formatAiText(text) {
+    // Convert markdown-ish to HTML
+    let html = text
+      // **bold** sections as coloured labels
+      .replace(/\*\*(.*?)\*\*/g, (_, t) => {
+        // Detect section headers vs inline bold
+        const isHeader = /^(Risk|Recommended|Estimated|Immediate|Priority|Coverage|Summary)/i.test(t.trim());
+        if (isHeader) return `<span class="section-label">${t}</span>`;
+        return `<strong>${t}</strong>`;
+      })
+      // bullet lists
+      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+      // wrap consecutive <li> in <ul>
+      .replace(/(<li>.*<\/li>(\n)?)+/gs, m => `<ul>${m}</ul>`)
+      // £X–£Y price lines
+      .replace(/(£[\d,]+ ?[–-] ?£[\d,]+[^\n]*)/g, '<span class="price-tag">$1</span>')
+      // paragraphs
+      .replace(/\n{2,}/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+
+    return `<p>${html}</p>`;
+  }
+
+  /* ── DOM HELPERS ── */
+  function appendUserMsg(text) {
+    const el = document.createElement('div');
+    el.className = 'msg user';
+    el.innerHTML = `
+      <div class="msg-avatar">You</div>
+      <div class="msg-bubble">${escHtml(text)}</div>
+    `;
+    document.getElementById('chat-messages').appendChild(el);
+    return el;
+  }
+
+  function appendAiMsg(html) {
+    const el = document.createElement('div');
+    el.className = 'msg ai';
+    el.innerHTML = `
+      <div class="msg-avatar">G</div>
+      <div class="msg-bubble">${html}</div>
+    `;
+    document.getElementById('chat-messages').appendChild(el);
+    return el.querySelector('.msg-bubble');
+  }
+
+  function appendTyping() {
+    const el = document.createElement('div');
+    el.className = 'msg ai';
+    el.innerHTML = `
+      <div class="msg-avatar">G</div>
+      <div class="msg-bubble" style="padding:0">
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    `;
+    document.getElementById('chat-messages').appendChild(el);
+    scrollBottom();
+    return el;
+  }
+
+  function appendErrorMsg(msg) {
+    const el = document.createElement('div');
+    el.className = 'msg ai';
+    el.innerHTML = `
+      <div class="msg-avatar" style="background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);color:var(--red)">!</div>
+      <div class="msg-bubble" style="border-color:rgba(255,107,107,0.2);color:var(--red)">
+        <strong>Something went wrong</strong><br>${escHtml(msg)}
+      </div>
+    `;
+    document.getElementById('chat-messages').appendChild(el);
+  }
+
+  function scrollBottom() {
+    const c = document.getElementById('chat-messages');
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── CHIPS ── */
+  function useChip(el) {
+    const input = document.getElementById('chat-input');
+    input.value = el.textContent;
+    autoResize(input);
+    input.focus();
+    sendMessage();
+  }
+
+  /* ── INPUT ── */
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  }
+
+  /* ── API MODAL ── */
+  function openApiModal() {
+    const m = document.getElementById('api-modal');
+    m.classList.add('open');
+    document.getElementById('modal-api-input').value = apiKey;
+    setTimeout(() => document.getElementById('modal-api-input').focus(), 100);
+  }
+  function closeApiModal() {
+    document.getElementById('api-modal').classList.remove('open');
+  }
+  function saveApiKey() {
+    const val = document.getElementById('modal-api-input').value.trim();
+    if (val) {
+      apiKey = val;
+      localStorage.setItem('gnocchi_api_key', val);
+      updateApiBtn();
+    }
+    closeApiModal();
+  }
+  document.getElementById('api-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeApiModal();
+  });
+
+  /* ── MISC ── */
+  function openTypeform() {
+    window.open(TYPEFORM_URL, '_blank', 'noopener');
+  }
+  function scrollToChat() {
+    document.getElementById('chat-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
 </body>
 </html>
