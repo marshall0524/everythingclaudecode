@@ -3,1157 +3,1188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gnocchi — AI-Powered Business Insurance</title>
-  <meta name="description" content="Describe your business, get an instant AI-generated insurance advisory. Coverage tailored to your stage, sector and risk profile.">
+  <title>Gnocchi — Business Insurance for Founders</title>
+  <meta name="description" content="Describe your business and get an AI-generated insurance plan in seconds. Coverage that scales with your company.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ── TOKENS ── */
+    /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
-      --bg:        #060D0D;
-      --bg2:       #0A1616;
-      --bg3:       #0E1E1E;
-      --card:      #101C1C;
-      --card2:     #142424;
-      --border:    rgba(0,210,185,0.10);
-      --border-hi: rgba(0,210,185,0.28);
-      --teal:      #00D2B9;
-      --teal-dk:   #00A896;
-      --teal-lt:   #70FFEE;
-      --teal-glow: rgba(0,210,185,0.12);
-      --sky:       #38BDF8;
-      --cream:     #EDE8DB;
-      --cream2:    #C4BDB0;
-      --white:     #FFFFFF;
-      --text:      #DCE8E5;
-      --text2:     #7A9A96;
-      --text3:     #4A6460;
-      --red:       #FF6B6B;
-      --font:      'Manrope', system-ui, sans-serif;
-      --r-sm:      8px;
-      --r-md:      14px;
-      --r-lg:      20px;
-      --r-xl:      28px;
+      --white:   #FFFFFF;
+      --gray-50: #F9FAFB;
+      --gray-75: #F5F5F4;
+      --gray-100:#F0F0EF;
+      --gray-200:#E2E2E0;
+      --gray-300:#C8C8C5;
+      --gray-400:#A0A09C;
+      --gray-500:#6B6B68;
+      --gray-700:#383836;
+      --gray-900:#141413;
+      --green:   #0A7A5A;
+      --green-d: #085C44;
+      --green-l: #E6F5F0;
+      --green-m: #C0E8DC;
+      --font:    'Inter', system-ui, -apple-system, sans-serif;
     }
 
-    /* ── RESET ── */
+    /* ─── RESET ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    html { -webkit-font-smoothing: antialiased; color-scheme: light; }
     body {
       font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
+      background: var(--white);
+      color: var(--gray-900);
       overflow-x: hidden;
+      font-size: 16px;
+      line-height: 1.5;
     }
     a { color: inherit; text-decoration: none; }
-    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
+    button { font-family: var(--font); cursor: pointer; border: none; background: none; }
+    input, textarea { font-family: var(--font); }
 
-    /* ── NAV ── */
+    /* ─── LAYOUT ─────────────────────────────────────────── */
+    .container {
+      width: 100%; max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────── */
     .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(1.5rem, 4vw, 3rem);
-      height: 64px;
-      background: rgba(6,13,13,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
     }
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 1.25rem; font-weight: 800; color: var(--white);
-      letter-spacing: -0.02em;
+    .nav-inner {
+      display: flex; align-items: center;
+      height: 60px; gap: 2rem;
     }
-    .nav-logo-mark {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
+    /* ── LOGO ── */
+    .logo {
+      display: flex; align-items: center; gap: 9px;
+      flex-shrink: 0; user-select: none;
+    }
+    .logo-mark {
+      width: 30px; height: 22px; display: block;
+    }
+    .logo-text {
+      font-size: 1.0625rem; font-weight: 700;
+      letter-spacing: -0.02em; color: var(--gray-900);
     }
     .nav-links {
-      display: flex; align-items: center; gap: 2rem;
-      list-style: none;
+      display: flex; align-items: center; gap: 1.75rem;
+      list-style: none; flex: 1;
     }
     .nav-links a {
-      font-size: 0.875rem; font-weight: 500; color: var(--text2);
-      transition: color 0.2s;
+      font-size: 0.875rem; font-weight: 450;
+      color: var(--gray-500); transition: color 0.15s;
     }
-    .nav-links a:hover { color: var(--text); }
-    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
-    .btn-ghost {
-      padding: 0.5rem 1.125rem;
-      background: transparent;
-      border: 1px solid var(--border-hi);
-      border-radius: var(--r-md);
-      color: var(--text); font-size: 0.875rem; font-weight: 600;
-      transition: all 0.2s;
+    .nav-links a:hover { color: var(--gray-900); }
+    .nav-right { display: flex; align-items: center; gap: 0.625rem; margin-left: auto; }
+    .btn-ghost-sm {
+      padding: 0.4375rem 0.875rem;
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--gray-700); border-radius: 8px;
+      transition: background 0.15s;
     }
-    .btn-ghost:hover { background: var(--teal-glow); border-color: var(--teal); color: var(--teal); }
-    .btn-teal {
-      padding: 0.5rem 1.25rem;
-      background: var(--teal);
-      border-radius: var(--r-md);
-      color: var(--bg); font-size: 0.875rem; font-weight: 700;
-      transition: all 0.2s; border: none;
-      box-shadow: 0 0 20px rgba(0,210,185,0.25);
+    .btn-ghost-sm:hover { background: var(--gray-100); }
+    .btn-primary {
+      padding: 0.4375rem 1rem;
+      background: var(--gray-900); color: var(--white);
+      font-size: 0.875rem; font-weight: 600;
+      border-radius: 8px; transition: background 0.15s;
+      white-space: nowrap;
     }
-    .btn-teal:hover { background: var(--teal-lt); box-shadow: 0 0 30px rgba(0,210,185,0.4); }
+    .btn-primary:hover { background: var(--gray-700); }
+    .btn-green {
+      padding: 0.4375rem 1rem;
+      background: var(--green); color: var(--white);
+      font-size: 0.875rem; font-weight: 600;
+      border-radius: 8px; transition: background 0.15s;
+    }
+    .btn-green:hover { background: var(--green-d); }
 
-    /* ── HERO ── */
+    /* ─── HERO ─────────────────────────────────────────────── */
     .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 80px clamp(1.5rem, 4vw, 3rem) 4rem;
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,210,185,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(56,189,248,0.06) 0%, transparent 60%);
-      pointer-events: none;
+      padding: clamp(5rem, 10vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
+      text-align: center;
     }
     .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.375rem 0.875rem;
-      background: rgba(0,210,185,0.08);
-      border: 1px solid rgba(0,210,185,0.25);
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0.3125rem 0.75rem;
+      background: var(--green-l);
+      border: 1px solid var(--green-m);
       border-radius: 999px;
-      font-size: 0.75rem; font-weight: 600; color: var(--teal);
-      letter-spacing: 0.04em; text-transform: uppercase;
-      margin-bottom: 1.75rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--green); letter-spacing: 0.01em;
+      margin-bottom: 2.25rem;
     }
     .hero-badge-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--teal);
-      animation: pulse 2s ease-in-out infinite;
+      background: var(--green); flex-shrink: 0;
+      animation: pulse 2.4s ease-in-out infinite;
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(0.8); }
+      0%, 100% { opacity: 1; } 50% { opacity: 0.35; }
     }
     .hero h1 {
-      font-size: clamp(2.4rem, 6vw, 4.5rem);
-      font-weight: 800; line-height: 1.08;
-      letter-spacing: -0.03em;
-      text-align: center; color: var(--white);
-      max-width: 820px; margin-bottom: 1.25rem;
+      font-size: clamp(2.6rem, 6.5vw, 5rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: var(--gray-900);
+      max-width: 840px; margin: 0 auto 1.5rem;
     }
-    .hero h1 .grad {
-      background: linear-gradient(90deg, var(--teal) 0%, var(--sky) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .hero h1 em {
+      font-style: normal; color: var(--green);
     }
     .hero-sub {
-      font-size: clamp(1rem, 1.8vw, 1.2rem);
-      font-weight: 400; color: var(--text2);
-      text-align: center; max-width: 560px; line-height: 1.7;
-      margin-bottom: 3rem;
+      font-size: clamp(1rem, 2vw, 1.1875rem);
+      font-weight: 400; line-height: 1.65;
+      color: var(--gray-500);
+      max-width: 520px; margin: 0 auto 3rem;
+    }
+    /* Email form */
+    .email-form {
+      display: flex; gap: 0.5rem;
+      max-width: 460px; margin: 0 auto;
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 5px 5px 5px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 0 transparent;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .email-form:focus-within {
+      border-color: var(--gray-400);
+      box-shadow: 0 0 0 3px rgba(10,122,90,0.08);
+    }
+    .email-form input {
+      flex: 1; border: none; outline: none;
+      font-size: 0.9375rem; color: var(--gray-900);
+      background: transparent; min-width: 0;
+    }
+    .email-form input::placeholder { color: var(--gray-400); }
+    .email-form button {
+      flex-shrink: 0;
+      padding: 0.625rem 1.375rem;
+      background: var(--gray-900); color: var(--white);
+      font-size: 0.875rem; font-weight: 600;
+      border-radius: 8px; transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .email-form button:hover { background: var(--gray-700); }
+    .hero-note {
+      margin-top: 0.875rem;
+      font-size: 0.8125rem; color: var(--gray-400);
     }
 
-    /* ── CHAT WIDGET ── */
-    .chat-wrap {
-      width: 100%; max-width: 780px;
-      background: var(--card);
-      border: 1px solid var(--border-hi);
-      border-radius: var(--r-xl);
-      overflow: hidden;
-      box-shadow: 0 0 60px rgba(0,210,185,0.08), 0 32px 80px rgba(0,0,0,0.5);
+    /* ─── DIVIDER ─────────────────────────────────────────── */
+    hr.divider {
+      border: none; border-top: 1px solid var(--gray-200);
     }
-    .chat-header {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1.125rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--card2);
+
+    /* ─── LOGOS BAR ───────────────────────────────────────── */
+    .logos-section {
+      padding: clamp(2.5rem, 5vw, 4rem) 0;
     }
-    .chat-header-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+    .logos-label {
+      text-align: center;
+      font-size: 0.8125rem; font-weight: 500;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--gray-400); margin-bottom: 2rem;
+    }
+    .logos-row {
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0;
+      flex-wrap: wrap; gap: clamp(1.5rem, 4vw, 3.5rem);
     }
-    .chat-header-info { flex: 1; }
-    .chat-header-name {
-      font-size: 0.875rem; font-weight: 700; color: var(--white);
+    .logo-pill {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.9375rem; font-weight: 600;
+      color: var(--gray-300); letter-spacing: -0.01em;
     }
-    .chat-header-status {
-      font-size: 0.75rem; color: var(--teal); display: flex; align-items: center; gap: 0.35rem;
+    .logo-pill svg { opacity: 0.5; }
+
+    /* ─── SECTIONS ────────────────────────────────────────── */
+    section { padding: clamp(5rem, 9vw, 8rem) 0; }
+    section.alt { background: var(--gray-50); }
+    .section-eyebrow {
+      font-size: 0.8125rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1rem;
     }
-    .status-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
-      display: inline-block; animation: pulse 2s infinite;
+    .section-h2 {
+      font-size: clamp(1.75rem, 4vw, 2.875rem);
+      font-weight: 800; line-height: 1.12;
+      letter-spacing: -0.03em; color: var(--gray-900);
+      max-width: 560px; margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.0625rem; line-height: 1.7;
+      color: var(--gray-500); max-width: 480px;
+    }
+
+    /* ─── INTRO / WHAT IS GNOCCHI ─────────────────────────── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+    .intro-grid .right {
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .intro-card {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.25rem 1.5rem;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+    }
+    .intro-card-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--green-l); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .intro-card h4 {
+      font-size: 0.9375rem; font-weight: 700;
+      color: var(--gray-900); margin-bottom: 0.25rem;
+    }
+    .intro-card p {
+      font-size: 0.875rem; color: var(--gray-500); line-height: 1.6;
+    }
+
+    /* ─── AI CHAT SECTION ─────────────────────────────────── */
+    .chat-intro {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .chat-intro .section-h2 { max-width: 640px; margin: 0 auto 0.875rem; }
+    .chat-intro .section-sub { max-width: 520px; margin: 0 auto; }
+    .chat-wrap {
+      max-width: 720px; margin: 0 auto;
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .chat-topbar {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--gray-200);
+      background: var(--gray-50);
+    }
+    .chat-topbar-dot { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #FF5F57; }
+    .dot-y { background: #FFBD2E; }
+    .dot-g { background: #28C840; }
+    .chat-topbar-title {
+      flex: 1; text-align: center;
+      font-size: 0.8125rem; font-weight: 600; color: var(--gray-500);
     }
     .chat-api-btn {
-      display: flex; align-items: center; gap: 0.4rem;
-      padding: 0.35rem 0.75rem;
-      background: rgba(0,210,185,0.06);
-      border: 1px solid var(--border);
-      border-radius: var(--r-sm);
-      font-size: 0.75rem; font-weight: 600; color: var(--text2);
-      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 5px;
+      padding: 0.3125rem 0.625rem;
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+      color: var(--gray-500); cursor: pointer; transition: all 0.15s;
     }
-    .chat-api-btn:hover { border-color: var(--border-hi); color: var(--teal); }
-    .chat-api-btn.has-key { color: var(--teal); border-color: rgba(0,210,185,0.25); }
+    .chat-api-btn:hover { border-color: var(--gray-400); color: var(--gray-700); }
+    .chat-api-btn.active { border-color: var(--green-m); color: var(--green); background: var(--green-l); }
 
     .chat-messages {
-      min-height: 320px; max-height: 440px;
+      min-height: 300px; max-height: 400px;
       overflow-y: auto; padding: 1.5rem;
       display: flex; flex-direction: column; gap: 1.25rem;
       scroll-behavior: smooth;
     }
     .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .chat-messages::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
 
-    .msg { display: flex; gap: 0.75rem; align-items: flex-start; animation: msgIn 0.3s ease; }
-    @keyframes msgIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .msg { display: flex; gap: 0.75rem; align-items: flex-start; animation: msgIn 0.25s ease; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     .msg.user { flex-direction: row-reverse; }
-    .msg-avatar {
-      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    .msg-av {
+      width: 28px; height: 28px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 700;
+      font-size: 0.6875rem; font-weight: 700; flex-shrink: 0;
     }
-    .msg.ai .msg-avatar {
-      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
-      color: var(--bg);
+    .msg.ai .msg-av {
+      background: var(--green); color: var(--white);
     }
-    .msg.user .msg-avatar {
-      background: var(--card2); border: 1px solid var(--border-hi);
-      color: var(--text2);
+    .msg.user .msg-av {
+      background: var(--gray-100); border: 1px solid var(--gray-200);
+      color: var(--gray-600); font-size: 0.625rem;
     }
-    .msg-bubble {
-      max-width: 85%; padding: 0.875rem 1.125rem;
-      border-radius: 16px; font-size: 0.9rem; line-height: 1.65;
+    .msg-bub {
+      max-width: 82%;
+      padding: 0.8125rem 1.0625rem;
+      font-size: 0.9rem; line-height: 1.65; border-radius: 14px;
     }
-    .msg.ai .msg-bubble {
-      background: var(--bg3); border: 1px solid var(--border);
-      color: var(--text); border-radius: 4px 16px 16px 16px;
+    .msg.ai .msg-bub {
+      background: var(--gray-75); color: var(--gray-700);
+      border: 1px solid var(--gray-200);
+      border-radius: 4px 14px 14px 14px;
     }
-    .msg.user .msg-bubble {
-      background: var(--teal); color: var(--bg); font-weight: 500;
-      border-radius: 16px 4px 16px 16px;
+    .msg.user .msg-bub {
+      background: var(--gray-900); color: var(--white);
+      border-radius: 14px 4px 14px 14px;
     }
-    .msg-bubble strong { color: var(--teal-lt); font-weight: 700; }
-    .msg.user .msg-bubble strong { color: var(--bg); }
-    .msg-bubble .section-label {
-      display: block; font-size: 0.7rem; font-weight: 700;
+    .msg-bub ul { padding-left: 1.25rem; margin: 0.375rem 0; }
+    .msg-bub li { margin: 0.2rem 0; }
+    .msg-bub strong { color: var(--gray-900); font-weight: 700; }
+    .msg.user .msg-bub strong { color: var(--white); }
+    .section-lbl {
+      display: block; font-size: 0.6875rem; font-weight: 700;
       letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--teal); margin-top: 0.875rem; margin-bottom: 0.25rem;
+      color: var(--green); margin-top: 0.875rem; margin-bottom: 0.25rem;
     }
-    .msg-bubble ul { padding-left: 1.2rem; margin: 0.25rem 0; }
-    .msg-bubble li { margin: 0.2rem 0; }
-    .msg-bubble .price-tag {
-      display: inline-block; margin-top: 0.75rem;
-      padding: 0.375rem 0.875rem;
-      background: rgba(0,210,185,0.12); border: 1px solid rgba(0,210,185,0.25);
-      border-radius: var(--r-sm);
-      font-size: 0.875rem; font-weight: 700; color: var(--teal-lt);
+    .price-pill {
+      display: inline-block; margin-top: 0.625rem;
+      padding: 0.3125rem 0.75rem;
+      background: var(--green-l); border: 1px solid var(--green-m);
+      border-radius: 999px;
+      font-size: 0.8125rem; font-weight: 700; color: var(--green);
     }
-
-    /* typing dots */
-    .typing-indicator {
-      display: flex; gap: 5px; align-items: center;
-      padding: 0.875rem 1.125rem;
+    /* typing */
+    .typing { display: flex; gap: 4px; align-items: center; padding: 0.875rem 1rem; }
+    .typing span {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gray-300);
+      animation: typeBounce 1.2s ease-in-out infinite;
     }
-    .typing-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--teal); opacity: 0.5;
-      animation: typingBounce 1.2s ease-in-out infinite;
-    }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingBounce {
-      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-      40%           { transform: translateY(-6px); opacity: 1; }
+    .typing span:nth-child(2) { animation-delay: 0.18s; }
+    .typing span:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes typeBounce {
+      0%,80%,100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-5px); opacity: 1; }
     }
 
-    .chat-chips-row {
-      padding: 0 1.5rem 1rem;
-      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    .chat-chips {
+      padding: 0 1.25rem 1rem;
+      display: flex; flex-wrap: wrap; gap: 0.4375rem;
     }
     .chip {
-      padding: 0.4rem 0.875rem;
-      background: rgba(0,210,185,0.04);
-      border: 1px solid var(--border);
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--gray-200);
       border-radius: 999px;
-      font-size: 0.8rem; font-weight: 500; color: var(--text2);
-      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+      font-size: 0.8125rem; font-weight: 450;
+      color: var(--gray-500); cursor: pointer;
+      background: var(--white); transition: all 0.15s;
     }
-    .chip:hover { background: var(--teal-glow); border-color: var(--border-hi); color: var(--teal); }
-
+    .chip:hover {
+      border-color: var(--green-m); color: var(--green);
+      background: var(--green-l);
+    }
     .chat-input-row {
-      display: flex; align-items: flex-end; gap: 0.75rem;
-      padding: 1rem 1.5rem 1.25rem;
-      border-top: 1px solid var(--border);
+      display: flex; gap: 0.5rem; align-items: flex-end;
+      padding: 0.875rem 1.25rem 1.125rem;
+      border-top: 1px solid var(--gray-200);
     }
-    .chat-input {
-      flex: 1;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--r-md);
-      padding: 0.75rem 1rem;
-      font-family: var(--font); font-size: 0.9rem; color: var(--text);
-      resize: none; min-height: 44px; max-height: 140px;
-      line-height: 1.5; transition: border-color 0.2s;
-      overflow-y: auto;
+    .chat-textarea {
+      flex: 1; min-height: 40px; max-height: 120px;
+      padding: 0.5rem 0.75rem;
+      background: var(--gray-75); border: 1.5px solid var(--gray-200);
+      border-radius: 10px; resize: none; overflow-y: auto;
+      font-size: 0.9rem; color: var(--gray-900); line-height: 1.5;
+      transition: border-color 0.15s;
     }
-    .chat-input::placeholder { color: var(--text3); }
-    .chat-input:focus { outline: none; border-color: var(--border-hi); }
+    .chat-textarea:focus { outline: none; border-color: var(--gray-400); background: var(--white); }
+    .chat-textarea::placeholder { color: var(--gray-400); }
     .send-btn {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: var(--teal); color: var(--bg);
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      background: var(--gray-900); color: var(--white);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; flex-shrink: 0;
-      transition: all 0.2s; box-shadow: 0 0 16px rgba(0,210,185,0.3);
+      transition: all 0.15s;
     }
-    .send-btn:hover { background: var(--teal-lt); transform: scale(1.05); }
-    .send-btn:disabled { opacity: 0.4; transform: none; pointer-events: none; }
+    .send-btn:hover { background: var(--gray-700); }
+    .send-btn:disabled { opacity: 0.35; pointer-events: none; }
 
-    /* ── SCROLL HINT ── */
-    .scroll-hint {
-      margin-top: 2.5rem;
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      color: var(--text3); font-size: 0.75rem; font-weight: 500;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      animation: fadeDown 2s ease-in-out infinite;
-    }
-    @keyframes fadeDown {
-      0%, 100% { opacity: 0.4; transform: translateY(0); }
-      50%       { opacity: 0.9; transform: translateY(4px); }
-    }
-
-    /* ── MARQUEE ── */
-    .marquee-section {
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      padding: 1.5rem 0; overflow: hidden;
-      background: var(--bg2);
-    }
-    .marquee-track {
-      display: flex; gap: 3rem; align-items: center;
-      animation: marquee 30s linear infinite;
-      width: max-content;
-    }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    .marquee-item {
-      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--text3); white-space: nowrap;
-    }
-    .marquee-item span { color: var(--text2); }
-
-    /* ── SECTIONS ── */
-    .section {
-      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem);
-      max-width: 1200px; margin: 0 auto;
-    }
-    .section-label {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--teal);
-      margin-bottom: 1.25rem;
-    }
-    .section-label::before {
-      content: ''; display: block;
-      width: 20px; height: 2px; background: var(--teal);
-    }
-    .section h2 {
-      font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800;
-      letter-spacing: -0.025em; line-height: 1.15; color: var(--white);
-      max-width: 600px; margin-bottom: 1rem;
-    }
-    .section h2 .grad {
-      background: linear-gradient(90deg, var(--teal) 0%, var(--sky) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .section-sub {
-      font-size: 1.05rem; color: var(--text2); line-height: 1.7;
-      max-width: 500px; margin-bottom: 3.5rem;
-    }
-
-    /* ── HOW IT WORKS ── */
+    /* ─── HOW IT WORKS ────────────────────────────────────── */
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
     }
-    .step-card {
+    .step {
       padding: 2rem 1.75rem;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--r-lg); position: relative; overflow: hidden;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px; background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .step-card:hover {
-      border-color: var(--border-hi);
-      box-shadow: 0 0 30px var(--teal-glow);
+    .step:hover {
+      border-color: var(--gray-300);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
-    .step-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent 0%, var(--teal) 50%, transparent 100%);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .step-card:hover::before { opacity: 1; }
     .step-num {
-      font-size: 3rem; font-weight: 800; line-height: 1;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; color: var(--green);
+      text-transform: uppercase; margin-bottom: 1.125rem;
     }
-    .step-card h3 {
-      font-size: 1.1rem; font-weight: 700; color: var(--white);
-      margin-bottom: 0.625rem;
+    .step h3 {
+      font-size: 1.0625rem; font-weight: 700; color: var(--gray-900);
+      margin-bottom: 0.5rem; letter-spacing: -0.01em;
     }
-    .step-card p { font-size: 0.9rem; color: var(--text2); line-height: 1.65; }
+    .step p { font-size: 0.9rem; color: var(--gray-500); line-height: 1.65; }
 
-    /* ── COVERAGE GRID ── */
-    .coverage-section { background: var(--bg2); }
-    .coverage-section .inner {
-      max-width: 1200px; margin: 0 auto;
-      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem);
+    /* ─── COVERAGE ────────────────────────────────────────── */
+    .cov-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
     }
-    .coverage-grid {
+    .cov-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-      gap: 1rem; margin-top: 3rem;
+      grid-template-columns: repeat(4,1fr);
+      gap: 1px;
+      background: var(--gray-200);
+      border: 1px solid var(--gray-200);
+      border-radius: 14px; overflow: hidden;
     }
-    .cov-card {
-      padding: 1.75rem 1.5rem;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      transition: all 0.3s; cursor: default;
+    .cov-cell {
+      background: var(--white); padding: 1.625rem 1.5rem;
+      transition: background 0.15s;
     }
-    .cov-card:hover {
-      border-color: var(--border-hi); background: var(--card);
-      transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-    }
+    .cov-cell:hover { background: var(--gray-50); }
     .cov-icon {
-      width: 44px; height: 44px; border-radius: var(--r-sm);
-      background: var(--teal-glow); border: 1px solid var(--border-hi);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; margin-bottom: 1rem;
+      width: 40px; height: 40px; border-radius: 9px;
+      background: var(--green-l); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1.0625rem; margin-bottom: 0.875rem;
     }
-    .cov-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
-    .cov-card p  { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+    .cov-cell h4 { font-size: 0.9375rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.375rem; }
+    .cov-cell p { font-size: 0.8125rem; color: var(--gray-500); line-height: 1.6; }
+    .cov-tag {
+      display: inline-block; margin-top: 0.75rem;
+      padding: 0.2rem 0.625rem;
+      background: var(--green-l); border-radius: 999px;
+      font-size: 0.6875rem; font-weight: 700;
+      color: var(--green); text-transform: uppercase; letter-spacing: 0.04em;
+    }
 
-    /* ── TESTIMONIALS ── */
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-      gap: 1.25rem; margin-top: 3rem;
+    /* ─── PULL QUOTE ─────────────────────────────────────── */
+    .quote-section {
+      border-top: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+      padding: clamp(4rem, 8vw, 7rem) 0;
+      background: var(--white);
     }
-    .testi-card {
-      padding: 2rem; background: var(--card);
-      border: 1px solid var(--border); border-radius: var(--r-lg);
+    .quote-wrap { max-width: 760px; margin: 0 auto; text-align: center; }
+    .quote-mark { font-size: 4rem; line-height: 1; color: var(--green); font-family: Georgia, serif; }
+    .quote-text {
+      font-size: clamp(1.2rem, 2.5vw, 1.625rem);
+      font-weight: 500; line-height: 1.55;
+      letter-spacing: -0.01em; color: var(--gray-900);
+      margin: 0.75rem 0 1.75rem;
     }
-    .testi-stars { color: var(--teal); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
-    .testi-quote { font-size: 0.9rem; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem; }
-    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
-    .testi-avatar {
+    .quote-attr { display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+    .quote-av {
       width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; color: var(--bg); flex-shrink: 0;
+      background: var(--green); display: flex; align-items: center;
+      justify-content: center; font-size: 0.8rem; font-weight: 700; color: white;
     }
-    .testi-name { font-size: 0.875rem; font-weight: 700; color: var(--white); }
-    .testi-role { font-size: 0.75rem; color: var(--text2); }
+    .quote-name { font-size: 0.9rem; font-weight: 700; color: var(--gray-900); }
+    .quote-role { font-size: 0.8125rem; color: var(--gray-500); }
 
-    /* ── FINAL CTA ── */
+    /* ─── FINAL CTA ──────────────────────────────────────── */
     .cta-section {
-      position: relative; overflow: hidden;
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      padding: clamp(5rem, 9vw, 8rem) 0;
+      text-align: center; background: var(--gray-900);
     }
-    .cta-section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0,210,185,0.07) 0%, transparent 70%);
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
+      color: var(--white); max-width: 620px; margin: 0 auto 1.125rem;
     }
-    .cta-inner {
-      position: relative; max-width: 760px; margin: 0 auto;
-      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 3rem);
-      text-align: center;
+    .cta-section p {
+      font-size: 1.0625rem; color: rgba(255,255,255,0.5);
+      margin: 0 auto 2.5rem; max-width: 440px; line-height: 1.65;
     }
-    .cta-inner h2 {
-      font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800;
-      letter-spacing: -0.025em; color: var(--white); margin-bottom: 1rem;
+    /* CTA email form — light on dark */
+    .email-form-dark {
+      display: flex; gap: 0.5rem;
+      max-width: 440px; margin: 0 auto;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 5px 5px 5px 16px;
+      transition: border-color 0.2s;
     }
-    .cta-inner p { font-size: 1.05rem; color: var(--text2); line-height: 1.7; margin-bottom: 2.5rem; }
-    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-teal-lg {
-      padding: 0.875rem 2.25rem;
-      background: var(--teal); border-radius: var(--r-md);
-      color: var(--bg); font-family: var(--font); font-size: 1rem; font-weight: 700;
-      transition: all 0.2s; border: none;
-      box-shadow: 0 0 30px rgba(0,210,185,0.3);
+    .email-form-dark:focus-within { border-color: rgba(255,255,255,0.3); }
+    .email-form-dark input {
+      flex: 1; border: none; outline: none;
+      background: transparent; font-size: 0.9375rem;
+      color: var(--white); min-width: 0;
     }
-    .btn-teal-lg:hover { background: var(--teal-lt); box-shadow: 0 0 50px rgba(0,210,185,0.5); }
-    .btn-outline-lg {
-      padding: 0.875rem 2.25rem;
-      background: transparent;
-      border: 1px solid var(--border-hi);
-      border-radius: var(--r-md);
-      color: var(--text); font-family: var(--font); font-size: 1rem; font-weight: 600;
-      transition: all 0.2s;
+    .email-form-dark input::placeholder { color: rgba(255,255,255,0.35); }
+    .email-form-dark button {
+      flex-shrink: 0; padding: 0.625rem 1.25rem;
+      background: var(--white); color: var(--gray-900);
+      font-size: 0.875rem; font-weight: 700; border-radius: 8px;
+      transition: background 0.15s; white-space: nowrap;
     }
-    .btn-outline-lg:hover { background: var(--teal-glow); border-color: var(--teal); color: var(--teal); }
+    .email-form-dark button:hover { background: var(--gray-100); }
+    .cta-note { margin-top: 0.875rem; font-size: 0.8125rem; color: rgba(255,255,255,0.3); }
+    .success-msg {
+      display: none; margin-top: 1rem;
+      font-size: 0.9rem; font-weight: 600; color: #6EE7B7;
+    }
 
-    /* ── FOOTER ── */
+    /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
-      padding: 3rem clamp(1.5rem, 5vw, 5rem);
-      border-top: 1px solid var(--border);
+      background: var(--gray-900);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2.5rem 0;
     }
     .footer-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; flex-wrap: wrap; gap: 2rem;
-      justify-content: space-between; align-items: center;
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      align-items: center; justify-content: space-between;
     }
-    .footer-logo {
-      display: flex; align-items: center; gap: 0.625rem;
-      font-size: 1.1rem; font-weight: 800; color: var(--white);
-    }
-    .footer-logo-mark {
-      width: 26px; height: 26px; border-radius: 6px;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
-      display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
-    }
-    .footer-copy { font-size: 0.8rem; color: var(--text3); line-height: 1.6; }
-    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-    .footer-links a { font-size: 0.8rem; color: var(--text3); transition: color 0.2s; }
-    .footer-links a:hover { color: var(--teal); }
+    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo-text { font-size: 0.9375rem; font-weight: 700; color: rgba(255,255,255,0.7); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8125rem; color: rgba(255,255,255,0.35); transition: color 0.15s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.65); }
+    .footer-copy { font-size: 0.8125rem; color: rgba(255,255,255,0.25); }
     .footer-disclaimer {
-      max-width: 1200px; margin: 1.5rem auto 0;
-      padding-top: 1.5rem; border-top: 1px solid var(--border);
-      font-size: 0.72rem; color: var(--text3); line-height: 1.6;
+      margin-top: 1.5rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.75rem; color: rgba(255,255,255,0.2);
+      line-height: 1.65; max-width: 900px;
     }
 
-    /* ── API KEY MODAL ── */
-    .modal-backdrop {
+    /* ─── API KEY MODAL ──────────────────────────────────── */
+    .overlay {
       position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      padding: 1rem; opacity: 0; pointer-events: none;
-      transition: opacity 0.2s;
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
     }
-    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .overlay.open { opacity: 1; pointer-events: all; }
     .modal {
-      background: var(--card); border: 1px solid var(--border-hi);
-      border-radius: var(--r-xl); padding: 2.5rem;
-      max-width: 480px; width: 100%;
-      transform: translateY(20px); transition: transform 0.2s;
+      background: var(--white); border-radius: 16px;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.12);
+      padding: 2.25rem; max-width: 440px; width: 100%;
+      transform: translateY(12px); transition: transform 0.2s;
     }
-    .modal-backdrop.open .modal { transform: translateY(0); }
-    .modal h3 { font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
-    .modal p { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 1.5rem; }
-    .modal-input {
-      width: 100%; padding: 0.75rem 1rem;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--r-md);
-      font-family: var(--font); font-size: 0.875rem; color: var(--text);
-      margin-bottom: 1rem; transition: border-color 0.2s;
+    .overlay.open .modal { transform: translateY(0); }
+    .modal h3 { font-size: 1.125rem; font-weight: 800; color: var(--gray-900); margin-bottom: 0.375rem; }
+    .modal p { font-size: 0.875rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 1.25rem; }
+    .modal input {
+      width: 100%; padding: 0.6875rem 0.9375rem;
+      border: 1.5px solid var(--gray-200); border-radius: 9px;
+      font-size: 0.875rem; color: var(--gray-900); margin-bottom: 0.875rem;
+      transition: border-color 0.15s;
     }
-    .modal-input:focus { outline: none; border-color: var(--border-hi); }
-    .modal-input::placeholder { color: var(--text3); }
-    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
-    .modal-note { font-size: 0.75rem; color: var(--text3); margin-top: 1rem; line-height: 1.6; }
-    .modal-note a { color: var(--teal); }
+    .modal input:focus { outline: none; border-color: var(--gray-400); }
+    .modal input::placeholder { color: var(--gray-400); }
+    .modal-row { display: flex; gap: 0.5rem; justify-content: flex-end; }
+    .modal-note { margin-top: 0.875rem; font-size: 0.75rem; color: var(--gray-400); line-height: 1.6; }
+    .modal-note a { color: var(--green); text-decoration: underline; text-underline-offset: 2px; }
 
-    /* ── UTIL ── */
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .intro-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .cov-grid { grid-template-columns: repeat(2,1fr); }
       .nav-links { display: none; }
-      .chat-messages { min-height: 260px; max-height: 360px; }
     }
-    @media (max-width: 480px) {
-      .chat-chips-row { gap: 0.4rem; }
-      .chip { font-size: 0.72rem; padding: 0.35rem 0.7rem; }
+    @media (max-width: 600px) {
+      .cov-grid { grid-template-columns: 1fr; }
+      .email-form { flex-direction: column; gap: 0.5rem; padding: 0.625rem; }
+      .email-form button { width: 100%; }
+      .email-form-dark { flex-direction: column; gap: 0.5rem; padding: 0.625rem; }
+      .email-form-dark button { width: 100%; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-logo">
-    <div class="nav-logo-mark">🍝</div>
-    Gnocchi
-  </div>
-  <ul class="nav-links">
-    <li><a href="#how-it-works">How it works</a></li>
-    <li><a href="#coverage">Coverage</a></li>
-    <li><a href="#testimonials">Stories</a></li>
-  </ul>
-  <div class="nav-right">
-    <button class="btn-ghost" onclick="openTypeform()">Sign in</button>
-    <button class="btn-teal" onclick="openTypeform()">Get a quote</button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge"><span class="hero-badge-dot"></span> AI-Powered Insurance · Now in beta</div>
-  <h1>Business insurance that<br><span class="grad">actually gets you</span></h1>
-  <p class="hero-sub">Describe your company. Our AI advisor generates a tailored coverage plan with estimated pricing — in seconds, not weeks.</p>
-
-  <!-- CHAT -->
-  <div class="chat-wrap" id="chat-wrap">
-    <div class="chat-header">
-      <div class="chat-header-icon">🍝</div>
-      <div class="chat-header-info">
-        <div class="chat-header-name">Gnocchi Advisor</div>
-        <div class="chat-header-status"><span class="status-dot"></span> Online · responds instantly</div>
+<!-- ─── NAV ─────────────────────────────────────────────────── -->
+<header class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a class="logo" href="/">
+        <!-- GNOCCHI LOGOMARK — two rounded pillows, like gnocchi viewed from above -->
+        <svg class="logo-mark" viewBox="0 0 30 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Back piece -->
+          <ellipse cx="10" cy="11" rx="9" ry="6" fill="#0A7A5A" opacity="0.35"/>
+          <!-- Front piece, slightly offset and full opacity -->
+          <ellipse cx="20" cy="11" rx="9" ry="6" fill="#0A7A5A" opacity="0.35"/>
+          <!-- Center highlight overlap -->
+          <ellipse cx="10" cy="11" rx="7.5" ry="4.8" fill="#0A7A5A"/>
+          <ellipse cx="20" cy="11" rx="7.5" ry="4.8" fill="#0A7A5A"/>
+          <!-- Fork ridge on each piece -->
+          <path d="M6.5 11.5 Q10 9.5 13.5 11.5" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+          <path d="M16.5 11.5 Q20 9.5 23.5 11.5" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+        <span class="logo-text">gnocchi</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#coverage">Coverage</a></li>
+        <li><a href="#advisor">AI Advisor</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="btn-ghost-sm" onclick="openModal()">Sign in</button>
+        <button class="btn-primary" onclick="focusHeroEmail()">Start cover →</button>
       </div>
-      <button class="chat-api-btn" id="api-key-btn" onclick="openApiModal()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="8" cy="8" r="3"/><path d="M10.7 10.7L21 21m-4-4l-2-2"/></svg>
-        <span id="api-btn-label">Add API key</span>
-      </button>
-    </div>
-
-    <div class="chat-messages" id="chat-messages">
-      <!-- initial message injected by JS -->
-    </div>
-
-    <div class="chat-chips-row" id="chips-row">
-      <button class="chip" onclick="useChip(this)">We're a SaaS startup, 8 employees, pre-Series A</button>
-      <button class="chip" onclick="useChip(this)">Fintech startup, 20 people, processing payments</button>
-      <button class="chip" onclick="useChip(this)">E-commerce brand, bootstrapped, £1.2M revenue</button>
-      <button class="chip" onclick="useChip(this)">Climate tech startup, just closed our seed round</button>
-      <button class="chip" onclick="useChip(this)">Digital agency, 12 contractors, client work</button>
-      <button class="chip" onclick="useChip(this)">Healthtech, handling patient data, Series A</button>
-    </div>
-
-    <div class="chat-input-row">
-      <textarea
-        class="chat-input" id="chat-input"
-        placeholder="Describe your company — size, what you do, stage…"
-        rows="1"
-        onkeydown="handleKey(event)"
-        oninput="autoResize(this)"
-      ></textarea>
-      <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      </button>
     </div>
   </div>
+</header>
 
-  <div class="scroll-hint">
-    <span>Scroll to explore</span>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14m-7-7l7 7 7-7"/></svg>
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><span class="hero-badge-dot"></span> Now in beta — join 300+ founders</div>
+    <h1>Business insurance<br>built for <em>how you build</em></h1>
+    <p class="hero-sub">Describe your company. Get an AI-generated coverage plan with pricing — tailored to your stage, sector, and risk profile.</p>
+    <form class="email-form" id="hero-form" onsubmit="handleEmailSubmit(event,'hero')">
+      <input type="email" id="hero-email" placeholder="you@company.com" autocomplete="email" required>
+      <button type="submit">Start cover</button>
+    </form>
+    <p class="hero-note" id="hero-success" style="display:none;color:var(--green);font-weight:600">
+      ✓ Got it — we'll be in touch shortly.
+    </p>
+    <p class="hero-note" id="hero-note">No broker. No jargon. Cancel anytime.</p>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-section" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item">Directors <span>&amp;</span> Officers</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Cyber Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Tech E<span>&amp;</span>O</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Professional Indemnity</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Public Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">IP Protection</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">EPLI</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Key Person</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Directors <span>&amp;</span> Officers</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Cyber Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Tech E<span>&amp;</span>O</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Professional Indemnity</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Public Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">IP Protection</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">EPLI</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Key Person</span>
-    <span class="marquee-item">·</span>
+<hr class="divider">
+
+<!-- ─── LOGOS ─────────────────────────────────────────────────── -->
+<div class="logos-section">
+  <div class="container">
+    <p class="logos-label">Trusted by teams backed by</p>
+    <div class="logos-row">
+      <span class="logo-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gray-300)"><circle cx="12" cy="12" r="10"/></svg>
+        Y Combinator
+      </span>
+      <span class="logo-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gray-300)"><rect x="2" y="2" width="20" height="20" rx="4"/></svg>
+        Seedcamp
+      </span>
+      <span class="logo-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gray-300)"><polygon points="12,2 22,20 2,20"/></svg>
+        Backed VC
+      </span>
+      <span class="logo-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gray-300)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Notion Capital
+      </span>
+      <span class="logo-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gray-300)"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9" fill="none" stroke="var(--gray-300)" stroke-width="2"/></svg>
+        Entrepreneur First
+      </span>
+    </div>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
-<section id="how-it-works">
-  <div class="section">
-    <div class="section-label">How it works</div>
-    <h2>From description to <span class="grad">coverage plan</span> in seconds</h2>
-    <p class="section-sub">No brokers, no endless forms. Just tell us about your business and we handle the rest.</p>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <h3>Describe your business</h3>
-        <p>Tell the Gnocchi AI about your company — what you do, your stage, team size, and any specific risks you're thinking about.</p>
+<hr class="divider">
+
+<!-- ─── WHAT IS GNOCCHI ────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="intro-grid">
+      <div class="left">
+        <p class="section-eyebrow">What is Gnocchi</p>
+        <h2 class="section-h2">Insurance that<br>understands<br>your business</h2>
+        <p class="section-sub" style="margin-top:1rem">
+          Traditional brokers take weeks, ask irrelevant questions, and sell you policies designed for a different era. Gnocchi is different — we use AI to understand what you actually build, then match you to coverage that fits.
+        </p>
       </div>
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <h3>Get your advisory</h3>
-        <p>Our AI instantly analyses your risk profile and generates a tailored coverage recommendation with estimated pricing.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <h3>Lock in your cover</h3>
-        <p>Confirm your details and get bound coverage in minutes. Your policy scales as you grow — no rebrokering required.</p>
+      <div class="right">
+        <div class="intro-card">
+          <div class="intro-card-icon">⚡</div>
+          <div>
+            <h4>Packaged by stage</h4>
+            <p>Pre-seed to Series B+, each with coverage matched to your actual exposure — not a generic bundle.</p>
+          </div>
+        </div>
+        <div class="intro-card">
+          <div class="intro-card-icon">🎯</div>
+          <div>
+            <h4>Tailored by vertical</h4>
+            <p>SaaS, fintech, healthtech, e-commerce — your industry shapes your risk. So should your policy.</p>
+          </div>
+        </div>
+        <div class="intro-card">
+          <div class="intro-card-icon">📈</div>
+          <div>
+            <h4>Scales as you grow</h4>
+            <p>Coverage adjusts with your headcount, revenue, and funding rounds. No rebrokering required.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- COVERAGE -->
-<section id="coverage" class="coverage-section">
-  <div class="coverage-section inner">
-    <div class="section-label">Coverage</div>
-    <h2>Everything your business needs, <span class="grad">nothing it doesn't</span></h2>
-    <p class="section-sub">From a solo founder to a scaling Series B, Gnocchi packages coverage for every stage.</p>
-    <div class="coverage-grid">
-      <div class="cov-card">
+<!-- ─── AI ADVISOR ─────────────────────────────────────────────── -->
+<section id="advisor" class="alt">
+  <div class="container">
+    <div class="chat-intro">
+      <p class="section-eyebrow">AI Advisor</p>
+      <h2 class="section-h2">Just describe your company</h2>
+      <p class="section-sub">Our AI reads between the lines — understanding your business model, growth stage, and risk profile to recommend exactly the right coverage.</p>
+    </div>
+
+    <!-- CHAT WIDGET -->
+    <div class="chat-wrap">
+      <!-- macOS-style title bar -->
+      <div class="chat-topbar">
+        <div class="chat-topbar-dot">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <span class="chat-topbar-title">Gnocchi Insurance Advisor</span>
+        <button class="chat-api-btn" id="api-btn" onclick="openModal()">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          <span id="api-btn-label">Add API key</span>
+        </button>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <!-- populated by JS -->
+      </div>
+
+      <div class="chat-chips" id="chips">
+        <button class="chip" onclick="useChip(this)">We're a SaaS startup, 8 people, pre-Series A</button>
+        <button class="chip" onclick="useChip(this)">Fintech processing payments, 20 employees</button>
+        <button class="chip" onclick="useChip(this)">E-commerce brand, bootstrapped, £1.2M revenue</button>
+        <button class="chip" onclick="useChip(this)">Climate tech, just closed our seed round</button>
+        <button class="chip" onclick="useChip(this)">Digital agency, 12 contractors, client projects</button>
+        <button class="chip" onclick="useChip(this)">Healthtech handling patient data, Series A</button>
+      </div>
+
+      <div class="chat-input-row">
+        <textarea
+          class="chat-textarea"
+          id="chat-input"
+          placeholder="Describe your company — what you build, team size, funding stage…"
+          rows="1"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" id="send-btn" onclick="send()" title="Send" aria-label="Send message">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ───────────────────────────────────────────── -->
+<section id="how-it-works">
+  <div class="container">
+    <p class="section-eyebrow">How it works</p>
+    <h2 class="section-h2">From description<br>to bound cover</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">Step 01</div>
+        <h3>Describe your business</h3>
+        <p>Tell the advisor what you build, your team size, funding stage, and anything specific you're worried about. Natural language — no forms.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 02</div>
+        <h3>Receive your advisory</h3>
+        <p>The AI analyses your risk profile and generates a recommended coverage package with policy details and estimated monthly pricing.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 03</div>
+        <h3>Start cover in minutes</h3>
+        <p>Confirm your details, review the policy, and get bound. Your coverage scales automatically as your company grows — no rebrokering needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COVERAGE ───────────────────────────────────────────────── -->
+<section id="coverage" class="alt">
+  <div class="container">
+    <div class="cov-header">
+      <div>
+        <p class="section-eyebrow">Coverage</p>
+        <h2 class="section-h2" style="max-width:none;margin:0">Everything your business needs</h2>
+      </div>
+      <p class="section-sub" style="max-width:320px">A full suite of business insurance — packaged intelligently for your stage and sector.</p>
+    </div>
+    <div class="cov-grid">
+      <div class="cov-cell">
         <div class="cov-icon">🛡️</div>
         <h4>Directors &amp; Officers</h4>
-        <p>Protect founders and executives from personal liability for business decisions.</p>
+        <p>Protect founders and executives from personal liability for company decisions.</p>
+        <span class="cov-tag">Essential</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">🔐</div>
         <h4>Cyber Liability</h4>
-        <p>First and third-party coverage for data breaches, ransomware and cyber events.</p>
+        <p>First and third-party cover for data breaches, ransomware, and cyber incidents.</p>
+        <span class="cov-tag">Essential</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">⚙️</div>
         <h4>Tech E&amp;O</h4>
-        <p>Covers claims from technology failures, bugs, or missed deliverables in your product.</p>
+        <p>Claims arising from technology failures, bugs, or missed deliverables.</p>
+        <span class="cov-tag">Tech</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">📋</div>
         <h4>Professional Indemnity</h4>
-        <p>For advice-based businesses and consultants facing professional negligence claims.</p>
+        <p>For advice-driven businesses facing professional negligence claims.</p>
+        <span class="cov-tag">Services</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">🌍</div>
         <h4>Public Liability</h4>
-        <p>Third-party injury and property damage — essential for any customer-facing business.</p>
+        <p>Third-party injury and property damage — standard for any customer-facing business.</p>
+        <span class="cov-tag">Standard</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">💡</div>
         <h4>IP Protection</h4>
-        <p>Defend your patents, trademarks and trade secrets from infringement claims.</p>
+        <p>Defend patents, trademarks, and trade secrets from infringement claims.</p>
+        <span class="cov-tag">Growth</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">🤝</div>
         <h4>EPLI</h4>
-        <p>Employment Practices Liability for claims of discrimination, harassment or wrongful termination.</p>
+        <p>Employment Practices Liability — discrimination, harassment, wrongful termination.</p>
+        <span class="cov-tag">Scale</span>
       </div>
-      <div class="cov-card">
+      <div class="cov-cell">
         <div class="cov-icon">🔑</div>
         <h4>Key Person</h4>
-        <p>Business continuity protection if a critical team member is unable to work.</p>
+        <p>Business continuity protection if a critical team member can no longer work.</p>
+        <span class="cov-tag">Growth</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div class="section">
-    <div class="section-label">Stories</div>
-    <h2>Founders who <span class="grad">stopped worrying</span></h2>
-    <p class="section-sub">Real companies. Real coverage. Built for the way startups actually work.</p>
-    <div class="testimonials-grid">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"We had an investor ask about our D&amp;O coverage two days before our seed close. Gnocchi got us sorted same day. Nothing else comes close."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">SM</div>
-          <div>
-            <div class="testi-name">Sarah M.</div>
-            <div class="testi-role">CEO, Series A SaaS · London</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"I described our fintech product in three sentences. The AI came back with a full coverage plan that actually matched our risk profile. Honestly shocked by how accurate it was."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">JK</div>
-          <div>
-            <div class="testi-name">James K.</div>
-            <div class="testi-role">CTO, Fintech startup · Manchester</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"Every time I tried traditional brokers it took weeks and felt like they didn't understand our business at all. Gnocchi understood us immediately."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">AL</div>
-          <div>
-            <div class="testi-name">Amelia L.</div>
-            <div class="testi-role">Founder, Healthtech · Bristol</div>
-          </div>
+<!-- ─── PULL QUOTE ─────────────────────────────────────────────── -->
+<div class="quote-section">
+  <div class="container">
+    <div class="quote-wrap">
+      <div class="quote-mark">"</div>
+      <p class="quote-text">We had an investor ask about our D&amp;O coverage two days before our seed close. Gnocchi got us sorted same day. Nothing else comes close.</p>
+      <div class="quote-attr">
+        <div class="quote-av">SM</div>
+        <div>
+          <div class="quote-name">Sarah Mitchell</div>
+          <div class="quote-role">CEO, Series A SaaS · London</div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- FINAL CTA -->
+<!-- ─── FINAL CTA ───────────────────────────────────────────────── -->
 <section class="cta-section">
-  <div class="cta-inner">
-    <div class="hero-badge" style="margin: 0 auto 1.5rem;"><span class="hero-badge-dot"></span> Join the waitlist</div>
-    <h2>Ready to ditch the <span class="grad">broker chaos</span>?</h2>
-    <p>Join founders who've already got a better way to protect their business. Takes 2 minutes to join the waitlist.</p>
-    <div class="cta-btns">
-      <button class="btn-teal-lg" onclick="openTypeform()">Join the waitlist</button>
-      <button class="btn-outline-lg" onclick="scrollToChat()">Try the AI advisor</button>
-    </div>
+  <div class="container">
+    <h2>Ready to get covered?</h2>
+    <p>Join hundreds of founders who've already protected their business the smarter way.</p>
+    <form class="email-form-dark" id="cta-form" onsubmit="handleEmailSubmit(event,'cta')">
+      <input type="email" id="cta-email" placeholder="you@company.com" autocomplete="email" required>
+      <button type="submit">Start cover</button>
+    </form>
+    <p class="success-msg" id="cta-success">✓ You're on the list — we'll be in touch.</p>
+    <p class="cta-note" id="cta-note">Free to join the waitlist. No broker, no jargon.</p>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ─── FOOTER ─────────────────────────────────────────────────── -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-logo">
-      <div class="footer-logo-mark">🍝</div>
-      Gnocchi
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <svg width="24" height="18" viewBox="0 0 30 22" fill="none">
+          <ellipse cx="10" cy="11" rx="7.5" ry="4.8" fill="rgba(255,255,255,0.4)"/>
+          <ellipse cx="20" cy="11" rx="7.5" ry="4.8" fill="rgba(255,255,255,0.4)"/>
+          <path d="M6.5 11.5 Q10 9.5 13.5 11.5" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M16.5 11.5 Q20 9.5 23.5 11.5" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span class="footer-logo-text">gnocchi</span>
+      </div>
+      <nav class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Regulatory</a>
+        <a href="#">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2025 Gnocchi Insurance Ltd.</p>
     </div>
-    <nav class="footer-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Regulatory</a>
-      <a href="#">Contact</a>
-    </nav>
-    <p class="footer-copy">© 2025 Gnocchi Insurance Ltd. All rights reserved.</p>
+    <p class="footer-disclaimer">
+      Gnocchi Insurance Ltd is an appointed representative of a Financial Conduct Authority (FCA) authorised insurance intermediary. All policies subject to underwriting and full policy terms and conditions. The AI advisor provides indicative guidance only and does not constitute a binding insurance contract or regulated financial advice. Estimated pricing is indicative only and subject to change. Policies are underwritten by approved UK/EU carriers.
+    </p>
   </div>
-  <p class="footer-disclaimer">
-    Gnocchi Insurance Ltd is an appointed representative of a FCA-authorised insurance intermediary. Coverage subject to underwriting and full policy terms. The AI advisor provides indicative guidance only and does not constitute a binding insurance contract. All quotes are advisory until confirmed in writing.
-  </p>
 </footer>
 
-<!-- API KEY MODAL -->
-<div class="modal-backdrop" id="api-modal" role="dialog" aria-modal="true">
+<!-- ─── API KEY MODAL ──────────────────────────────────────────── -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Add API key">
   <div class="modal">
-    <h3>Connect your Anthropic API key</h3>
-    <p>The Gnocchi AI advisor uses Claude to generate insurance recommendations. Add your Anthropic API key to enable the live chat. Your key is stored only in your browser and never sent to our servers.</p>
+    <h3>Connect Anthropic API key</h3>
+    <p>The Gnocchi AI advisor uses Claude to generate insurance recommendations. Add your Anthropic API key to activate the live chat. It's stored only in your browser — never sent to our servers.</p>
     <input
-      type="password" class="modal-input" id="modal-api-input"
-      placeholder="sk-ant-api03-..."
-      onkeydown="if(event.key==='Enter')saveApiKey()"
+      type="password" id="modal-key-input"
+      placeholder="sk-ant-api03-…"
+      onkeydown="if(event.key==='Enter') saveKey()"
     />
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeApiModal()">Cancel</button>
-      <button class="btn-teal" onclick="saveApiKey()">Save key</button>
+    <div class="modal-row">
+      <button class="btn-ghost-sm" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveKey()">Save &amp; activate</button>
     </div>
-    <p class="modal-note">Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>. For demo/testing only — don't use a production key in a public page.</p>
+    <p class="modal-note">
+      Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>.
+      For demo use — don't use a production key in a public-facing page.
+    </p>
   </div>
 </div>
 
 <script>
-  /* ── CONFIG ── */
-  const TYPEFORM_URL = 'https://form.typeform.com/to/REPLACE_WITH_YOUR_FORM_ID';
+/* ─── CONFIG ─────────────────────────────────────────── */
+const SYSTEM_PROMPT = `You are Gnocchi's AI insurance advisor — a friendly, knowledgeable consultant specialising in business insurance for UK startups and SMEs.
 
-  const SYSTEM_PROMPT = `You are Gnocchi's AI insurance advisor — a friendly, expert insurance consultant specialising in UK startups and SMEs.
-
-When a user describes their company, analyse their risk profile and provide a concise, structured insurance recommendation.
-
-Format your response using these exact sections (use **Section Title** for headers):
+When a user describes their company, produce a concise insurance recommendation structured as follows. Use **Section Name** for each header.
 
 **Risk Assessment**
-2-3 sentences identifying the key risks given their business model, stage and sector.
+2–3 sentences identifying key risks given their business model, sector, team size, and stage.
 
 **Recommended Coverage**
-A bullet list of specific policies they need, with one-line rationale for each. Lead with must-haves, then recommended add-ons.
+A bullet list of specific policies they need, with a one-line rationale each. Lead with must-haves, then recommended add-ons.
 
 **Estimated Monthly Cost**
-Give a realistic range based on their stage and size. Use UK market benchmarks.
-Format as: "£X – £Y per month · adjusts with headcount"
+Give a realistic UK market range. Format exactly as: £X – £Y per month · scales with headcount
 
-**Immediate Priority**
-One or two sentences on what to sort first and why.
+**First Step**
+One sentence on the single most important policy to secure first, and why.
 
-Keep responses under 300 words. Be warm, expert, and direct. Avoid jargon. Think like a trusted advisor who gets startups.`;
+Keep the total response under 280 words. Be warm, direct, and expert. No jargon. Think like a trusted advisor who gets startups — not a salesperson.`;
 
-  /* ── STATE ── */
-  let apiKey = localStorage.getItem('gnocchi_api_key') || '';
-  let isLoading = false;
-  let conversationHistory = [];
+/* ─── STATE ──────────────────────────────────────────── */
+let apiKey = localStorage.getItem('gnocchi_key') || '';
+let history = [];
+let busy = false;
 
-  const WELCOME = {
-    role: 'ai',
-    html: `<p>Hi! I'm Gnocchi's AI insurance advisor.</p>
-<p>Tell me about your company — what you do, how many people you have, your funding stage, and any specific risks you're thinking about — and I'll generate a tailored coverage plan with estimated pricing.</p>
-<p style="color:var(--text2);font-size:0.82rem;margin-top:0.75rem">Or pick one of the examples below to see how it works.</p>`
-  };
+/* ─── BOOT ───────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderWelcome();
+  updateApiBtn();
+});
 
-  /* ── INIT ── */
-  window.addEventListener('DOMContentLoaded', () => {
-    renderWelcome();
-    updateApiBtn();
-  });
+function renderWelcome() {
+  appendAiRaw(`<p>Hi — I'm your Gnocchi insurance advisor.</p>
+<p>Tell me about your business: what you do, your team size, funding stage, and any specific concerns. I'll generate a tailored coverage plan with estimated pricing.</p>
+<p style="color:var(--gray-400);font-size:0.825rem;margin-top:0.5rem">Try one of the examples below, or write your own.</p>`);
+}
 
-  function renderWelcome() {
-    const container = document.getElementById('chat-messages');
-    const el = document.createElement('div');
-    el.className = 'msg ai';
-    el.innerHTML = `
-      <div class="msg-avatar">G</div>
-      <div class="msg-bubble">${WELCOME.html}</div>
-    `;
-    container.appendChild(el);
-  }
+function updateApiBtn() {
+  const btn = document.getElementById('api-btn');
+  const lbl = document.getElementById('api-btn-label');
+  if (apiKey) { lbl.textContent = 'API key ✓'; btn.classList.add('active'); }
+  else        { lbl.textContent = 'Add API key'; btn.classList.remove('active'); }
+}
 
-  function updateApiBtn() {
-    const btn = document.getElementById('api-key-btn');
-    const label = document.getElementById('api-btn-label');
-    if (apiKey) {
-      label.textContent = 'API key ✓';
-      btn.classList.add('has-key');
-    } else {
-      label.textContent = 'Add API key';
-      btn.classList.remove('has-key');
-    }
-  }
+/* ─── SEND ───────────────────────────────────────────── */
+async function send() {
+  const input = document.getElementById('chat-input');
+  const text  = input.value.trim();
+  if (!text || busy) return;
 
-  /* ── SEND ── */
-  async function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
+  if (!apiKey) { openModal(); return; }
 
-    if (!apiKey) {
-      openApiModal();
-      return;
-    }
+  input.value = '';
+  input.style.height = 'auto';
+  busy = true;
+  document.getElementById('send-btn').disabled = true;
+  document.getElementById('chips').style.display = 'none';
 
-    input.value = '';
-    input.style.height = 'auto';
-    isLoading = true;
-    document.getElementById('send-btn').disabled = true;
+  appendUser(text);
+  history.push({ role: 'user', content: text });
+  scrollDown();
 
-    // Add user message
-    appendUserMsg(text);
-    scrollBottom();
+  const typingEl = appendTyping();
+  scrollDown();
 
-    // Hide chips after first real use
-    document.getElementById('chips-row').style.display = 'none';
-
-    // Add to history
-    conversationHistory.push({ role: 'user', content: text });
-
-    // Show typing
-    const typingEl = appendTyping();
-    scrollBottom();
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 1024,
-          stream: true,
-          system: SYSTEM_PROMPT,
-          messages: conversationHistory
-        })
-      });
-
-      typingEl.remove();
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        const msg = err?.error?.message || `API error ${response.status}`;
-        appendErrorMsg(msg);
-      } else {
-        const aiEl = appendAiMsg('');
-        let fullText = '';
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const raw = decoder.decode(value, { stream: true });
-          for (const line of raw.split('\n')) {
-            if (!line.startsWith('data: ')) continue;
-            const data = line.slice(6).trim();
-            if (data === '[DONE]' || !data) continue;
-            try {
-              const ev = JSON.parse(data);
-              if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
-                fullText += ev.delta.text;
-                aiEl.innerHTML = formatAiText(fullText);
-                scrollBottom();
-              }
-            } catch (_) {}
-          }
-        }
-
-        conversationHistory.push({ role: 'assistant', content: fullText });
-      }
-    } catch (err) {
-      typingEl?.remove?.();
-      appendErrorMsg(err.message || 'Network error — check your connection');
-    }
-
-    isLoading = false;
-    document.getElementById('send-btn').disabled = false;
-    input.focus();
-  }
-
-  /* ── FORMAT ── */
-  function formatAiText(text) {
-    // Convert markdown-ish to HTML
-    let html = text
-      // **bold** sections as coloured labels
-      .replace(/\*\*(.*?)\*\*/g, (_, t) => {
-        // Detect section headers vs inline bold
-        const isHeader = /^(Risk|Recommended|Estimated|Immediate|Priority|Coverage|Summary)/i.test(t.trim());
-        if (isHeader) return `<span class="section-label">${t}</span>`;
-        return `<strong>${t}</strong>`;
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 900,
+        stream: true,
+        system: SYSTEM_PROMPT,
+        messages: history
       })
-      // bullet lists
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      // wrap consecutive <li> in <ul>
-      .replace(/(<li>.*<\/li>(\n)?)+/gs, m => `<ul>${m}</ul>`)
-      // £X–£Y price lines
-      .replace(/(£[\d,]+ ?[–-] ?£[\d,]+[^\n]*)/g, '<span class="price-tag">$1</span>')
-      // paragraphs
-      .replace(/\n{2,}/g, '</p><p>')
-      .replace(/\n/g, '<br>');
+    });
 
-    return `<p>${html}</p>`;
-  }
+    typingEl.remove();
 
-  /* ── DOM HELPERS ── */
-  function appendUserMsg(text) {
-    const el = document.createElement('div');
-    el.className = 'msg user';
-    el.innerHTML = `
-      <div class="msg-avatar">You</div>
-      <div class="msg-bubble">${escHtml(text)}</div>
-    `;
-    document.getElementById('chat-messages').appendChild(el);
-    return el;
-  }
+    if (!resp.ok) {
+      const e = await resp.json().catch(() => ({}));
+      appendError(e?.error?.message || `API error ${resp.status}`);
+    } else {
+      const bubble = appendAiStreaming();
+      let full = '';
 
-  function appendAiMsg(html) {
-    const el = document.createElement('div');
-    el.className = 'msg ai';
-    el.innerHTML = `
-      <div class="msg-avatar">G</div>
-      <div class="msg-bubble">${html}</div>
-    `;
-    document.getElementById('chat-messages').appendChild(el);
-    return el.querySelector('.msg-bubble');
-  }
+      const reader = resp.body.getReader();
+      const dec = new TextDecoder();
 
-  function appendTyping() {
-    const el = document.createElement('div');
-    el.className = 'msg ai';
-    el.innerHTML = `
-      <div class="msg-avatar">G</div>
-      <div class="msg-bubble" style="padding:0">
-        <div class="typing-indicator">
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-        </div>
-      </div>
-    `;
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
-    return el;
-  }
-
-  function appendErrorMsg(msg) {
-    const el = document.createElement('div');
-    el.className = 'msg ai';
-    el.innerHTML = `
-      <div class="msg-avatar" style="background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);color:var(--red)">!</div>
-      <div class="msg-bubble" style="border-color:rgba(255,107,107,0.2);color:var(--red)">
-        <strong>Something went wrong</strong><br>${escHtml(msg)}
-      </div>
-    `;
-    document.getElementById('chat-messages').appendChild(el);
-  }
-
-  function scrollBottom() {
-    const c = document.getElementById('chat-messages');
-    c.scrollTop = c.scrollHeight;
-  }
-
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  /* ── CHIPS ── */
-  function useChip(el) {
-    const input = document.getElementById('chat-input');
-    input.value = el.textContent;
-    autoResize(input);
-    input.focus();
-    sendMessage();
-  }
-
-  /* ── INPUT ── */
-  function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  }
-  function autoResize(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
-  }
-
-  /* ── API MODAL ── */
-  function openApiModal() {
-    const m = document.getElementById('api-modal');
-    m.classList.add('open');
-    document.getElementById('modal-api-input').value = apiKey;
-    setTimeout(() => document.getElementById('modal-api-input').focus(), 100);
-  }
-  function closeApiModal() {
-    document.getElementById('api-modal').classList.remove('open');
-  }
-  function saveApiKey() {
-    const val = document.getElementById('modal-api-input').value.trim();
-    if (val) {
-      apiKey = val;
-      localStorage.setItem('gnocchi_api_key', val);
-      updateApiBtn();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        for (const line of dec.decode(value, { stream: true }).split('\n')) {
+          if (!line.startsWith('data: ')) continue;
+          const d = line.slice(6).trim();
+          if (!d || d === '[DONE]') continue;
+          try {
+            const ev = JSON.parse(d);
+            if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
+              full += ev.delta.text;
+              bubble.innerHTML = renderMarkdown(full);
+              scrollDown();
+            }
+          } catch (_) {}
+        }
+      }
+      history.push({ role: 'assistant', content: full });
     }
-    closeApiModal();
+  } catch (err) {
+    typingEl?.remove?.();
+    appendError(err.message || 'Connection error');
   }
-  document.getElementById('api-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeApiModal();
-  });
 
-  /* ── MISC ── */
-  function openTypeform() {
-    window.open(TYPEFORM_URL, '_blank', 'noopener');
-  }
-  function scrollToChat() {
-    document.getElementById('chat-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
+  busy = false;
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('chat-input').focus();
+}
+
+/* ─── MARKDOWN RENDERER ─────────────────────────────── */
+function renderMarkdown(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, (_, t) => {
+      const isHeader = /^(Risk|Recommended|Estimated|First Step|Coverage|Priority|Summary)/i.test(t.trim());
+      return isHeader
+        ? `<span class="section-lbl">${esc(t)}</span>`
+        : `<strong>${esc(t)}</strong>`;
+    })
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*?<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    .replace(/(£[\d,]+ ?[–\-] ?£[\d,]+[^\n<]*)/g, '<span class="price-pill">$1</span>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>').replace(/$/, '</p>');
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ─── DOM HELPERS ────────────────────────────────────── */
+function appendUser(text) {
+  const el = document.createElement('div');
+  el.className = 'msg user';
+  el.innerHTML = `<div class="msg-av">You</div><div class="msg-bub">${esc(text)}</div>`;
+  document.getElementById('chat-messages').appendChild(el);
+}
+
+function appendAiRaw(html) {
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.innerHTML = `<div class="msg-av">G</div><div class="msg-bub">${html}</div>`;
+  document.getElementById('chat-messages').appendChild(el);
+}
+
+function appendAiStreaming() {
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.innerHTML = `<div class="msg-av">G</div><div class="msg-bub"></div>`;
+  document.getElementById('chat-messages').appendChild(el);
+  return el.querySelector('.msg-bub');
+}
+
+function appendTyping() {
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.innerHTML = `<div class="msg-av">G</div><div class="msg-bub" style="padding:0"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  document.getElementById('chat-messages').appendChild(el);
+  return el;
+}
+
+function appendError(msg) {
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.innerHTML = `<div class="msg-av" style="background:#FEE2E2;color:#DC2626;border:1px solid #FECACA">!</div><div class="msg-bub" style="border-color:#FECACA;color:#DC2626"><strong>Error</strong> — ${esc(msg)}</div>`;
+  document.getElementById('chat-messages').appendChild(el);
+}
+
+function scrollDown() {
+  const c = document.getElementById('chat-messages');
+  c.scrollTop = c.scrollHeight;
+}
+
+/* ─── CHIPS ──────────────────────────────────────────── */
+function useChip(el) {
+  const input = document.getElementById('chat-input');
+  input.value = el.textContent;
+  autoResize(input);
+  send();
+}
+
+/* ─── INPUT ──────────────────────────────────────────── */
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+}
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+/* ─── API MODAL ──────────────────────────────────────── */
+function openModal() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('modal-key-input').value = apiKey;
+  setTimeout(() => document.getElementById('modal-key-input').focus(), 80);
+}
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+function saveKey() {
+  const v = document.getElementById('modal-key-input').value.trim();
+  if (v) { apiKey = v; localStorage.setItem('gnocchi_key', v); updateApiBtn(); }
+  closeModal();
+}
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* ─── EMAIL FORM ─────────────────────────────────────── */
+function handleEmailSubmit(e, id) {
+  e.preventDefault();
+  const form = document.getElementById(`${id}-form`);
+  const success = document.getElementById(`${id}-success`);
+  const note = document.getElementById(`${id}-note`);
+  form.style.display = 'none';
+  if (note) note.style.display = 'none';
+  success.style.display = 'block';
+  // TODO: POST email to your backend / Mailchimp / Resend
+}
+
+function focusHeroEmail() {
+  document.getElementById('hero-email').focus();
+  document.getElementById('hero-email').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 </script>
 </body>
 </html>
