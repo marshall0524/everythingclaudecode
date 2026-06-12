@@ -3,1316 +3,1023 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gnocchi — Personalised Business Insurance for Founders</title>
-  <meta name="description" content="Coverage tailored to your stage, sector and ambitions. From pre-seed to scale-up — no brokers, no jargon. FCA-authorised.">
-  <meta property="og:title" content="Gnocchi — Business Insurance for Founders">
-  <meta property="og:description" content="Personalised cover from pre-seed to Series A+. Get your plan in minutes.">
-
+  <title>Gnocchi — Cover for Founders</title>
+  <meta name="description" content="Business insurance tailored to your stage, sector and ambitions. Pre-seed to Series A+. No broker, no jargon. FCA-authorised.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
   <style>
-/* ============================================================
-   DESIGN TOKENS
-   ============================================================ */
+/* ─── TOKENS ─────────────────────────────────────────────── */
 :root {
-  /* Surfaces */
-  --bg:        #FFFEF9;
-  --bg-soft:   #F5F2EB;
-  --bg-dark:   #0C0C0A;
-  --bg-dark2:  #141412;
-  --card:      #FFFFFF;
-
-  /* Text */
-  --ink:       #0C0C0A;
-  --ink-2:     #4B4844;
-  --ink-3:     #918E88;
-  --inv:       #FFFFFF;
-  --inv-2:     rgba(255,255,255,0.60);
-  --inv-3:     rgba(255,255,255,0.30);
-
-  /* Brand */
-  --g:         #0DBF8C;
-  --g-dk:      #0A9971;
-  --g-lt:      #E7FAF3;
-  --g-mid:     #B0EDD8;
-
-  /* Borders */
-  --border:    #E6E2DA;
-  --bdr-dark:  rgba(255,255,255,0.09);
-  --bdr-glass: rgba(255,255,255,0.45);
-
-  /* Typography */
-  --sans:      'Plus Jakarta Sans', system-ui, sans-serif;
-  --serif:     'Instrument Serif', Georgia, serif;
-
-  /* Radius */
-  --r-sm: 8px; --r-md: 12px; --r-lg: 16px;
-  --r-xl: 22px; --r-2xl: 32px; --r-full: 999px;
-
-  /* Shadow */
-  --s-sm:  0 1px 3px rgba(0,0,0,0.06);
-  --s-md:  0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
-  --s-lg:  0 16px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
-  --s-xl:  0 32px 80px rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.08);
-  --s-glow:0 0 0 4px rgba(13,191,140,0.14);
+  --cream:   #EDE9DF;
+  --cream-2: #E6E1D5;
+  --parch:   #F7F4EE;
+  --white:   #FEFDFB;
+  --dark:    #1A1612;
+  --mid:     #5A5149;
+  --muted:   #9A9088;
+  --line:    #D5CEBU;   /* fallback below */
+  --line:    #D5CEBF;
+  --green:   #2C6B4A;
+  --green-d: #1E5037;
+  --green-l: #EAF3EE;
+  --green-m: #B4D9C4;
+  --serif:   'DM Serif Display', Georgia, serif;
+  --sans:    'DM Sans', system-ui, sans-serif;
+  --r:       12px;
+  --r-lg:    18px;
+  --r-xl:    24px;
 }
 
-/* ============================================================
-   RESET
-   ============================================================ */
+/* ─── RESET ─────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;color-scheme:light;scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.5}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--dark);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-button{font-family:var(--sans);cursor:pointer;border:none;background:none}
-input,textarea{font-family:var(--sans)}
+button,input,textarea{font-family:var(--sans)}
+button{cursor:pointer;border:none;background:none}
 ul{list-style:none}
-img{max-width:100%}
 
-/* ============================================================
-   LAYOUT
-   ============================================================ */
-.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3.5rem)}
+/* ─── LAYOUT ─────────────────────────────────────────────── */
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
 
-/* ============================================================
-   NAV
-   ============================================================ */
+/* ─── GLOBAL SECTION ─────────────────────────────────────── */
+.sec{padding:clamp(4.5rem,8vw,8rem) 0}
+.sec-sm{padding:clamp(2.5rem,4vw,4rem) 0}
+.sec-white{background:var(--white)}
+.sec-parch{background:var(--parch)}
+.sec-cream{background:var(--cream)}
+.sec-cream-2{background:var(--cream-2)}
+.sec-dark{background:var(--dark)}
+
+/* ─── TYPOGRAPHY UTILS ───────────────────────────────────── */
+.eyebrow{
+  font-size:.6875rem;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1.125rem;
+  display:block;
+}
+.eyebrow-green{color:var(--green)}
+.display{
+  font-family:var(--serif);
+  font-size:clamp(2.25rem,5vw,4rem);
+  line-height:1.08;letter-spacing:-.01em;
+  color:var(--dark);
+}
+.display em{font-style:italic;color:var(--green)}
+.h2{
+  font-size:clamp(1.75rem,3.5vw,2.875rem);
+  font-weight:700;line-height:1.15;letter-spacing:-.025em;
+  color:var(--dark);
+}
+.h2 em{font-style:italic;font-family:var(--serif);font-weight:400;color:var(--green)}
+.h2-inv{color:var(--parch)}
+.body-lg{font-size:clamp(1rem,1.8vw,1.125rem);line-height:1.72;color:var(--mid)}
+.body{font-size:.9375rem;line-height:1.68;color:var(--mid)}
+.small{font-size:.8125rem;line-height:1.6;color:var(--muted)}
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:.375rem;
+  font-family:var(--sans);font-weight:600;cursor:pointer;
+  border:none;transition:all .18s;white-space:nowrap;
+  border-radius:var(--r);
+}
+.btn-sm{font-size:.8125rem;padding:.4375rem 1rem}
+.btn-md{font-size:.9375rem;padding:.6875rem 1.5rem}
+.btn-lg{font-size:1rem;padding:.875rem 1.875rem}
+.btn-dark{background:var(--dark);color:var(--parch)}
+.btn-dark:hover{background:#2f2820}
+.btn-green{background:var(--green);color:var(--white)}
+.btn-green:hover{background:var(--green-d)}
+.btn-outline{
+  background:transparent;border:1.5px solid var(--line);
+  color:var(--dark);
+}
+.btn-outline:hover{border-color:var(--mid);background:rgba(0,0,0,.03)}
+.btn-outline-inv{
+  background:transparent;border:1.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.75);
+}
+.btn-outline-inv:hover{border-color:rgba(255,255,255,.45);color:white}
+.btn-white{background:var(--white);color:var(--dark)}
+.btn-white:hover{background:var(--parch)}
+
+/* ─── NAV ─────────────────────────────────────────────────── */
 .nav{
-  position:sticky;top:0;z-index:90;
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(237,233,223,0);
+  transition:background .3s,border-color .3s;
   border-bottom:1px solid transparent;
-  transition:background .25s,border-color .25s,backdrop-filter .25s;
 }
 .nav.scrolled{
-  background:rgba(12,12,10,0.88);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-color:var(--bdr-dark);
+  background:rgba(237,233,223,.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom-color:var(--line);
 }
 .nav-inner{
-  display:flex;align-items:center;height:64px;gap:2.5rem;
+  display:flex;align-items:center;height:60px;gap:0;
 }
-.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.logo-mark{display:block;width:32px;height:24px}
-.logo-word{
-  font-size:1.0625rem;font-weight:700;letter-spacing:-.025em;
-  color:var(--inv);
+.nav-logo{display:flex;align-items:center;gap:9px;flex-shrink:0;margin-right:auto}
+.nav-logo-text{
+  font-size:.875rem;font-weight:700;letter-spacing:.04em;
+  text-transform:lowercase;color:var(--dark);
 }
 .nav-links{
-  display:flex;align-items:center;gap:2rem;flex:1;
+  display:flex;align-items:center;
 }
-.nav-links a{
-  font-size:.875rem;font-weight:500;color:var(--inv-2);
+.nav-link{
+  font-size:.6875rem;font-weight:500;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--muted);
+  padding:0 1.5rem;
+  border-left:1px solid var(--line);
+  height:60px;display:flex;align-items:center;
   transition:color .15s;
 }
-.nav-links a:hover{color:var(--inv)}
-.nav-ctas{display:flex;align-items:center;gap:.625rem;margin-left:auto}
-
-/* Buttons */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
-  font-family:var(--sans);font-weight:600;cursor:pointer;border:none;
-  transition:all .18s;white-space:nowrap;
+.nav-link:hover{color:var(--dark)}
+.nav-cta{
+  height:60px;padding:0 1.5rem;
+  display:flex;align-items:center;
+  border-left:1px solid var(--line);
 }
-.btn-sm{font-size:.8125rem;padding:.4375rem 1rem;border-radius:var(--r-sm)}
-.btn-md{font-size:.9375rem;padding:.6875rem 1.5rem;border-radius:var(--r-md)}
-.btn-lg{font-size:1rem;padding:.875rem 1.875rem;border-radius:var(--r-lg)}
-.btn-ghost{
-  background:transparent;border:1px solid var(--bdr-dark);
-  color:var(--inv-2);
-}
-.btn-ghost:hover{border-color:rgba(255,255,255,.22);color:var(--inv)}
-.btn-white{background:var(--inv);color:var(--ink)}
-.btn-white:hover{background:rgba(255,255,255,.90)}
-.btn-green{background:var(--g);color:var(--inv)}
-.btn-green:hover{background:var(--g-dk)}
-.btn-dark{background:var(--ink);color:var(--inv)}
-.btn-dark:hover{background:#2a2a26}
-.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--ink)}
-.btn-outline:hover{border-color:var(--ink);background:var(--bg-soft)}
+.nav-cta .btn{font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase}
 
-/* ============================================================
-   HERO
-   ============================================================ */
+/* ─── HERO ─────────────────────────────────────────────────── */
 .hero{
-  background:var(--bg-dark);
-  padding:clamp(5rem,9vw,8rem) 0 clamp(4rem,7vw,7rem);
-  position:relative;overflow:hidden;
-}
-/* gradient orbs so glass looks right */
-.hero::before{
-  content:'';position:absolute;
-  top:-160px;right:8%;
-  width:700px;height:700px;border-radius:50%;
-  background:radial-gradient(circle,rgba(13,191,140,.13) 0%,transparent 68%);
-  pointer-events:none;
-}
-.hero::after{
-  content:'';position:absolute;
-  bottom:-120px;left:2%;
-  width:500px;height:500px;border-radius:50%;
-  background:radial-gradient(circle,rgba(56,189,248,.07) 0%,transparent 68%);
-  pointer-events:none;
-}
-.hero-grid{
+  background:var(--cream);
+  border-bottom:1px solid var(--line);
+  min-height:100vh;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:clamp(2.5rem,5vw,5rem);
-  align-items:center;
+  grid-template-rows:60px 1fr auto;
+  position:relative;
+}
+/* Vertical grid lines through full hero */
+.hero-vlines{
+  position:absolute;inset:0;
+  display:flex;pointer-events:none;z-index:0;
+}
+.hero-vline{
+  flex:1;border-right:1px solid var(--line);
+}
+.hero-vline:last-child{border-right:none}
+/* Horizontal mid line */
+.hero-hline{
+  position:absolute;left:0;right:0;top:55%;
+  border-top:1px solid var(--line);
+  pointer-events:none;z-index:0;
+}
+
+/* spacer for fixed nav */
+.hero-spacer{height:60px}
+
+/* Center area */
+.hero-center{
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(2rem,5vw,4rem);
   position:relative;z-index:1;
 }
-.hero-badge{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:.375rem .875rem;
-  background:rgba(13,191,140,.10);
-  border:1px solid rgba(13,191,140,.25);
-  border-radius:var(--r-full);
-  font-size:.75rem;font-weight:700;color:var(--g);
-  letter-spacing:.03em;text-transform:uppercase;
-  margin-bottom:1.625rem;
+.hero-side-label{
+  position:absolute;left:clamp(1.5rem,3vw,3rem);bottom:2rem;
+  font-size:.6875rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  line-height:1.8;
 }
-.badge-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--g);
-  animation:blip 2.2s ease-in-out infinite;
+.hero-scroll{
+  position:absolute;right:clamp(1.5rem,3vw,3rem);bottom:2rem;
+  font-size:.6875rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:.5rem;
 }
-@keyframes blip{0%,100%{opacity:1}50%{opacity:.25}}
-.hero h1{
-  font-size:clamp(2.5rem,5.5vw,4.25rem);
-  font-weight:800;line-height:1.06;
-  letter-spacing:-.035em;color:var(--inv);
-  margin-bottom:1.375rem;
+
+/* Hero logomark — animated */
+.hero-mark{
+  width:clamp(100px,18vw,160px);
+  animation:slowSpin 20s linear infinite;
 }
-.hero h1 .serif{
-  font-family:var(--serif);font-style:italic;font-weight:400;
-  color:var(--g);
+@keyframes slowSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* Bottom row */
+.hero-bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--line);
+  position:relative;z-index:1;
 }
-.hero-sub{
-  font-size:clamp(1rem,1.8vw,1.125rem);
-  font-weight:400;line-height:1.7;color:var(--inv-2);
-  max-width:480px;margin-bottom:2.5rem;
+.hero-headline-cell{
+  padding:clamp(1.5rem,3vw,2.5rem) clamp(1.5rem,3vw,3rem);
+  border-right:1px solid var(--line);
 }
-/* Inline email form */
+.hero-headline{
+  font-family:var(--serif);
+  font-size:clamp(2.5rem,6vw,5.5rem);
+  line-height:1.02;letter-spacing:-.02em;
+  color:var(--dark);
+}
+.hero-desc-cell{
+  padding:clamp(1.5rem,3vw,2.5rem) clamp(1.5rem,3vw,3rem);
+  display:flex;flex-direction:column;justify-content:flex-end;gap:1.5rem;
+}
+.hero-desc{
+  font-size:clamp(1rem,2vw,1.25rem);
+  line-height:1.65;color:var(--mid);max-width:420px;
+}
+.hero-desc .accent{color:var(--green);font-style:italic;font-family:var(--serif)}
 .hero-form{
-  display:flex;gap:.4rem;
-  background:rgba(255,255,255,.06);
-  border:1.5px solid rgba(255,255,255,.12);
-  border-radius:var(--r-lg);
-  padding:5px 5px 5px 18px;
-  max-width:440px;
+  display:flex;gap:.375rem;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r);
+  padding:4px 4px 4px 16px;
+  max-width:400px;
   transition:border-color .2s;
 }
-.hero-form:focus-within{border-color:rgba(13,191,140,.4)}
+.hero-form:focus-within{border-color:var(--green)}
 .hero-form input{
-  flex:1;border:none;outline:none;
-  background:transparent;font-size:.9375rem;
-  color:var(--inv);min-width:0;
+  flex:1;border:none;outline:none;background:transparent;
+  font-size:.9375rem;color:var(--dark);min-width:0;
 }
-.hero-form input::placeholder{color:var(--inv-3)}
-.hero-form .btn{flex-shrink:0}
-.hero-note{
-  margin-top:.875rem;font-size:.8125rem;color:var(--inv-3);
-}
-.hero-success{
-  display:none;margin-top:.875rem;
-  font-size:.875rem;font-weight:600;color:var(--g);
-}
-/* Trust avatars */
-.trust-row{
-  display:flex;align-items:center;gap:.875rem;margin-top:2rem;
-}
-.avatars{display:flex}
-.av{
-  width:30px;height:30px;border-radius:50%;
-  border:2px solid var(--bg-dark);
-  background:var(--bg-dark2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.625rem;font-weight:700;color:var(--inv-2);
-  margin-right:-8px;
-}
-.av:nth-child(1){background:#264d3d}
-.av:nth-child(2){background:#1d3a52}
-.av:nth-child(3){background:#402d5a}
-.av:nth-child(4){background:#4d2d2d}
-.trust-text{
-  margin-left:1.25rem;
-  font-size:.8125rem;font-weight:500;color:var(--inv-2);line-height:1.5;
-}
-.trust-text strong{color:var(--inv);font-weight:700}
+.hero-form input::placeholder{color:var(--muted)}
+.hero-form .btn{flex-shrink:0;font-size:.8125rem}
+.hero-note{font-size:.75rem;color:var(--muted)}
+.hero-success{display:none;font-size:.875rem;font-weight:600;color:var(--green)}
 
-/* ── chat preview card (right column) ── */
-.chat-preview-wrap{position:relative}
-.stat-pill{
-  position:absolute;
-  background:rgba(255,255,255,.06);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.13);
-  border-radius:var(--r-full);
-  padding:.4375rem 1rem;
-  font-size:.75rem;font-weight:700;color:var(--inv-2);
-  white-space:nowrap;
-}
-.stat-pill-1{top:-14px;left:-20px}
-.stat-pill-2{bottom:32px;right:-18px}
-.stat-pill-3{top:40%;left:-32px}
-.chat-preview{
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border:1px solid rgba(255,255,255,.11);
-  border-radius:var(--r-2xl);
-  overflow:hidden;
-  box-shadow:var(--s-xl),inset 0 1px 0 rgba(255,255,255,.07);
-}
-.chat-preview-bar{
-  display:flex;align-items:center;gap:.625rem;
-  padding:1rem 1.25rem;
-  border-bottom:1px solid rgba(255,255,255,.07);
-  background:rgba(255,255,255,.03);
-}
-.mac-dots{display:flex;gap:5px}
-.mac-dot{
-  width:10px;height:10px;border-radius:50%;
-}
-.mac-dot:nth-child(1){background:#FF5F57}
-.mac-dot:nth-child(2){background:#FFBD2E}
-.mac-dot:nth-child(3){background:#28C840}
-.chat-preview-title{
-  flex:1;text-align:center;
-  font-size:.75rem;font-weight:600;
-  color:rgba(255,255,255,.35);letter-spacing:.01em;
-}
-.chat-preview-status{
-  display:flex;align-items:center;gap:5px;
-  font-size:.6875rem;font-weight:600;color:var(--g);
-}
-.status-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--g);
-  animation:blip 2.2s ease-in-out infinite;
-}
-.chat-preview-msgs{
-  padding:1.25rem;display:flex;flex-direction:column;gap:1rem;
-}
-.pmsg{display:flex;gap:.625rem;align-items:flex-start}
-.pmsg.right{flex-direction:row-reverse}
-.pmsg-av{
-  width:26px;height:26px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.6rem;font-weight:700;
-}
-.pmsg.left .pmsg-av{background:var(--g);color:var(--inv)}
-.pmsg.right .pmsg-av{background:rgba(255,255,255,.12);color:var(--inv-2)}
-.pmsg-bubble{
-  max-width:83%;padding:.6875rem .9375rem;
-  font-size:.8125rem;line-height:1.6;border-radius:14px;
-}
-.pmsg.left .pmsg-bubble{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);
-  color:rgba(255,255,255,.82);border-radius:4px 14px 14px 14px;
-}
-.pmsg.right .pmsg-bubble{
-  background:rgba(13,191,140,.15);border:1px solid rgba(13,191,140,.2);
-  color:rgba(255,255,255,.9);border-radius:14px 4px 14px 14px;
-}
-.pmsg-bubble strong{
-  display:block;font-size:.6875rem;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;
-  color:var(--g);margin-bottom:.35rem;
-}
-.pmsg-bubble ul{padding-left:1rem;margin:.3rem 0}
-.pmsg-bubble li{margin:.15rem 0;font-size:.7875rem}
-.pmsg-price{
-  display:inline-block;margin-top:.5rem;
-  padding:.3125rem .75rem;
-  background:rgba(13,191,140,.12);
-  border:1px solid rgba(13,191,140,.25);
-  border-radius:var(--r-full);
-  font-size:.8rem;font-weight:700;color:var(--g);
-}
-.chat-preview-input{
-  display:flex;align-items:center;gap:.5rem;
-  padding:1rem 1.25rem;
-  border-top:1px solid rgba(255,255,255,.07);
-  background:rgba(255,255,255,.02);
-}
-.chat-preview-input-pill{
-  flex:1;padding:.5rem .875rem;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:var(--r-full);
-  font-size:.7875rem;color:rgba(255,255,255,.3);
-}
-.chat-preview-send{
-  width:30px;height:30px;border-radius:50%;
-  background:var(--g);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;cursor:pointer;
-}
-
-/* ============================================================
-   TRUST BAR
-   ============================================================ */
-.trust-bar{
-  border-top:1px solid var(--bdr-dark);
-  border-bottom:1px solid var(--bdr-dark);
-  background:var(--bg-dark);
-  padding:1.25rem 0;overflow:hidden;
-}
-.marquee{display:flex;animation:scroll 32s linear infinite;width:max-content}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.marquee-item{
-  padding:0 2.5rem;font-size:.75rem;font-weight:700;
-  letter-spacing:.10em;text-transform:uppercase;
-  color:rgba(255,255,255,.20);white-space:nowrap;
-}
-.marquee-item span{color:rgba(255,255,255,.12)}
-
-/* ============================================================
-   STATS BAR
-   ============================================================ */
+/* ─── STATS BAR ───────────────────────────────────────────── */
 .stats-bar{
-  background:var(--bg-soft);
-  padding:3.5rem 0;
+  border-bottom:1px solid var(--line);
+  background:var(--cream-2);
 }
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:1px;background:var(--border);
-  border-radius:var(--r-xl);overflow:hidden;
-  border:1px solid var(--border);
+.stats-inner{
+  display:grid;grid-template-columns:repeat(4,1fr);
 }
 .stat-cell{
-  background:var(--card);padding:2rem 1.75rem;
+  padding:2rem 2.5rem;
+  border-right:1px solid var(--line);
 }
+.stat-cell:last-child{border-right:none}
 .stat-num{
-  font-size:clamp(1.75rem,3vw,2.5rem);font-weight:800;
-  letter-spacing:-.03em;color:var(--ink);margin-bottom:.25rem;
+  font-family:var(--serif);
+  font-size:clamp(1.875rem,3.5vw,3rem);
+  line-height:1;letter-spacing:-.02em;
+  color:var(--dark);margin-bottom:.375rem;
 }
-.stat-num .green{color:var(--g)}
-.stat-label{font-size:.875rem;color:var(--ink-3);line-height:1.5}
+.stat-num sup{font-size:.5em;vertical-align:top;line-height:2}
+.stat-num .g{color:var(--green)}
+.stat-label{font-size:.8125rem;color:var(--muted);line-height:1.5}
 
-/* ============================================================
-   SECTION HEADINGS
-   ============================================================ */
-.eyebrow{
-  display:inline-flex;align-items:center;gap:.5rem;
-  font-size:.6875rem;font-weight:700;letter-spacing:.10em;
-  text-transform:uppercase;color:var(--g);margin-bottom:1rem;
+/* ─── ABOUT (2-col editorial) ─────────────────────────────── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(3rem,6vw,7rem);align-items:start;
 }
-.eyebrow-dark{color:rgba(13,191,140,.75)}
-.section-h2{
-  font-size:clamp(1.875rem,4vw,3.125rem);font-weight:800;
-  line-height:1.1;letter-spacing:-.03em;color:var(--ink);
-  margin-bottom:1rem;
+.about-right{
+  display:flex;flex-direction:column;gap:1px;
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);overflow:hidden;
+  background:var(--line);
 }
-.section-h2 .serif{
-  font-family:var(--serif);font-style:italic;font-weight:400;color:var(--g);
+.about-card{
+  background:var(--white);
+  padding:1.5rem 1.75rem;
+  transition:background .15s;
 }
-.section-h2-inv{color:var(--inv)}
-.section-sub{
-  font-size:clamp(.9375rem,1.6vw,1.0625rem);
-  line-height:1.7;color:var(--ink-3);max-width:480px;
+.about-card:hover{background:var(--parch)}
+.about-card-num{
+  font-size:.6875rem;font-weight:500;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--green);
+  margin-bottom:.625rem;
 }
-.section-sub-inv{color:var(--inv-2)}
+.about-card h4{
+  font-size:1rem;font-weight:700;color:var(--dark);
+  letter-spacing:-.01em;margin-bottom:.375rem;
+}
+.about-card p{font-size:.875rem;color:var(--mid);line-height:1.65}
 
-/* ============================================================
-   INTRO SECTION
-   ============================================================ */
-.intro-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:clamp(3rem,6vw,6rem);
-  align-items:center;
-}
-.feature-cards{display:flex;flex-direction:column;gap:1rem}
-.feature-card{
-  display:flex;gap:1rem;align-items:flex-start;
-  padding:1.375rem 1.5rem;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--r-lg);
-  transition:box-shadow .2s,border-color .2s;
-}
-.feature-card:hover{
-  border-color:var(--g-mid);
-  box-shadow:0 4px 24px rgba(13,191,140,.07);
-}
-.feature-icon{
-  width:40px;height:40px;flex-shrink:0;
-  border-radius:var(--r-md);
-  background:var(--g-lt);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.0625rem;
-}
-.feature-card h4{font-size:.9375rem;font-weight:700;color:var(--ink);margin-bottom:.25rem}
-.feature-card p{font-size:.85rem;color:var(--ink-3);line-height:1.6}
-
-/* ============================================================
-   PACKAGES
-   ============================================================ */
-.packages-section{background:var(--bg-soft)}
-.packages-header{
-  display:flex;flex-wrap:wrap;gap:1.5rem;
-  justify-content:space-between;align-items:flex-end;
-  margin-bottom:3rem;
-}
-.packages-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1.25rem;align-items:start;
+/* ─── PACKAGES ────────────────────────────────────────────── */
+.pkg-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r-xl);overflow:hidden;
+  margin-top:3.5rem;
 }
 .pkg{
-  background:var(--card);
-  border:1.5px solid var(--border);
-  border-radius:var(--r-xl);
-  padding:2rem 1.875rem 2rem;
+  background:var(--white);
+  padding:2.25rem 2rem;
   position:relative;
-  transition:box-shadow .25s,border-color .25s,transform .2s;
+  transition:background .2s;
 }
-.pkg:hover{
-  transform:translateY(-3px);
-  box-shadow:var(--s-lg);
+.pkg:hover{background:var(--parch)}
+.pkg.featured{background:var(--dark)}
+.pkg-label{
+  font-size:.6875rem;font-weight:500;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:.625rem;
 }
-.pkg.featured{
-  border-color:var(--g);
-  box-shadow:0 0 0 4px rgba(13,191,140,.08),var(--s-lg);
-  transform:translateY(-6px);
-}
+.pkg.featured .pkg-label{color:rgba(255,255,255,.4)}
 .pkg-badge{
-  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  background:var(--g);color:var(--inv);
-  font-size:.6875rem;font-weight:700;letter-spacing:.04em;
-  text-transform:uppercase;padding:.3rem .875rem;
-  border-radius:var(--r-full);
-  white-space:nowrap;
-}
-.pkg-eyebrow{
-  font-size:.6875rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--ink-3);margin-bottom:.5rem;
+  display:inline-block;margin-bottom:.875rem;
+  padding:.25rem .75rem;
+  background:var(--green);color:var(--white);
+  border-radius:var(--r);
+  font-size:.6875rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
 }
 .pkg-name{
-  font-size:1.25rem;font-weight:800;letter-spacing:-.02em;
-  color:var(--ink);margin-bottom:.25rem;
+  font-family:var(--serif);
+  font-size:1.75rem;letter-spacing:-.01em;
+  color:var(--dark);margin-bottom:.375rem;
 }
-.pkg-desc{font-size:.875rem;color:var(--ink-3);margin-bottom:1.5rem;line-height:1.5}
+.pkg.featured .pkg-name{color:var(--parch)}
+.pkg-tagline{font-size:.875rem;color:var(--muted);line-height:1.5;margin-bottom:1.75rem}
+.pkg.featured .pkg-tagline{color:rgba(255,255,255,.45)}
 .pkg-price{
-  font-size:clamp(1.5rem,3vw,2rem);font-weight:800;
-  letter-spacing:-.03em;color:var(--ink);margin-bottom:.2rem;
+  font-family:var(--serif);
+  font-size:2.5rem;letter-spacing:-.02em;
+  color:var(--dark);line-height:1;
+  margin-bottom:.25rem;
 }
-.pkg-price sub{font-size:.875rem;font-weight:500;color:var(--ink-3);vertical-align:middle}
-.pkg-cadence{font-size:.8125rem;color:var(--ink-3);margin-bottom:.25rem}
+.pkg.featured .pkg-price{color:var(--parch)}
+.pkg-price sub{font-family:var(--sans);font-size:.875rem;font-weight:400;color:var(--muted);vertical-align:middle;letter-spacing:0}
+.pkg.featured .pkg-price sub{color:rgba(255,255,255,.4)}
+.pkg-cadence{font-size:.8125rem;color:var(--muted);margin-bottom:.375rem}
+.pkg.featured .pkg-cadence{color:rgba(255,255,255,.35)}
 .pkg-size{
-  font-size:.8125rem;font-weight:600;color:var(--ink-2);
-  padding:.3125rem .75rem;
-  background:var(--bg-soft);border-radius:var(--r-full);
-  display:inline-block;margin-bottom:1.5rem;
+  font-size:.8125rem;font-weight:600;color:var(--mid);
+  padding:.3rem .75rem;background:var(--parch);
+  display:inline-block;border-radius:var(--r);margin-bottom:1.75rem;
 }
-.pkg-div{height:1px;background:var(--border);margin:1.25rem 0}
-.pkg-list{display:flex;flex-direction:column;gap:.625rem;margin-bottom:1.75rem}
+.pkg.featured .pkg-size{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
+.pkg-div{height:1px;background:var(--line);margin:1.25rem 0}
+.pkg.featured .pkg-div{background:rgba(255,255,255,.08)}
+.pkg-list{display:flex;flex-direction:column;gap:.625rem;margin-bottom:2rem}
 .pkg-item{
-  display:flex;gap:.625rem;align-items:flex-start;
-  font-size:.8625rem;color:var(--ink-2);line-height:1.4;
+  display:grid;grid-template-columns:14px 1fr;gap:.625rem;
+  font-size:.875rem;color:var(--mid);line-height:1.45;
 }
-.pkg-check{
-  flex-shrink:0;width:16px;height:16px;border-radius:50%;
-  background:var(--g-lt);color:var(--g);
+.pkg.featured .pkg-item{color:rgba(255,255,255,.6)}
+.pkg-tick{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--green-l);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  margin-top:.1rem;font-size:.6rem;font-weight:900;
+  margin-top:.15rem;
 }
-.pkg-check-feat{background:var(--g);color:var(--inv)}
-.pkg .btn{width:100%;justify-content:center}
+.pkg-tick svg{width:8px;height:8px}
+.pkg.featured .pkg-tick{background:rgba(13,191,140,.2)}
+.pkg .btn{width:100%;justify-content:center;font-size:.875rem}
 
-/* ============================================================
-   CHAT SECTION  (live interactive)
-   ============================================================ */
-.chat-section{
-  background:var(--bg-dark);
-  padding:clamp(5rem,9vw,8rem) 0;
-  position:relative;overflow:hidden;
-}
-.chat-section::before{
-  content:'';position:absolute;
-  top:0;left:50%;transform:translateX(-50%);
-  width:800px;height:400px;
-  background:radial-gradient(ellipse,rgba(13,191,140,.08) 0%,transparent 70%);
-  pointer-events:none;
-}
-.chat-section-header{
-  text-align:center;margin-bottom:3rem;
-  position:relative;z-index:1;
-}
-.chat-section-header .section-h2{max-width:580px;margin:0 auto 1rem}
-.chat-section-header .section-sub{max-width:480px;margin:0 auto}
-.chat-widget{
-  max-width:740px;margin:0 auto;
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--r-2xl);
+/* ─── CHAT ────────────────────────────────────────────────── */
+.chat-wrap{
+  max-width:700px;margin:3.5rem auto 0;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r-xl);
   overflow:hidden;
-  box-shadow:var(--s-xl),inset 0 1px 0 rgba(255,255,255,.06);
-  position:relative;z-index:1;
+  box-shadow:0 4px 32px rgba(26,22,18,.06);
 }
-.chat-titlebar{
+.chat-bar{
   display:flex;align-items:center;gap:.875rem;
-  padding:1rem 1.375rem;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  background:rgba(255,255,255,.025);
+  padding:.875rem 1.375rem;
+  border-bottom:1px solid var(--line);
+  background:var(--parch);
 }
-.chat-title-info{flex:1}
-.chat-title-name{font-size:.875rem;font-weight:700;color:var(--inv)}
-.chat-title-sub{font-size:.725rem;color:var(--g);display:flex;align-items:center;gap:4px}
-.chat-api-btn{
-  display:flex;align-items:center;gap:5px;
-  padding:.3125rem .75rem;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--r-sm);
-  font-size:.725rem;font-weight:600;color:var(--inv-2);
-  transition:all .15s;
+.chat-bar-dots{display:flex;gap:5px}
+.cbar-dot{width:10px;height:10px;border-radius:50%}
+.cbar-dot:nth-child(1){background:#FF5F57}
+.cbar-dot:nth-child(2){background:#FFBD2E}
+.cbar-dot:nth-child(3){background:#28C840}
+.chat-bar-title{
+  flex:1;text-align:center;
+  font-size:.75rem;font-weight:500;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);
 }
-.chat-api-btn:hover{border-color:rgba(13,191,140,.35);color:var(--g)}
-.chat-api-btn.keyed{border-color:rgba(13,191,140,.3);color:var(--g);background:rgba(13,191,140,.06)}
+.chat-key-btn{
+  display:flex;align-items:center;gap:4px;
+  padding:.3rem .625rem;
+  background:var(--white);border:1px solid var(--line);
+  border-radius:var(--r);
+  font-size:.6875rem;font-weight:600;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.chat-key-btn:hover{border-color:var(--mid);color:var(--dark)}
+.chat-key-btn.active{border-color:var(--green-m);color:var(--green);background:var(--green-l)}
 .chat-msgs{
-  min-height:280px;max-height:420px;
+  min-height:260px;max-height:380px;
   overflow-y:auto;padding:1.5rem;
-  display:flex;flex-direction:column;gap:1.125rem;
+  display:flex;flex-direction:column;gap:1rem;
   scroll-behavior:smooth;
 }
 .chat-msgs::-webkit-scrollbar{width:3px}
-.chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
-.cmsg{display:flex;gap:.625rem;align-items:flex-start;animation:msgIn .28s ease}
-@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+.cmsg{display:flex;gap:.625rem;align-items:flex-start;animation:msgIn .25s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .cmsg.user{flex-direction:row-reverse}
 .cmsg-av{
-  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:.6rem;font-weight:700;
+  font-size:.6rem;font-weight:700;letter-spacing:.02em;
 }
-.cmsg.ai .cmsg-av{background:var(--g);color:var(--inv)}
-.cmsg.user .cmsg-av{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);color:var(--inv-2)}
+.cmsg.ai .cmsg-av{background:var(--green);color:var(--white)}
+.cmsg.user .cmsg-av{background:var(--cream-2);border:1px solid var(--line);color:var(--mid)}
 .cmsg-body{
-  max-width:84%;padding:.8125rem 1.0625rem;
-  font-size:.875rem;line-height:1.65;border-radius:14px;
+  max-width:84%;padding:.75rem 1rem;
+  font-size:.875rem;line-height:1.65;border-radius:13px;
 }
 .cmsg.ai .cmsg-body{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  color:rgba(255,255,255,.82);
-  border-radius:4px 14px 14px 14px;
+  background:var(--parch);border:1px solid var(--line);
+  color:var(--mid);border-radius:3px 13px 13px 13px;
 }
 .cmsg.user .cmsg-body{
-  background:var(--g);color:var(--inv);font-weight:500;
-  border-radius:14px 4px 14px 14px;
+  background:var(--dark);color:rgba(255,255,255,.82);
+  border-radius:13px 3px 13px 13px;font-weight:500;
 }
-.cmsg-body strong{color:var(--inv);font-weight:700}
-.cmsg.ai .cmsg-body strong{color:rgba(255,255,255,.95)}
-.msg-section-lbl{
+.cmsg-body strong{color:var(--dark);font-weight:700}
+.cmsg.user .cmsg-body strong{color:white}
+.msg-lbl{
   display:block;font-size:.6875rem;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;
-  color:var(--g);margin-top:.875rem;margin-bottom:.25rem;
+  color:var(--green);margin-top:.875rem;margin-bottom:.25rem;
 }
-.cmsg-body ul{padding-left:1.125rem;margin:.3rem 0}
+.cmsg-body ul{padding-left:1.125rem;margin:.25rem 0}
 .cmsg-body li{margin:.2rem 0;font-size:.855rem}
-.price-tag{
+.price-pill{
   display:inline-block;margin-top:.625rem;
   padding:.3125rem .875rem;
-  background:rgba(13,191,140,.12);
-  border:1px solid rgba(13,191,140,.25);
-  border-radius:var(--r-full);
-  font-size:.8125rem;font-weight:700;color:var(--g);
+  background:var(--green-l);border:1px solid var(--green-m);
+  border-radius:var(--r);
+  font-size:.8125rem;font-weight:700;color:var(--green);
 }
-.typing{display:flex;gap:4px;align-items:center;padding:.75rem .875rem}
+.typing{display:flex;gap:4px;padding:.75rem .875rem}
 .typing span{
-  width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);
-  animation:bounce 1.2s ease-in-out infinite;
+  width:7px;height:7px;border-radius:50%;background:var(--line);
+  animation:tdot 1.2s ease-in-out infinite;
 }
 .typing span:nth-child(2){animation-delay:.16s}
 .typing span:nth-child(3){animation-delay:.32s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+@keyframes tdot{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
 .chat-chips{
-  padding:.75rem 1.375rem 1rem;
-  display:flex;flex-wrap:wrap;gap:.4375rem;
+  padding:.75rem 1.375rem .875rem;
+  display:flex;flex-wrap:wrap;gap:.375rem;
+  border-top:1px solid var(--line);
 }
 .chip{
-  padding:.375rem .75rem;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--r-full);
-  font-size:.775rem;font-weight:500;color:var(--inv-2);
-  background:transparent;cursor:pointer;
+  padding:.3125rem .75rem;
+  border:1px solid var(--line);border-radius:var(--r);
+  font-size:.775rem;font-weight:400;color:var(--muted);
+  background:var(--white);cursor:pointer;
   transition:all .15s;
 }
-.chip:hover{border-color:rgba(13,191,140,.35);color:var(--g);background:rgba(13,191,140,.06)}
-.chat-input-area{
-  display:flex;gap:.5rem;align-items:flex-end;
-  padding:.875rem 1.375rem 1.125rem;
-  border-top:1px solid rgba(255,255,255,.07);
+.chip:hover{border-color:var(--green-m);color:var(--green);background:var(--green-l)}
+.chat-input-row{
+  display:flex;gap:.375rem;align-items:flex-end;
+  padding:.875rem 1.375rem 1rem;
+  border-top:1px solid var(--line);
+  background:var(--parch);
 }
-.chat-textarea{
-  flex:1;min-height:40px;max-height:120px;
-  background:rgba(255,255,255,.05);
-  border:1.5px solid rgba(255,255,255,.10);
-  border-radius:var(--r-md);
-  padding:.5625rem .875rem;
-  font-size:.875rem;color:var(--inv);
-  resize:none;overflow-y:auto;line-height:1.5;
+.chat-ta{
+  flex:1;min-height:38px;max-height:110px;
+  padding:.5rem .875rem;
+  background:var(--white);border:1.5px solid var(--line);
+  border-radius:var(--r);resize:none;overflow-y:auto;
+  font-size:.875rem;color:var(--dark);line-height:1.5;
   transition:border-color .15s;
 }
-.chat-textarea:focus{outline:none;border-color:rgba(13,191,140,.35);background:rgba(255,255,255,.07)}
-.chat-textarea::placeholder{color:rgba(255,255,255,.25)}
+.chat-ta:focus{outline:none;border-color:var(--mid)}
+.chat-ta::placeholder{color:var(--muted)}
 .chat-send{
-  width:40px;height:40px;border-radius:var(--r-md);flex-shrink:0;
-  background:var(--g);color:var(--inv);
+  width:38px;height:38px;border-radius:var(--r);flex-shrink:0;
+  background:var(--dark);color:white;
   display:flex;align-items:center;justify-content:center;
-  transition:all .15s;
-}
-.chat-send:hover{background:var(--g-dk)}
-.chat-send:disabled{opacity:.35;pointer-events:none}
-
-/* ============================================================
-   HOW IT WORKS
-   ============================================================ */
-.how-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1.375rem;margin-top:3.5rem;
-}
-.how-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--r-xl);
-  padding:2rem 1.75rem;
-  transition:box-shadow .2s,border-color .2s;
-}
-.how-card:hover{border-color:var(--g-mid);box-shadow:0 8px 32px rgba(13,191,140,.06)}
-.how-num{
-  font-size:.6875rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--g);margin-bottom:1.25rem;
-}
-.how-card h3{
-  font-size:1.0625rem;font-weight:700;letter-spacing:-.015em;
-  color:var(--ink);margin-bottom:.625rem;
-}
-.how-card p{font-size:.875rem;color:var(--ink-3);line-height:1.65}
-
-/* ============================================================
-   COVERAGE GRID
-   ============================================================ */
-.coverage-section{background:var(--bg-soft)}
-.cov-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:1px;background:var(--border);
-  border:1px solid var(--border);
-  border-radius:var(--r-xl);overflow:hidden;
-  margin-top:3rem;
-}
-.cov-cell{
-  background:var(--card);padding:1.75rem 1.5rem;
   transition:background .15s;
 }
-.cov-cell:hover{background:var(--bg-soft)}
-.cov-icon{
-  width:42px;height:42px;border-radius:var(--r-md);
-  background:var(--g-lt);display:flex;align-items:center;
-  justify-content:center;font-size:1.125rem;margin-bottom:.875rem;
-}
-.cov-cell h4{font-size:.9375rem;font-weight:700;color:var(--ink);margin-bottom:.375rem;letter-spacing:-.01em}
-.cov-cell p{font-size:.8125rem;color:var(--ink-3);line-height:1.6}
-.cov-tag{
-  display:inline-block;margin-top:.75rem;
-  padding:.2rem .625rem;
-  background:var(--g-lt);border-radius:var(--r-full);
-  font-size:.6875rem;font-weight:700;color:var(--g);
-  text-transform:uppercase;letter-spacing:.04em;
-}
+.chat-send:hover{background:var(--mid)}
+.chat-send:disabled{opacity:.35;pointer-events:none}
 
-/* ============================================================
-   TESTIMONIAL
-   ============================================================ */
-.testi-section{
-  background:var(--bg-dark);
-  padding:clamp(5rem,9vw,8rem) 0;
+/* ─── HOW IT WORKS ────────────────────────────────────────── */
+.how-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r-xl);overflow:hidden;
+  margin-top:3.5rem;
 }
+.how-cell{
+  background:var(--white);
+  padding:2.25rem 2rem;
+  transition:background .15s;
+}
+.how-cell:hover{background:var(--parch)}
+.how-num{
+  font-family:var(--serif);
+  font-size:3rem;line-height:1;letter-spacing:-.03em;
+  color:var(--line);margin-bottom:1.5rem;
+}
+.how-cell h3{
+  font-size:1.0625rem;font-weight:700;color:var(--dark);
+  letter-spacing:-.01em;margin-bottom:.625rem;
+}
+.how-cell p{font-size:.875rem;color:var(--mid);line-height:1.65}
+
+/* ─── COVERAGE ────────────────────────────────────────────── */
+.cov-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r-xl);
+  overflow:hidden;margin-top:3rem;
+}
+.cov-cell{
+  background:var(--white);padding:1.875rem 1.625rem;
+  transition:background .15s;
+}
+.cov-cell:hover{background:var(--parch)}
+.cov-cell-tag{
+  font-size:.6875rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--green);
+  margin-bottom:.875rem;
+}
+.cov-cell h4{
+  font-size:1rem;font-weight:700;color:var(--dark);
+  letter-spacing:-.01em;margin-bottom:.4rem;
+}
+.cov-cell p{font-size:.8125rem;color:var(--mid);line-height:1.6}
+
+/* ─── TESTIMONIALS ────────────────────────────────────────── */
 .testi-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1.25rem;margin-top:3rem;
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r-xl);
+  overflow:hidden;margin-top:3rem;
 }
-.testi-card{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:var(--r-xl);padding:2rem 1.75rem;
-  transition:border-color .2s;
+.testi-cell{
+  background:var(--white);
+  padding:2.25rem 2rem;transition:background .15s;
 }
-.testi-card:hover{border-color:rgba(255,255,255,.15)}
-.testi-stars{color:var(--g);font-size:.875rem;letter-spacing:2px;margin-bottom:1rem}
-.testi-q{font-size:.9rem;color:var(--inv-2);line-height:1.7;margin-bottom:1.5rem}
+.testi-cell:hover{background:var(--parch)}
+.testi-stars{
+  font-size:.8125rem;letter-spacing:2px;
+  color:var(--green);margin-bottom:1.125rem;
+}
+.testi-quote{
+  font-family:var(--serif);font-style:italic;
+  font-size:1.0625rem;line-height:1.65;
+  color:var(--dark);margin-bottom:1.5rem;
+}
 .testi-meta{display:flex;align-items:center;gap:.75rem}
 .testi-av{
-  width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:var(--g);display:flex;align-items:center;justify-content:center;
-  font-size:.75rem;font-weight:700;color:var(--inv);
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:var(--green);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;
 }
-.testi-name{font-size:.875rem;font-weight:700;color:var(--inv)}
-.testi-role{font-size:.775rem;color:var(--inv-3)}
+.testi-name{font-size:.875rem;font-weight:700;color:var(--dark)}
+.testi-role{font-size:.75rem;color:var(--muted)}
 
-/* ============================================================
-   FINAL CTA
-   ============================================================ */
-.cta-section{
-  background:var(--bg-soft);
-  padding:clamp(5rem,9vw,8rem) 0;
-}
-.cta-inner{
-  max-width:680px;margin:0 auto;text-align:center;
-}
-.cta-inner .section-h2{max-width:none;margin:0 auto 1rem}
-.cta-inner .section-sub{margin:0 auto 2.5rem;max-width:none}
+/* ─── CTA DARK ────────────────────────────────────────────── */
+.cta-inner{max-width:620px;margin:0 auto;text-align:center}
+.cta-inner .display{color:var(--parch)}
+.cta-inner .body-lg{color:rgba(237,233,223,.55)}
 .cta-form{
-  display:flex;gap:.4rem;
-  background:var(--card);
-  border:1.5px solid var(--border);
-  border-radius:var(--r-lg);
-  padding:5px 5px 5px 18px;
-  max-width:460px;margin:0 auto;
-  box-shadow:var(--s-sm);
-  transition:border-color .2s,box-shadow .2s;
+  display:flex;gap:.375rem;
+  background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:var(--r);
+  padding:4px 4px 4px 18px;
+  max-width:440px;margin:0 auto;
+  transition:border-color .2s;
 }
-.cta-form:focus-within{
-  border-color:var(--g);
-  box-shadow:var(--s-glow);
-}
+.cta-form:focus-within{border-color:rgba(255,255,255,.3)}
 .cta-form input{
-  flex:1;border:none;outline:none;
-  font-size:.9375rem;color:var(--ink);background:transparent;min-width:0;
+  flex:1;border:none;outline:none;background:transparent;
+  font-size:.9375rem;color:var(--parch);min-width:0;
 }
-.cta-form input::placeholder{color:var(--ink-3)}
+.cta-form input::placeholder{color:rgba(237,233,223,.35)}
 .cta-form .btn{flex-shrink:0}
-.cta-note{margin-top:.875rem;font-size:.8125rem;color:var(--ink-3)}
-.cta-success{display:none;margin-top:1rem;font-size:.875rem;font-weight:600;color:var(--g)}
+.cta-note{font-size:.75rem;color:rgba(237,233,223,.28);margin-top:.875rem}
+.cta-success{display:none;font-size:.875rem;font-weight:600;color:var(--green-m);margin-top:.875rem}
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
+/* ─── FOOTER ─────────────────────────────────────────────── */
 footer{
-  background:var(--bg-dark);
-  border-top:1px solid var(--bdr-dark);
-  padding:3rem 0;
+  background:var(--dark);border-top:1px solid rgba(255,255,255,.06);
+  padding:2.5rem 0;
 }
 .footer-inner{
   display:flex;flex-wrap:wrap;gap:1.5rem;
   align-items:center;justify-content:space-between;
-  margin-bottom:2rem;
 }
 .footer-logo{display:flex;align-items:center;gap:9px}
-.footer-word{font-size:.9375rem;font-weight:700;color:rgba(255,255,255,.55)}
+.footer-text{font-size:.8125rem;font-weight:700;letter-spacing:.04em;text-transform:lowercase;color:rgba(237,233,223,.45)}
 .footer-nav{display:flex;flex-wrap:wrap;gap:1.5rem}
-.footer-nav a{font-size:.8125rem;color:rgba(255,255,255,.28);transition:color .15s}
-.footer-nav a:hover{color:rgba(255,255,255,.6)}
-.footer-copy{font-size:.8125rem;color:rgba(255,255,255,.2)}
-.footer-disclaimer{
-  border-top:1px solid rgba(255,255,255,.06);
-  padding-top:1.5rem;
-  font-size:.725rem;color:rgba(255,255,255,.18);line-height:1.7;
+.footer-nav a{font-size:.75rem;letter-spacing:.04em;color:rgba(237,233,223,.25);transition:color .15s}
+.footer-nav a:hover{color:rgba(237,233,223,.6)}
+.footer-copy{font-size:.75rem;color:rgba(237,233,223,.18)}
+.footer-disc{
+  margin-top:1.5rem;padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,.05);
+  font-size:.6875rem;line-height:1.7;
+  color:rgba(237,233,223,.16);
 }
-.footer-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.footer-badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
 .footer-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:.3125rem .75rem;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:var(--r-full);
-  font-size:.6875rem;font-weight:600;color:rgba(255,255,255,.3);
+  padding:.25rem .75rem;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r);
+  font-size:.625rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(237,233,223,.25);
 }
 
-/* ============================================================
-   COOKIE BANNER
-   ============================================================ */
-.cookie-banner{
+/* ─── COOKIE ─────────────────────────────────────────────── */
+.cookie{
   position:fixed;bottom:0;left:0;right:0;z-index:999;
-  padding:1.25rem;
-  transform:translateY(100%);
-  transition:transform .45s cubic-bezier(.16,1,.3,1);
+  padding:1rem;transform:translateY(110%);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
 }
-.cookie-banner.show{transform:translateY(0)}
-.cookie-inner{
+.cookie.show{transform:translateY(0)}
+.cookie-box{
   max-width:880px;margin:0 auto;
-  background:rgba(20,20,18,.94);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--r-xl);
-  padding:1.25rem 1.625rem;
+  background:rgba(26,22,18,.96);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:var(--r-lg);
+  padding:1.125rem 1.5rem;
   display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
-  box-shadow:0 -4px 40px rgba(0,0,0,.3),var(--s-lg);
+  box-shadow:0 -8px 40px rgba(0,0,0,.2);
+  position:relative;
 }
 .cookie-text{
-  flex:1;font-size:.8125rem;color:var(--inv-2);line-height:1.6;min-width:240px;
+  flex:1;font-size:.8125rem;color:rgba(237,233,223,.6);
+  line-height:1.6;min-width:200px;
 }
-.cookie-text strong{color:var(--inv);font-weight:700}
-.cookie-text a{color:var(--g);text-decoration:underline;text-underline-offset:2px}
-.cookie-btns{display:flex;gap:.5rem;flex-wrap:wrap;flex-shrink:0}
-.cookie-dismiss{
+.cookie-text strong{color:rgba(237,233,223,.85);font-weight:600}
+.cookie-text a{color:var(--green-m);text-decoration:underline;text-underline-offset:2px}
+.cookie-btns{display:flex;gap:.5rem;flex-shrink:0}
+.cookie-x{
   position:absolute;top:.75rem;right:.875rem;
-  background:transparent;font-size:.875rem;color:var(--inv-3);
-  cursor:pointer;padding:.25rem;
+  font-size:.9rem;color:rgba(237,233,223,.3);cursor:pointer;
+  line-height:1;padding:.25rem;
+  transition:color .15s;
 }
+.cookie-x:hover{color:rgba(237,233,223,.65)}
 
-/* ============================================================
-   API MODAL
-   ============================================================ */
-.modal-overlay{
+/* ─── API MODAL ───────────────────────────────────────────── */
+.modal-bg{
   position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
+  background:rgba(26,22,18,.5);backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;padding:1rem;
   opacity:0;pointer-events:none;transition:opacity .2s;
 }
-.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-bg.open{opacity:1;pointer-events:all}
 .modal{
-  background:var(--bg-dark2);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--r-2xl);
-  padding:2.5rem;max-width:460px;width:100%;
-  box-shadow:var(--s-xl);
-  transform:translateY(16px);transition:transform .2s;
+  background:var(--white);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:2.5rem;
+  max-width:440px;width:100%;
+  box-shadow:0 20px 60px rgba(26,22,18,.12);
+  transform:translateY(12px);transition:transform .2s;
 }
-.modal-overlay.open .modal{transform:translateY(0)}
-.modal h3{font-size:1.125rem;font-weight:800;color:var(--inv);margin-bottom:.375rem}
-.modal p{font-size:.875rem;color:var(--inv-2);line-height:1.65;margin-bottom:1.25rem}
+.modal-bg.open .modal{transform:none}
+.modal h3{font-family:var(--serif);font-size:1.5rem;color:var(--dark);margin-bottom:.375rem}
+.modal p{font-size:.875rem;color:var(--mid);line-height:1.65;margin-bottom:1.25rem}
 .modal input{
-  width:100%;padding:.75rem 1rem;
-  background:rgba(255,255,255,.05);
-  border:1.5px solid rgba(255,255,255,.10);
-  border-radius:var(--r-md);
-  font-size:.875rem;color:var(--inv);margin-bottom:.875rem;
-  transition:border-color .15s;
+  width:100%;padding:.6875rem 1rem;
+  border:1.5px solid var(--line);border-radius:var(--r);
+  font-size:.875rem;color:var(--dark);
+  margin-bottom:.875rem;transition:border-color .15s;
 }
-.modal input:focus{outline:none;border-color:rgba(13,191,140,.4)}
-.modal input::placeholder{color:rgba(255,255,255,.2)}
+.modal input:focus{outline:none;border-color:var(--mid)}
+.modal input::placeholder{color:var(--muted)}
 .modal-actions{display:flex;gap:.5rem;justify-content:flex-end}
-.modal-note{margin-top:.875rem;font-size:.75rem;color:rgba(255,255,255,.25);line-height:1.6}
-.modal-note a{color:var(--g);text-decoration:underline;text-underline-offset:2px}
+.modal-note{margin-top:.875rem;font-size:.75rem;color:var(--muted);line-height:1.6}
+.modal-note a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
 
-/* ============================================================
-   SECTIONS SPACING
-   ============================================================ */
-.sec{padding:clamp(5rem,9vw,8rem) 0}
-.sec-sm{padding:clamp(3rem,5vw,5rem) 0}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media(max-width:960px){
-  .hero-grid,.intro-grid,.packages-grid,.how-grid,.testi-grid{
-    grid-template-columns:1fr;
-  }
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-vlines .hero-vline:nth-child(2),.hero-vlines .hero-vline:nth-child(3){display:none}
+  .hero-bottom{grid-template-columns:1fr}
+  .hero-headline-cell{border-right:none;border-bottom:1px solid var(--line)}
+  .about-grid,.pkg-grid,.how-grid,.testi-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(3){border-top:1px solid var(--line)}
   .cov-grid{grid-template-columns:repeat(2,1fr)}
-  .nav-links{display:none}
-  .pkg.featured{transform:none}
-  .stat-pill{display:none}
+  .nav-link{display:none}
 }
-@media(max-width:600px){
+@media(max-width:640px){
   .cov-grid{grid-template-columns:1fr}
-  .hero-form,.cta-form{flex-direction:column;gap:.5rem;padding:.625rem}
-  .hero-form .btn,.cta-form .btn{width:100%;justify-content:center}
-  .cookie-inner{flex-direction:column;align-items:flex-start}
+  .hero-form{flex-direction:column;padding:.5rem}
+  .hero-form input{padding:.5rem .75rem}
+  .hero-form .btn{width:100%;justify-content:center}
+  .cta-form{flex-direction:column;padding:.5rem}
+  .cta-form input{padding:.5rem .75rem}
+  .cta-form .btn{width:100%;justify-content:center}
+  .cookie-btns{flex-direction:column}
+  .stats-inner{grid-template-columns:1fr}
+  .stat-cell:nth-child(2){border-right:1px solid var(--line)}
+  .stat-cell{border-top:1px solid var(--line);border-right:none}
+  .stat-cell:first-child{border-top:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     COOKIE BANNER
-     ============================================================ -->
-<div class="cookie-banner" id="cookie" role="dialog" aria-label="Cookie consent">
-  <div class="cookie-inner" style="position:relative">
-    <button class="cookie-dismiss" onclick="dismissCookie()" aria-label="Close">✕</button>
+<!-- COOKIE -->
+<div class="cookie" id="cookie" role="dialog" aria-label="Cookie consent">
+  <div class="cookie-box">
+    <button class="cookie-x" onclick="dismissCookie()" aria-label="Close">✕</button>
     <p class="cookie-text">
       <strong>We use cookies.</strong>
-      Gnocchi uses essential and analytics cookies to improve your experience and measure how our site performs, in line with UK GDPR and the Privacy and Electronic Communications Regulations.
+      Essential and analytics cookies help us improve your experience and measure performance, in line with UK GDPR and the Privacy and Electronic Communications Regulations.
       <a href="#">Cookie Policy</a> · <a href="#">Privacy Policy</a>
     </p>
     <div class="cookie-btns">
-      <button class="btn btn-sm btn-ghost" onclick="rejectCookie()">Reject non-essential</button>
+      <button class="btn btn-sm btn-outline-inv" onclick="rejectCookie()">Reject non-essential</button>
       <button class="btn btn-sm btn-green" onclick="acceptCookie()">Accept all</button>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     NAV
-     ============================================================ -->
+<!-- NAV -->
 <header class="nav" id="nav">
   <div class="wrap">
     <div class="nav-inner">
-      <a class="logo" href="/">
-        <!-- Gnocchi logomark: two rounded gnocchi pillows with fork ridges -->
-        <svg class="logo-mark" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="10" cy="12" rx="9.5" ry="6.5" fill="#0DBF8C" opacity=".3"/>
-          <ellipse cx="22" cy="12" rx="9.5" ry="6.5" fill="#0DBF8C" opacity=".3"/>
-          <ellipse cx="10" cy="12" rx="7.5" ry="5" fill="#0DBF8C"/>
-          <ellipse cx="22" cy="12" rx="7.5" ry="5" fill="#0DBF8C"/>
-          <path d="M6.5 12.5 Q10 10.2 13.5 12.5" stroke="white" stroke-width="1.25" stroke-linecap="round" opacity=".55"/>
-          <path d="M18.5 12.5 Q22 10.2 25.5 12.5" stroke="white" stroke-width="1.25" stroke-linecap="round" opacity=".55"/>
+      <a class="nav-logo" href="/">
+        <!-- Gnocchi logomark: clean geometric G formed by arc + bar, in rounded square -->
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="#2C6B4A"/>
+          <!-- G arc: start top-right, go counterclockwise (large arc), back to bottom-right -->
+          <!-- Center (14,14), r=7. Top of G at ~(14,7), Bar at (14,14)-(21,14) -->
+          <path d="M 20 9 A 7.5 7.5 0 1 0 20 19 L 14 19 L 14 14.5 L 20 14.5"
+                stroke="white" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round"
+                fill="none"/>
         </svg>
-        <span class="logo-word">gnocchi</span>
+        <span class="nav-logo-text">gnocchi</span>
       </a>
-      <nav class="nav-links" aria-label="Main">
-        <a href="#how">How it works</a>
-        <a href="#coverage">Coverage</a>
-        <a href="#packages">Plans</a>
-        <a href="#advisor">Get a plan</a>
-      </nav>
-      <div class="nav-ctas">
-        <button class="btn btn-sm btn-ghost" onclick="showCta()">Sign in</button>
-        <button class="btn btn-sm btn-green" onclick="focusEmail()">Get covered →</button>
+      <a class="nav-link" href="#packages">Plans</a>
+      <a class="nav-link" href="#how">How it works</a>
+      <a class="nav-link" href="#coverage">Coverage</a>
+      <div class="nav-cta">
+        <button class="btn btn-sm btn-dark" onclick="focusEmail()">Get covered</button>
       </div>
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     HERO
-     ============================================================ -->
-<section class="hero" id="top">
-  <div class="wrap">
-    <div class="hero-grid">
-      <!-- Left: copy -->
-      <div>
-        <div class="hero-badge"><span class="badge-dot"></span>Trusted by UK &amp; EU founders</div>
-        <h1>Insurance for<br><span class="serif">ambitious</span> founders</h1>
-        <p class="hero-sub">
-          From pre-seed to Series A, Gnocchi packages the exact cover your business needs — tailored to your stage, sector, and how you operate. No broker. No jargon.
-        </p>
-        <form class="hero-form" id="hero-form" onsubmit="submitEmail(event,'hero')">
-          <input type="email" id="hero-email" placeholder="your@company.com" autocomplete="email" required>
-          <button type="submit" class="btn btn-sm btn-white">Get my plan →</button>
-        </form>
-        <p class="hero-success" id="hero-success">✓ On the list — we'll be in touch shortly.</p>
-        <p class="hero-note" id="hero-note">No commitment. FCA-authorised. UK &amp; EU cover available.</p>
-        <div class="trust-row">
-          <div class="avatars">
-            <div class="av">SR</div><div class="av">JK</div>
-            <div class="av">AL</div><div class="av">MB</div>
-          </div>
-          <p class="trust-text"><strong>300+ founders</strong><br>already protected</p>
-        </div>
-      </div>
+<!-- HERO -->
+<section class="hero">
+  <!-- Grid overlays -->
+  <div class="hero-vlines" aria-hidden="true">
+    <div class="hero-vline"></div>
+    <div class="hero-vline"></div>
+    <div class="hero-vline"></div>
+    <div class="hero-vline"></div>
+  </div>
+  <div class="hero-hline" aria-hidden="true"></div>
 
-      <!-- Right: floating chat preview -->
-      <div class="chat-preview-wrap">
-        <div class="stat-pill stat-pill-1">🔐 GDPR-compliant</div>
-        <div class="stat-pill stat-pill-2">⚡ 5-min setup</div>
-        <div class="stat-pill stat-pill-3">🏅 FCA-authorised</div>
+  <div class="hero-spacer"></div>
 
-        <div class="chat-preview">
-          <div class="chat-preview-bar">
-            <div class="mac-dots">
-              <div class="mac-dot"></div>
-              <div class="mac-dot"></div>
-              <div class="mac-dot"></div>
-            </div>
-            <span class="chat-preview-title">Coverage Advisor</span>
-            <div class="chat-preview-status"><span class="status-dot"></span>Online</div>
-          </div>
-          <div class="chat-preview-msgs">
-            <div class="pmsg right">
-              <div class="pmsg-av">You</div>
-              <div class="pmsg-bubble">B2B SaaS, 18 people, just raised our seed round. Expanding to EU markets.</div>
-            </div>
-            <div class="pmsg left">
-              <div class="pmsg-av">G</div>
-              <div class="pmsg-bubble">
-                <strong>Your coverage summary</strong>
-                Must-have policies for your stage:
-                <ul>
-                  <li>Directors &amp; Officers — board liability protection</li>
-                  <li>Cyber Liability — GDPR compliance across EU</li>
-                  <li>Tech E&amp;O — software delivery claims</li>
-                  <li>IP Protection — defend your codebase</li>
-                </ul>
-                <div class="pmsg-price">£280 – £360 per month</div>
-              </div>
-            </div>
-          </div>
-          <div class="chat-preview-input">
-            <div class="chat-preview-input-pill">Describe your business…</div>
-            <div class="chat-preview-send">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Center: logomark -->
+  <div class="hero-center">
+    <span class="hero-side-label" aria-hidden="true">Cover for<br>founders &amp;<br>scale-ups</span>
+    <!-- Large animated logomark -->
+    <svg class="hero-mark" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Outer ring -->
+      <circle cx="80" cy="80" r="76" stroke="#D5CEBF" stroke-width="1"/>
+      <!-- Inner ring -->
+      <circle cx="80" cy="80" r="55" stroke="#D5CEBF" stroke-width="1" stroke-dasharray="4 6"/>
+      <!-- Gnocchi pill shape -->
+      <rect x="30" y="58" width="100" height="44" rx="22" fill="#2C6B4A" opacity=".08"/>
+      <rect x="30" y="58" width="100" height="44" rx="22" stroke="#2C6B4A" stroke-width="1.5"/>
+      <!-- Three fork ridges -->
+      <line x1="42" y1="70" x2="118" y2="70" stroke="#2C6B4A" stroke-width="1" opacity=".4" stroke-linecap="round"/>
+      <line x1="42" y1="80" x2="118" y2="80" stroke="#2C6B4A" stroke-width="1.5" opacity=".7" stroke-linecap="round"/>
+      <line x1="42" y1="90" x2="118" y2="90" stroke="#2C6B4A" stroke-width="1" opacity=".4" stroke-linecap="round"/>
+    </svg>
+    <span class="hero-scroll" aria-hidden="true">
+      Scroll down
+      <svg width="12" height="14" viewBox="0 0 12 16" fill="none"><path d="M6 1v12M1 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+  </div>
+
+  <!-- Bottom: headline + desc -->
+  <div class="hero-bottom">
+    <div class="hero-headline-cell">
+      <h1 class="hero-headline">Meet<br>Gnocchi.</h1>
+    </div>
+    <div class="hero-desc-cell">
+      <p class="hero-desc">
+        Gnocchi tailors the exact cover your business needs, matched to your
+        <span class="accent">stage and ambitions.</span>
+        From pre-seed to Series A+. No broker. No jargon.
+      </p>
+      <form class="hero-form" id="hero-form" onsubmit="submitEmail(event,'hero')">
+        <input type="email" id="hero-email" placeholder="your@company.com" autocomplete="email" required>
+        <button type="submit" class="btn btn-sm btn-dark">Get my plan</button>
+      </form>
+      <p class="hero-success" id="hero-success">We'll be in touch — thanks for joining.</p>
+      <p class="hero-note" id="hero-note">FCA-authorised · UK &amp; EU coverage · No commitment</p>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     TRUST MARQUEE
-     ============================================================ -->
-<div class="trust-bar" aria-hidden="true">
-  <div class="marquee">
-    <span class="marquee-item">Directors <span>&amp;</span> Officers</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Cyber Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Tech E<span>&amp;</span>O</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Professional Indemnity</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Public Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">IP Protection</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">EPLI</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Key Person</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Employer's Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Directors <span>&amp;</span> Officers</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Cyber Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Tech E<span>&amp;</span>O</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Professional Indemnity</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Public Liability</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">IP Protection</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">EPLI</span>
-    <span class="marquee-item">·</span>
-    <span class="marquee-item">Key Person</span>
-    <span class="marquee-item">·</span>
-  </div>
-</div>
-
-<!-- ============================================================
-     STATS BAR
-     ============================================================ -->
-<div class="stats-bar sec-sm">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat-cell">
-        <div class="stat-num"><span class="green">300</span>+</div>
-        <div class="stat-label">Companies covered across UK &amp; EU</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num">£<span class="green">2.4</span>M</div>
-        <div class="stat-label">In claims successfully paid out</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num"><span class="green">5</span>min</div>
-        <div class="stat-label">Average time to get your first plan</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num"><span class="green">98</span>%</div>
-        <div class="stat-label">Founder satisfaction rating</div>
-      </div>
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-cell">
+      <div class="stat-num"><span class="g">300</span>+</div>
+      <div class="stat-label">Companies covered across UK &amp; EU</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">£<span class="g">2.4</span>M</div>
+      <div class="stat-label">In claims successfully handled</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num"><span class="g">5</span><sup>min</sup></div>
+      <div class="stat-label">Average time from enquiry to first plan</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num"><span class="g">98</span>%</div>
+      <div class="stat-label">Founder satisfaction rate</div>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     WHAT IS GNOCCHI
-     ============================================================ -->
-<section class="sec" id="about">
+<!-- ABOUT -->
+<section class="sec sec-white" id="about">
   <div class="wrap">
-    <div class="intro-grid">
+    <div class="about-grid">
       <div>
-        <p class="eyebrow">What is Gnocchi</p>
-        <h2 class="section-h2">Cover that works the<br>way <span class="serif">you</span> work</h2>
-        <p class="section-sub" style="margin-top:.875rem">
-          Traditional insurance brokers were built for a different era. Long forms, weeks of waiting, generic policies that don't reflect how modern companies operate.
+        <span class="eyebrow eyebrow-green">What is Gnocchi</span>
+        <h2 class="h2">Cover built for the way <em>you</em> build</h2>
+        <p class="body-lg" style="margin-top:1.125rem">
+          Traditional brokers were built for a different era — long forms, weeks of delays, generic policies that don't reflect how modern companies actually operate.
         </p>
-        <p class="section-sub" style="margin-top:1rem">
-          Gnocchi is different. We've built a smarter way to get covered — one that understands your business model, your growth stage, and what's actually at risk. Policies tailored to UK &amp; EU regulatory requirements, from day one.
+        <p class="body-lg" style="margin-top:1rem">
+          Gnocchi packages the right cover for your exact stage and sector. Tailored to UK &amp; EU regulatory requirements, from your first hire to your Series A close.
         </p>
         <div style="margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap">
           <button class="btn btn-md btn-dark" onclick="focusEmail()">Get started</button>
           <a href="#packages" class="btn btn-md btn-outline">See plans</a>
         </div>
       </div>
-      <div class="feature-cards">
-        <div class="feature-card">
-          <div class="feature-icon">📐</div>
-          <div>
-            <h4>Packaged by stage</h4>
-            <p>Pre-seed to Series A — each plan is built around your actual exposure, not a one-size bundle that costs too much.</p>
-          </div>
+      <div class="about-right">
+        <div class="about-card">
+          <div class="about-card-num">01</div>
+          <h4>Packaged by stage</h4>
+          <p>Pre-seed to Series A+ — each plan is matched to your actual risk exposure, not a one-size-all bundle that costs too much and covers too little.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <div>
-            <h4>Matched to your sector</h4>
-            <p>SaaS, fintech, healthtech, e-commerce — your industry shapes your risk. So should your cover.</p>
-          </div>
+        <div class="about-card">
+          <div class="about-card-num">02</div>
+          <h4>Matched to your sector</h4>
+          <p>SaaS, fintech, healthtech, e-commerce — your industry defines your risk profile. Your cover should reflect that.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🇬🇧</div>
-          <div>
-            <h4>Built for UK &amp; EU</h4>
-            <p>FCA-authorised. GDPR-aware policies. ICO-compliant data handling. Designed for where you operate.</p>
-          </div>
+        <div class="about-card">
+          <div class="about-card-num">03</div>
+          <h4>Built for UK &amp; EU</h4>
+          <p>FCA-authorised. GDPR-aware policies. ICO-compliant data handling. Designed to comply with where you operate and grow.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     PACKAGES
-     ============================================================ -->
-<section class="packages-section sec" id="packages">
+<!-- PACKAGES -->
+<section class="sec sec-parch" id="packages">
   <div class="wrap">
-    <div class="packages-header">
-      <div>
-        <p class="eyebrow">Plans</p>
-        <h2 class="section-h2">Pick your stage</h2>
-      </div>
-      <p class="section-sub" style="max-width:320px">All plans are a starting point — your advisor will tailor the exact coverage to your business.</p>
+    <span class="eyebrow eyebrow-green">Plans</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;margin-bottom:0;flex-wrap:wrap">
+      <h2 class="h2">Choose your stage</h2>
+      <p class="body" style="max-width:340px">All plans are a starting point. Your advisor will tailor the exact cover to your business needs.</p>
     </div>
-    <div class="packages-grid">
+    <div class="pkg-grid">
 
       <!-- Pre-Seed -->
       <div class="pkg">
-        <p class="pkg-eyebrow">For early founders</p>
+        <p class="pkg-label">Early founders</p>
         <h3 class="pkg-name">Pre-Seed</h3>
-        <p class="pkg-desc">Essential protection for new businesses finding their footing.</p>
-        <div class="pkg-price">£79<sub>/mo</sub></div>
+        <p class="pkg-tagline">Essential protection while you find your footing.</p>
+        <div class="pkg-price">£79<sub>/month</sub></div>
         <p class="pkg-cadence">Starting from · billed monthly</p>
-        <div class="pkg-size">1–15 people · pre-rev to £2M ARR</div>
+        <span class="pkg-size">1–15 people · pre-rev to £2M ARR</span>
         <div class="pkg-div"></div>
         <ul class="pkg-list">
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Directors &amp; Officers — personal liability protection</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Public Liability — third-party claims</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Professional Indemnity — advice &amp; services</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Cyber Essentials — baseline data protection</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Employer's Liability — required as soon as you hire</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Directors &amp; Officers — personal liability</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Public Liability — third-party claims</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Professional Indemnity — advice &amp; services</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Cyber Essentials — baseline data protection</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Employer's Liability — from your first hire</span></li>
         </ul>
-        <button class="btn btn-md btn-outline" onclick="focusEmail()">Get started →</button>
+        <button class="btn btn-md btn-outline" style="width:100%;justify-content:center" onclick="focusEmail()">Get started</button>
       </div>
 
       <!-- Seed (featured) -->
       <div class="pkg featured">
         <div class="pkg-badge">Most popular</div>
-        <p class="pkg-eyebrow">For growing teams</p>
+        <p class="pkg-label">Growing teams</p>
         <h3 class="pkg-name">Seed</h3>
-        <p class="pkg-desc">Comprehensive cover as you hire, ship, and raise your next round.</p>
-        <div class="pkg-price">£229<sub>/mo</sub></div>
+        <p class="pkg-tagline">Comprehensive cover as you hire, ship and raise.</p>
+        <div class="pkg-price">£229<sub>/month</sub></div>
         <p class="pkg-cadence">Starting from · billed monthly</p>
-        <div class="pkg-size">15–60 people · £2M–£10M ARR</div>
+        <span class="pkg-size">15–60 people · £2M–£10M ARR</span>
         <div class="pkg-div"></div>
         <ul class="pkg-list">
-          <li class="pkg-item"><div class="pkg-check pkg-check-feat">✓</div><span>Everything in Pre-Seed, plus:</span></li>
-          <li class="pkg-item"><div class="pkg-check pkg-check-feat">✓</div><span>Tech E&amp;O — software delivery &amp; uptime claims</span></li>
-          <li class="pkg-item"><div class="pkg-check pkg-check-feat">✓</div><span>Cyber Liability — full GDPR &amp; data breach cover</span></li>
-          <li class="pkg-item"><div class="pkg-check pkg-check-feat">✓</div><span>IP Protection — defend your product &amp; brand</span></li>
-          <li class="pkg-item"><div class="pkg-check pkg-check-feat">✓</div><span>EPLI — employment practices protection</span></li>
-          <li class="pkg-item"><div class="pkg-check pkg-check-feat">✓</div><span>EU coverage extension included</span></li>
+          <li class="pkg-item"><div class="pkg-tick" style="background:rgba(13,191,140,.2)"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#0DBF8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Everything in Pre-Seed, plus:</span></li>
+          <li class="pkg-item"><div class="pkg-tick" style="background:rgba(13,191,140,.2)"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#0DBF8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Tech E&amp;O — software delivery claims</span></li>
+          <li class="pkg-item"><div class="pkg-tick" style="background:rgba(13,191,140,.2)"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#0DBF8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Cyber Liability — full GDPR &amp; data breach cover</span></li>
+          <li class="pkg-item"><div class="pkg-tick" style="background:rgba(13,191,140,.2)"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#0DBF8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>IP Protection — product &amp; brand defence</span></li>
+          <li class="pkg-item"><div class="pkg-tick" style="background:rgba(13,191,140,.2)"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#0DBF8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>EPLI — employment practices protection</span></li>
+          <li class="pkg-item"><div class="pkg-tick" style="background:rgba(13,191,140,.2)"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#0DBF8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>EU coverage extension included</span></li>
         </ul>
-        <button class="btn btn-md btn-green" onclick="focusEmail()">Get started →</button>
+        <button class="btn btn-md btn-green" style="width:100%;justify-content:center" onclick="focusEmail()">Get started</button>
       </div>
 
       <!-- Series A+ -->
       <div class="pkg">
-        <p class="pkg-eyebrow">For scale-ups</p>
+        <p class="pkg-label">Scale-ups</p>
         <h3 class="pkg-name">Series A+</h3>
-        <p class="pkg-desc">Enterprise-grade protection for companies scaling fast.</p>
-        <div class="pkg-price">£575<sub>/mo</sub></div>
+        <p class="pkg-tagline">Enterprise-grade protection for companies scaling fast.</p>
+        <div class="pkg-price">£575<sub>/month</sub></div>
         <p class="pkg-cadence">Starting from · custom pricing available</p>
-        <div class="pkg-size">60+ people · £10M+ ARR</div>
+        <span class="pkg-size">60+ people · £10M+ ARR</span>
         <div class="pkg-div"></div>
         <ul class="pkg-list">
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Full Seed package, plus:</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Key Person Cover — business continuity</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Regulatory Liability — FCA, ICO, GDPR enforcement</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Global coverage extension</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Custom add-ons &amp; policy limits</span></li>
-          <li class="pkg-item"><div class="pkg-check">✓</div><span>Dedicated account management</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Full Seed package, plus:</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Key Person Cover — business continuity</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Regulatory Liability — FCA, ICO, GDPR enforcement</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Global coverage extension</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Custom add-ons &amp; policy limits</span></li>
+          <li class="pkg-item"><div class="pkg-tick"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#2C6B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Dedicated account management</span></li>
         </ul>
-        <button class="btn btn-md btn-outline" onclick="focusEmail()">Talk to us →</button>
+        <button class="btn btn-md btn-outline" style="width:100%;justify-content:center" onclick="focusEmail()">Talk to us</button>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     CHAT ADVISOR SECTION
-     ============================================================ -->
-<section class="chat-section" id="advisor">
+<!-- CHAT ADVISOR -->
+<section class="sec sec-white" id="advisor">
   <div class="wrap">
-    <div class="chat-section-header">
-      <p class="eyebrow eyebrow-dark">Coverage advisor</p>
-      <h2 class="section-h2 section-h2-inv">Tell us about your company.<br>We'll handle the rest.</h2>
-      <p class="section-sub section-sub-inv">Just describe what you build and where you are in your journey. You'll receive a tailored coverage plan with pricing — no forms, no waiting, no broker.</p>
+    <div style="max-width:560px">
+      <span class="eyebrow eyebrow-green">Coverage advisor</span>
+      <h2 class="h2">Describe your company.<br>We'll do the rest.</h2>
+      <p class="body-lg" style="margin-top:1rem">
+        Just tell us what you build, your team size and your stage. You'll receive a tailored coverage plan with transparent pricing — no forms, no broker, no waiting.
+      </p>
     </div>
-
-    <div class="chat-widget">
-      <div class="chat-titlebar">
-        <div class="mac-dots">
-          <div class="mac-dot"></div><div class="mac-dot"></div><div class="mac-dot"></div>
+    <div class="chat-wrap">
+      <div class="chat-bar">
+        <div class="chat-bar-dots">
+          <div class="cbar-dot"></div>
+          <div class="cbar-dot"></div>
+          <div class="cbar-dot"></div>
         </div>
-        <div class="chat-title-info">
-          <div class="chat-title-name">Gnocchi Coverage Advisor</div>
-          <div class="chat-title-sub"><span class="status-dot"></span>Available now · responds instantly</div>
-        </div>
-        <button class="chat-api-btn" id="api-btn" onclick="openModal()">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-          <span id="api-lbl">Connect API</span>
+        <span class="chat-bar-title">Gnocchi Coverage Advisor</span>
+        <button class="chat-key-btn" id="key-btn" onclick="openModal()">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          <span id="key-lbl">Connect</span>
         </button>
       </div>
-
       <div class="chat-msgs" id="chat-msgs"></div>
-
-      <div class="chat-chips" id="chip-row">
-        <button class="chip" onclick="useChip(this)">SaaS startup, 12 people, closing Series A</button>
+      <div class="chat-chips" id="chips">
+        <button class="chip" onclick="useChip(this)">SaaS startup, 12 people, pre-Series A</button>
         <button class="chip" onclick="useChip(this)">Fintech, processing payments, 25 employees</button>
-        <button class="chip" onclick="useChip(this)">Climate tech, just raised seed, 8 founders</button>
-        <button class="chip" onclick="useChip(this)">E-commerce brand, bootstrapped, £800k revenue</button>
-        <button class="chip" onclick="useChip(this)">Healthtech with patient data, Series A, 45 people</button>
+        <button class="chip" onclick="useChip(this)">Climate tech, just closed seed round</button>
+        <button class="chip" onclick="useChip(this)">E-commerce, bootstrapped, £900k revenue</button>
+        <button class="chip" onclick="useChip(this)">Healthtech, patient data, Series A, 45 people</button>
       </div>
-
-      <div class="chat-input-area">
+      <div class="chat-input-row">
         <textarea
-          class="chat-textarea" id="chat-in"
-          placeholder="Describe your company — what you build, team size, funding stage, any specific concerns…"
+          class="chat-ta" id="chat-in"
+          placeholder="Describe your company — what you build, team size, funding stage…"
           rows="1"
           onkeydown="chatKey(event)"
           oninput="autoSize(this)"
         ></textarea>
         <button class="chat-send" id="chat-send" onclick="chatSend()" aria-label="Send">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     HOW IT WORKS
-     ============================================================ -->
-<section class="sec" id="how">
+<!-- HOW IT WORKS -->
+<section class="sec sec-cream" id="how">
   <div class="wrap">
-    <p class="eyebrow">How it works</p>
-    <h2 class="section-h2">From conversation<br>to cover in minutes</h2>
+    <span class="eyebrow eyebrow-green">How it works</span>
+    <h2 class="h2">From conversation to cover</h2>
     <div class="how-grid">
-      <div class="how-card">
-        <div class="how-num">Step 01</div>
+      <div class="how-cell">
+        <div class="how-num">01</div>
         <h3>Tell us about your business</h3>
-        <p>Describe what you do, your team size, funding stage, and anything specific on your mind. Plain English — no forms, no broker calls.</p>
+        <p>Describe what you do, your team size and your stage. Plain English — no forms, no broker calls, no jargon.</p>
       </div>
-      <div class="how-card">
-        <div class="how-num">Step 02</div>
-        <h3>Receive your personalised plan</h3>
-        <p>We analyse your risk profile and build a tailored coverage recommendation — specific policies, cover limits, and transparent pricing.</p>
+      <div class="how-cell">
+        <div class="how-num">02</div>
+        <h3>Receive your tailored plan</h3>
+        <p>We analyse your risk profile and build a personalised coverage recommendation — specific policies, cover limits, and transparent pricing.</p>
       </div>
-      <div class="how-card">
-        <div class="how-num">Step 03</div>
+      <div class="how-cell">
+        <div class="how-num">03</div>
         <h3>Get bound and stay protected</h3>
         <p>Confirm your details and get covered. Your policy scales automatically as your team and revenue grow — no rebrokering, ever.</p>
       </div>
@@ -1320,77 +1027,70 @@ footer{
   </div>
 </section>
 
-<!-- ============================================================
-     COVERAGE
-     ============================================================ -->
-<section class="coverage-section sec" id="coverage">
+<!-- COVERAGE -->
+<section class="sec sec-parch" id="coverage">
   <div class="wrap">
-    <p class="eyebrow">Coverage</p>
-    <h2 class="section-h2">Every policy you need.<br>Nothing you don't.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;flex-wrap:wrap">
+      <div>
+        <span class="eyebrow eyebrow-green">Coverage</span>
+        <h2 class="h2">Every policy you need.<br>Nothing you don't.</h2>
+      </div>
+      <p class="body" style="max-width:340px">A full suite of business insurance, packaged intelligently for your stage and sector.</p>
+    </div>
     <div class="cov-grid">
       <div class="cov-cell">
-        <div class="cov-icon">🛡️</div>
+        <div class="cov-cell-tag">Essential</div>
         <h4>Directors &amp; Officers</h4>
-        <p>Protect founders and directors from personal liability for management decisions.</p>
-        <span class="cov-tag">Essential</span>
+        <p>Protects founders and directors from personal liability for company decisions. Often required by investors.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">🔐</div>
+        <div class="cov-cell-tag">Essential</div>
         <h4>Cyber Liability</h4>
-        <p>First and third-party cover for data breaches, ransomware, and cyber incidents. GDPR-aware.</p>
-        <span class="cov-tag">Essential</span>
+        <p>First and third-party cover for data breaches, ransomware and cyber incidents. GDPR-aware for EU operations.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">⚙️</div>
+        <div class="cov-cell-tag">Tech</div>
         <h4>Tech E&amp;O</h4>
-        <p>Covers claims arising from technology failures, software bugs, or missed service levels.</p>
-        <span class="cov-tag">Tech</span>
+        <p>Claims arising from technology failures, software bugs, or missed service levels in your product.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">📋</div>
+        <div class="cov-cell-tag">Services</div>
         <h4>Professional Indemnity</h4>
-        <p>For advice-driven businesses and consultants facing professional negligence claims.</p>
-        <span class="cov-tag">Services</span>
+        <p>For advice-driven businesses facing professional negligence or errors &amp; omissions claims.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">🌍</div>
+        <div class="cov-cell-tag">Standard</div>
         <h4>Public Liability</h4>
-        <p>Third-party injury and property damage. Standard for any customer-facing business.</p>
-        <span class="cov-tag">Standard</span>
+        <p>Third-party injury and property damage — required for any customer-facing or office-based business.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">💡</div>
+        <div class="cov-cell-tag">Growth</div>
         <h4>IP Protection</h4>
-        <p>Defend your patents, trademarks, and trade secrets from infringement claims.</p>
-        <span class="cov-tag">Growth</span>
+        <p>Defend your patents, trademarks and trade secrets from infringement claims as you scale.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">🤝</div>
+        <div class="cov-cell-tag">Scale</div>
         <h4>EPLI</h4>
-        <p>Employment Practices Liability — discrimination, harassment, and wrongful termination claims.</p>
-        <span class="cov-tag">Scale</span>
+        <p>Employment Practices Liability — discrimination, harassment and wrongful termination claims.</p>
       </div>
       <div class="cov-cell">
-        <div class="cov-icon">🔑</div>
+        <div class="cov-cell-tag">Growth</div>
         <h4>Key Person Cover</h4>
-        <p>Business continuity protection when a critical team member is unable to work.</p>
-        <span class="cov-tag">Growth</span>
+        <p>Business continuity protection if a critical team member is unable to work through illness or injury.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     TESTIMONIALS
-     ============================================================ -->
-<section class="testi-section">
+<!-- TESTIMONIALS -->
+<section class="sec sec-white">
   <div class="wrap">
-    <p class="eyebrow eyebrow-dark">What founders say</p>
-    <h2 class="section-h2 section-h2-inv">Built by founders,<br>for founders</h2>
+    <span class="eyebrow eyebrow-green">What founders say</span>
+    <h2 class="h2">Built by founders, <em>for founders</em></h2>
     <div class="testi-grid">
-      <div class="testi-card">
+      <div class="testi-cell">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">"Our investor asked about D&amp;O coverage two days before our seed close. Gnocchi had us sorted that afternoon. Nothing else comes close for speed."</p>
+        <p class="testi-quote">"Our investor asked about D&amp;O two days before our seed close. Gnocchi had us sorted that afternoon. Nothing else comes close."</p>
         <div class="testi-meta">
           <div class="testi-av">SM</div>
           <div>
@@ -1399,9 +1099,9 @@ footer{
           </div>
         </div>
       </div>
-      <div class="testi-card">
+      <div class="testi-cell">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">"Described our fintech product in a few sentences. The coverage plan that came back was genuinely accurate to our risk profile. My broker of 3 years never got it this right."</p>
+        <p class="testi-quote">"Described our fintech product in a few sentences. The coverage plan was genuinely accurate. My previous broker of three years never got it right."</p>
         <div class="testi-meta">
           <div class="testi-av">JK</div>
           <div>
@@ -1410,9 +1110,9 @@ footer{
           </div>
         </div>
       </div>
-      <div class="testi-card">
+      <div class="testi-cell">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">"As a healthtech company handling patient data, getting the right GDPR-aware cyber cover was non-trivial. Gnocchi understood it immediately and our EU expansion is fully covered."</p>
+        <p class="testi-quote">"As a healthtech handling patient data, getting GDPR-aware cyber cover was non-trivial. Gnocchi understood it immediately. Our EU expansion is fully covered."</p>
         <div class="testi-meta">
           <div class="testi-av">AL</div>
           <div>
@@ -1425,41 +1125,39 @@ footer{
   </div>
 </section>
 
-<!-- ============================================================
-     FINAL CTA
-     ============================================================ -->
-<section class="cta-section" id="cta">
+<!-- FINAL CTA -->
+<section class="sec sec-dark" id="cta">
   <div class="wrap">
     <div class="cta-inner">
-      <p class="eyebrow" style="justify-content:center">Get started</p>
-      <h2 class="section-h2">Ready to get properly covered?</h2>
-      <p class="section-sub">Join hundreds of UK &amp; EU founders who've already stopped worrying about their cover. Takes two minutes to get your personalised plan.</p>
+      <span class="eyebrow" style="color:rgba(237,233,223,.35);display:block;text-align:center">Get started</span>
+      <h2 class="display" style="color:var(--parch);text-align:center;margin-bottom:1rem">Ready to get properly covered?</h2>
+      <p class="body-lg" style="text-align:center;color:rgba(237,233,223,.5);margin-bottom:2.5rem">
+        Join hundreds of UK &amp; EU founders who've stopped worrying about their cover.
+      </p>
       <form class="cta-form" id="cta-form" onsubmit="submitEmail(event,'cta')">
         <input type="email" id="cta-email" placeholder="your@company.com" autocomplete="email" required>
-        <button type="submit" class="btn btn-sm btn-dark">Start cover →</button>
+        <button type="submit" class="btn btn-sm btn-white">Start cover</button>
       </form>
-      <p class="cta-success" id="cta-success">✓ You're on the list — we'll be in touch.</p>
-      <p class="cta-note" id="cta-note">No broker. No commitment. FCA-authorised.</p>
+      <p class="cta-success" id="cta-success">We'll be in touch — thanks for joining.</p>
+      <p class="cta-note" id="cta-note">No broker · No commitment · FCA-authorised</p>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- FOOTER -->
 <footer>
   <div class="wrap">
     <div class="footer-inner">
       <div class="footer-logo">
-        <svg width="26" height="20" viewBox="0 0 32 24" fill="none">
-          <ellipse cx="10" cy="12" rx="7.5" ry="5" fill="rgba(13,191,140,.5)"/>
-          <ellipse cx="22" cy="12" rx="7.5" ry="5" fill="rgba(13,191,140,.5)"/>
-          <path d="M6.5 12.5 Q10 10.2 13.5 12.5" stroke="rgba(255,255,255,.5)" stroke-width="1.25" stroke-linecap="round"/>
-          <path d="M18.5 12.5 Q22 10.2 25.5 12.5" stroke="rgba(255,255,255,.5)" stroke-width="1.25" stroke-linecap="round"/>
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="rgba(44,107,74,.4)"/>
+          <path d="M 20 9 A 7.5 7.5 0 1 0 20 19 L 14 19 L 14 14.5 L 20 14.5"
+                stroke="rgba(237,233,223,.5)" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
-        <span class="footer-word">gnocchi</span>
+        <span class="footer-text">gnocchi</span>
       </div>
-      <nav class="footer-nav" aria-label="Footer">
+      <nav class="footer-nav">
         <a href="#">Privacy Policy</a>
         <a href="#">Cookie Policy</a>
         <a href="#">Terms of Service</a>
@@ -1469,107 +1167,93 @@ footer{
       <p class="footer-copy">© 2025 Gnocchi Insurance Ltd.</p>
     </div>
     <div class="footer-badges">
-      <span class="footer-badge">🏅 FCA Authorised</span>
-      <span class="footer-badge">🔒 ICO Registered</span>
-      <span class="footer-badge">🇬🇧 UK Regulated</span>
-      <span class="footer-badge">🇪🇺 EU Coverage Available</span>
+      <span class="footer-badge">FCA Authorised</span>
+      <span class="footer-badge">ICO Registered</span>
+      <span class="footer-badge">UK Regulated</span>
+      <span class="footer-badge">EU Coverage Available</span>
     </div>
-    <p class="footer-disclaimer">
-      Gnocchi Insurance Ltd (Company No. 12345678) is an appointed representative of an FCA-authorised and regulated insurance intermediary (FCA No. 123456). Registered in England &amp; Wales. Registered office: London, UK.
-      All policies are subject to underwriting, full terms and conditions, and applicable law. Coverage recommendations provided through this website are indicative only and do not constitute a binding insurance contract or regulated financial advice.
-      Estimated pricing is based on typical market rates and will vary based on individual business risk assessment. Policies are underwritten by approved UK and EU insurance carriers. Regulated by the Financial Conduct Authority and subject to UK GDPR and the Data Protection Act 2018.
+    <p class="footer-disc">
+      Gnocchi Insurance Ltd is an appointed representative of an FCA-authorised and regulated insurance intermediary. All policies subject to underwriting and full terms and conditions. Coverage recommendations are indicative only and do not constitute a binding insurance contract or regulated financial advice. Prices are estimated and will vary based on individual risk assessment. Regulated by the Financial Conduct Authority. Subject to UK GDPR and the Data Protection Act 2018.
     </p>
   </div>
 </footer>
 
-<!-- ============================================================
-     API MODAL
-     ============================================================ -->
-<div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-label="Connect API key">
+<!-- API MODAL -->
+<div class="modal-bg" id="modal-bg" role="dialog" aria-modal="true">
   <div class="modal">
-    <h3>Connect your API key</h3>
-    <p>The Gnocchi coverage advisor uses Claude by Anthropic to generate personalised recommendations. Add your Anthropic API key to enable the live chat. It's stored only in your browser — never sent to our servers.</p>
+    <h3>Connect API key</h3>
+    <p>The Gnocchi coverage advisor uses an external API to generate personalised recommendations. Add your Anthropic API key to activate the live chat. Stored only in your browser.</p>
     <input type="password" id="modal-in" placeholder="sk-ant-api03-…" onkeydown="if(event.key==='Enter')saveKey()">
     <div class="modal-actions">
-      <button class="btn btn-sm btn-ghost" onclick="closeModal()" style="color:var(--inv-2)">Cancel</button>
-      <button class="btn btn-sm btn-green" onclick="saveKey()">Save &amp; activate</button>
+      <button class="btn btn-sm btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-sm btn-dark" onclick="saveKey()">Save &amp; activate</button>
     </div>
-    <p class="modal-note">Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> · For demo use only.</p>
+    <p class="modal-note">Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a></p>
   </div>
 </div>
 
-<!-- ============================================================
-     SCRIPT
-     ============================================================ -->
 <script>
-/* ── SYSTEM PROMPT ─────────────────────────────────────────── */
-const SYS = `You are a friendly and expert coverage advisor at Gnocchi, a UK insurance service for startups and SMEs. Your job is to analyse a business and recommend the right coverage.
+/* ── CONFIG ─────────────────────────────────────────────── */
+const SYS = `You are a friendly and knowledgeable coverage advisor at Gnocchi, a UK insurance service for startups and SMEs. Help businesses understand what cover they need.
 
-When a user describes their company, respond with a structured recommendation using these sections (use **Section Name** for headers):
+When a user describes their company, respond with a structured recommendation:
 
 **Your risk profile**
-2 sentences on their key exposures given their sector and stage.
+2 sentences on their key exposures given their sector, stage and team size.
 
 **Recommended cover**
-A clear bullet list of policies, with a one-line reason each. Lead with essentials, then helpful additions.
+A bullet list of specific policies with a one-line reason each. Lead with essentials.
 
 **Estimated monthly cost**
-Give a realistic UK market range. Format exactly as: £X – £Y per month · adjusts as you grow
+A realistic UK market range. Format exactly as: £X – £Y per month · adjusts as you grow
 
 **Start here**
-One sentence on the single most important policy to sort first and why.
+One sentence on the most important single policy and why.
 
-Keep responses under 280 words. Be warm, direct, and supportive. No jargon. Avoid any mention of AI or automated systems — you are a knowledgeable human advisor.`;
+Under 280 words. Be warm, direct, and supportive. No technical jargon. Never mention AI or automated systems.`;
 
-/* ── STATE ─────────────────────────────────────────────────── */
-let apiKey  = localStorage.getItem('gno_key') || '';
+/* ── STATE ──────────────────────────────────────────────── */
+let apiKey  = localStorage.getItem('gno_k') || '';
 let history = [];
 let busy    = false;
 
-/* ── BOOT ──────────────────────────────────────────────────── */
+/* ── INIT ───────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  // nav scroll effect
   window.addEventListener('scroll', () => {
-    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+    document.getElementById('nav').classList.toggle('scrolled', scrollY > 8);
   }, { passive: true });
 
-  // cookie banner
   if (!localStorage.getItem('gno_cookie')) {
-    setTimeout(() => document.getElementById('cookie').classList.add('show'), 900);
+    setTimeout(() => document.getElementById('cookie').classList.add('show'), 1000);
   }
 
-  renderWelcome();
-  updateApiBtn();
+  addAiRaw(`<p>Hi — I'm your Gnocchi coverage advisor.</p>
+<p>Tell me about your company: what you build, your team size and your funding stage. I'll put together a tailored coverage plan with clear pricing.</p>
+<p style="color:var(--muted);font-size:.82rem;margin-top:.5rem">Try one of the prompts below to see how it works.</p>`);
+
+  updateKeyBtn();
 });
 
-function renderWelcome() {
-  addAiRaw(`<p>Hi — I'm your Gnocchi coverage advisor.</p>
-<p>Tell me about your company — what you build, your team size, funding stage, and any specific concerns. I'll put together a tailored coverage plan with transparent pricing.</p>
-<p style="color:rgba(255,255,255,.35);font-size:.8rem;margin-top:.5rem">Try one of the example prompts below, or write your own.</p>`);
+function updateKeyBtn() {
+  const b = document.getElementById('key-btn');
+  const l = document.getElementById('key-lbl');
+  if (apiKey) { l.textContent = 'Connected ✓'; b.classList.add('active'); }
+  else        { l.textContent = 'Connect'; b.classList.remove('active'); }
 }
 
-function updateApiBtn() {
-  const btn = document.getElementById('api-btn');
-  const lbl = document.getElementById('api-lbl');
-  if (apiKey) { lbl.textContent = 'Connected ✓'; btn.classList.add('keyed'); }
-  else        { lbl.textContent = 'Connect API'; btn.classList.remove('keyed'); }
-}
-
-/* ── SEND ──────────────────────────────────────────────────── */
+/* ── SEND ───────────────────────────────────────────────── */
 async function chatSend() {
-  const el   = document.getElementById('chat-in');
-  const text = el.value.trim();
-  if (!text || busy) return;
-
+  const el  = document.getElementById('chat-in');
+  const txt = el.value.trim();
+  if (!txt || busy) return;
   if (!apiKey) { openModal(); return; }
 
   el.value = ''; el.style.height = 'auto';
   busy = true;
   document.getElementById('chat-send').disabled = true;
-  document.getElementById('chip-row').style.display = 'none';
-
-  addUser(text);
-  history.push({ role: 'user', content: text });
+  document.getElementById('chips').style.display = 'none';
+  addUser(txt);
+  history.push({ role:'user', content:txt });
   scrollChat();
 
   const typer = addTyping();
@@ -1577,55 +1261,53 @@ async function chatSend() {
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 900,
-        stream: true,
-        system: SYS,
-        messages: history
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:900,stream:true,
+        system:SYS,messages:history
       })
     });
 
     typer.remove();
 
     if (!res.ok) {
-      const e = await res.json().catch(() => ({}));
+      const e = await res.json().catch(()=>({}));
       addErr(e?.error?.message || `Error ${res.status}`);
     } else {
-      const bubble = addAiStream();
-      let full = '';
+      const bub = addAiStream();
+      let full  = '';
       const reader = res.body.getReader();
-      const dec = new TextDecoder();
+      const dec    = new TextDecoder();
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        for (const line of dec.decode(value, { stream: true }).split('\n')) {
+        for (const line of dec.decode(value,{stream:true}).split('\n')) {
           if (!line.startsWith('data: ')) continue;
           const d = line.slice(6).trim();
-          if (!d || d === '[DONE]') continue;
+          if (!d || d==='[DONE]') continue;
           try {
             const ev = JSON.parse(d);
-            if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
+            if (ev.type==='content_block_delta' && ev.delta?.type==='text_delta') {
               full += ev.delta.text;
-              bubble.innerHTML = fmt(full);
+              bub.innerHTML = fmt(full);
               scrollChat();
             }
-          } catch (_) {}
+          } catch(_) {}
         }
       }
-      history.push({ role: 'assistant', content: full });
+      history.push({ role:'assistant', content:full });
     }
-  } catch (err) {
+  } catch(err) {
     typer?.remove?.();
-    addErr(err.message || 'Connection error — check your network');
+    addErr(err.message || 'Connection error');
   }
 
   busy = false;
@@ -1633,101 +1315,88 @@ async function chatSend() {
   document.getElementById('chat-in').focus();
 }
 
-/* ── FORMAT MARKDOWN ────────────────────────────────────────── */
-function fmt(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, (_, t) => {
-      const hdr = /^(Your|Recommended|Estimated|Start|Summary|Priority|First|Risk|Cover)/i.test(t.trim());
-      return hdr ? `<span class="msg-section-lbl">${esc(t)}</span>` : `<strong>${esc(t)}</strong>`;
+/* ── MARKDOWN ───────────────────────────────────────────── */
+function fmt(t) {
+  return t
+    .replace(/\*\*(.*?)\*\*/g,(_,s)=>{
+      const hdr=/^(Your|Recommended|Estimated|Start|Risk|Cover|Summary|First)/i.test(s.trim());
+      return hdr ? `<span class="msg-lbl">${esc(s)}</span>` : `<strong>${esc(s)}</strong>`;
     })
-    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*?<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
-    .replace(/(£[\d,]+ ?[–\-] ?£[\d,]+[^\n<]*)/g, '<span class="price-tag">$1</span>')
-    .replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>')
-    .replace(/^/, '<p>').replace(/$/, '</p>');
+    .replace(/^[-•] (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*?<\/li>\n?)+/gs,m=>`<ul>${m}</ul>`)
+    .replace(/(£[\d,]+ ?[–\-] ?£[\d,]+[^\n<]*)/g,'<span class="price-pill">$1</span>')
+    .replace(/\n{2,}/g,'</p><p>').replace(/\n/g,'<br>')
+    .replace(/^/,'<p>').replace(/$/,'</p>');
 }
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-/* ── DOM HELPERS ─────────────────────────────────────────────── */
+/* ── DOM ─────────────────────────────────────────────────── */
 function addUser(t) {
   const el = document.createElement('div');
-  el.className = 'cmsg user';
-  el.innerHTML = `<div class="cmsg-av">You</div><div class="cmsg-body">${esc(t)}</div>`;
+  el.className='cmsg user';
+  el.innerHTML=`<div class="cmsg-av">You</div><div class="cmsg-body">${esc(t)}</div>`;
   document.getElementById('chat-msgs').appendChild(el);
 }
 function addAiRaw(html) {
   const el = document.createElement('div');
-  el.className = 'cmsg ai';
-  el.innerHTML = `<div class="cmsg-av">G</div><div class="cmsg-body">${html}</div>`;
+  el.className='cmsg ai';
+  el.innerHTML=`<div class="cmsg-av">G</div><div class="cmsg-body">${html}</div>`;
   document.getElementById('chat-msgs').appendChild(el);
 }
 function addAiStream() {
   const el = document.createElement('div');
-  el.className = 'cmsg ai';
-  el.innerHTML = `<div class="cmsg-av">G</div><div class="cmsg-body"></div>`;
+  el.className='cmsg ai';
+  el.innerHTML=`<div class="cmsg-av">G</div><div class="cmsg-body"></div>`;
   document.getElementById('chat-msgs').appendChild(el);
   return el.querySelector('.cmsg-body');
 }
 function addTyping() {
   const el = document.createElement('div');
-  el.className = 'cmsg ai';
-  el.innerHTML = `<div class="cmsg-av">G</div><div class="cmsg-body" style="padding:0"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  el.className='cmsg ai';
+  el.innerHTML=`<div class="cmsg-av">G</div><div class="cmsg-body" style="padding:0"><div class="typing"><span></span><span></span><span></span></div></div>`;
   document.getElementById('chat-msgs').appendChild(el);
   return el;
 }
 function addErr(m) {
   const el = document.createElement('div');
-  el.className = 'cmsg ai';
-  el.innerHTML = `<div class="cmsg-av" style="background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.25)">!</div><div class="cmsg-body" style="border-color:rgba(239,68,68,.2);color:#fca5a5"><strong style="color:#f87171">Couldn't connect</strong> — ${esc(m)}</div>`;
+  el.className='cmsg ai';
+  el.innerHTML=`<div class="cmsg-av" style="background:#FEE2E2;color:#DC2626">!</div><div class="cmsg-body" style="border-color:#FECACA;color:#DC2626">${esc(m)}</div>`;
   document.getElementById('chat-msgs').appendChild(el);
 }
-function scrollChat() {
-  const c = document.getElementById('chat-msgs');
-  c.scrollTop = c.scrollHeight;
-}
+function scrollChat(){const c=document.getElementById('chat-msgs');c.scrollTop=c.scrollHeight}
 
-/* ── CHIPS ─────────────────────────────────────────────────── */
-function useChip(el) {
-  const inp = document.getElementById('chat-in');
-  inp.value = el.textContent;
-  autoSize(inp);
-  chatSend();
-}
-function chatKey(e) { if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); chatSend(); } }
-function autoSize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+/* ── CHIPS ─────────────────────────────────────────────── */
+function useChip(el){document.getElementById('chat-in').value=el.textContent;autoSize(document.getElementById('chat-in'));chatSend()}
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chatSend()}}
+function autoSize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
 
-/* ── MODAL ─────────────────────────────────────────────────── */
-function openModal() { document.getElementById('modal').classList.add('open'); setTimeout(()=>document.getElementById('modal-in').focus(),80); }
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-function saveKey() {
-  const v = document.getElementById('modal-in').value.trim();
-  if (v) { apiKey = v; localStorage.setItem('gno_key', v); updateApiBtn(); }
+/* ── MODAL ─────────────────────────────────────────────── */
+function openModal(){document.getElementById('modal-bg').classList.add('open');setTimeout(()=>document.getElementById('modal-in').focus(),80)}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open')}
+function saveKey(){
+  const v=document.getElementById('modal-in').value.trim();
+  if(v){apiKey=v;localStorage.setItem('gno_k',v);updateKeyBtn()}
   closeModal();
 }
-document.getElementById('modal').addEventListener('click', function(e) { if (e.target===this) closeModal(); });
+document.getElementById('modal-bg').addEventListener('click',function(e){if(e.target===this)closeModal()});
 
-/* ── EMAIL FORMS ────────────────────────────────────────────── */
-function submitEmail(e, id) {
+/* ── EMAIL ─────────────────────────────────────────────── */
+function submitEmail(e,id){
   e.preventDefault();
-  document.getElementById(`${id}-form`).style.display = 'none';
-  const n = document.getElementById(`${id}-note`);
-  if (n) n.style.display = 'none';
-  document.getElementById(`${id}-success`).style.display = 'block';
-  // TODO: send email to backend / Resend / Mailchimp
+  document.getElementById(`${id}-form`).style.display='none';
+  const n=document.getElementById(`${id}-note`);if(n)n.style.display='none';
+  document.getElementById(`${id}-success`).style.display='block';
 }
-function focusEmail() {
-  document.getElementById('hero-email').scrollIntoView({ behavior:'smooth', block:'center' });
-  setTimeout(() => document.getElementById('hero-email').focus(), 400);
-}
-function showCta() {
-  document.getElementById('cta').scrollIntoView({ behavior:'smooth', block:'center' });
+function focusEmail(){
+  document.getElementById('hero-email').scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>document.getElementById('hero-email').focus(),400);
 }
 
-/* ── COOKIE BANNER ──────────────────────────────────────────── */
-function acceptCookie()  { localStorage.setItem('gno_cookie','accepted');  hideCookie(); }
-function rejectCookie()  { localStorage.setItem('gno_cookie','rejected');  hideCookie(); }
-function dismissCookie() { hideCookie(); }
-function hideCookie() { document.getElementById('cookie').classList.remove('show'); }
+/* ── COOKIE ─────────────────────────────────────────────── */
+function acceptCookie(){localStorage.setItem('gno_cookie','y');hideCookie()}
+function rejectCookie(){localStorage.setItem('gno_cookie','n');hideCookie()}
+function dismissCookie(){hideCookie()}
+function hideCookie(){document.getElementById('cookie').classList.remove('show')}
 </script>
 </body>
 </html>
