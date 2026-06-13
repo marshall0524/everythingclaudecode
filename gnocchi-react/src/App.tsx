@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { Clock, Menu, X, ArrowRight, Send, Shield } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { Clock, Menu, X, ArrowRight, Send, Shield, Check } from 'lucide-react'
 import { Swirl, MeshGradient, FlutedGlass } from '@paper-design/shaders-react'
 
 /* ── Live London clock ──────────────────────────────────────── */
@@ -59,10 +59,12 @@ function RollButton({ text, onClick, variant = 'green', size = 'md', className =
 }
 
 /* ── Expanding pill hover button (card overlay) ─────────────── */
-function ExpandPill({ label, light = false, wide = false }: { label: string; light?: boolean; wide?: boolean }) {
+function ExpandPill({ label, light = false, wide = false, onClick }: { label: string; light?: boolean; wide?: boolean; onClick?: () => void }) {
   const w = wide ? 'hover:w-[168px]' : 'hover:w-[148px]'
   return (
-    <div className={`
+    <div
+      onClick={onClick}
+      className={`
       group/pill absolute bottom-4 left-4 z-10
       flex items-center overflow-hidden rounded-full cursor-pointer
       h-9 w-9 ${w} transition-all duration-300 ease-in-out
@@ -144,13 +146,524 @@ function formatMsg(text: string): string {
   return out
 }
 
+/* ── Quote Form Modal ───────────────────────────────────────── */
+const SECTORS = [
+  'SaaS / B2B', 'Fintech', 'E-commerce', 'Marketplace',
+  'Health Tech', 'EdTech', 'Hardware / Deep Tech', 'Other',
+]
+const TEAM_SIZES = [
+  { id: 'solo', label: 'Solo / co-founder', sub: '1–2 people' },
+  { id: 'small', label: 'Small team', sub: '3–10 people' },
+  { id: 'growing', label: 'Growing', sub: '11–30 people' },
+  { id: 'scaling', label: 'Scaling', sub: '31+ people' },
+]
+const STAGES = [
+  { id: 'preseed', label: 'Pre-seed / Bootstrapped' },
+  { id: 'seed', label: 'Seed / Angel-backed' },
+  { id: 'seriesa', label: 'Series A' },
+  { id: 'seriesb', label: 'Series B+' },
+]
+const REGIONS = [
+  { id: 'uk', label: 'UK only', popular: false },
+  { id: 'eu', label: 'EU only', popular: false },
+  { id: 'ukeu', label: 'UK & EU', popular: true },
+]
+
+interface QuoteFormModalProps {
+  onClose: () => void
+}
+
+function QuoteFormModal({ onClose }: QuoteFormModalProps) {
+  const [step, setStep] = useState(0)
+  const [done, setDone] = useState(false)
+  const [sector, setSector] = useState('')
+  const [sectorDesc, setSectorDesc] = useState('')
+  const [teamSize, setTeamSize] = useState('')
+  const [stage, setStage] = useState('')
+  const [region, setRegion] = useState('')
+  const [email, setEmail] = useState('')
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward')
+  const [animating, setAnimating] = useState(false)
+
+  const totalSteps = 5
+
+  function goNext() {
+    if (animating) return
+    setDirection('forward')
+    setAnimating(true)
+    setTimeout(() => {
+      if (step < totalSteps - 1) setStep(s => s + 1)
+      setAnimating(false)
+    }, 180)
+  }
+
+  function goPrev() {
+    if (animating || step === 0) return
+    setDirection('back')
+    setAnimating(true)
+    setTimeout(() => {
+      setStep(s => s - 1)
+      setAnimating(false)
+    }, 180)
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setDone(true)
+  }
+
+  const canNext = () => {
+    if (step === 0) return sector !== ''
+    if (step === 1) return teamSize !== ''
+    if (step === 2) return stage !== ''
+    if (step === 3) return region !== ''
+    if (step === 4) return email.includes('@')
+    return false
+  }
+
+  const slideClass = animating
+    ? direction === 'forward' ? 'opacity-0 translate-x-4' : 'opacity-0 -translate-x-4'
+    : 'opacity-100 translate-x-0'
+
+  if (done) {
+    return (
+      <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div className="bg-[#0F2419] rounded-3xl shadow-2xl w-full max-w-lg p-10 flex flex-col items-center text-center relative">
+          <button onClick={onClose} className="absolute top-5 right-5 text-white/40 hover:text-white transition-colors">
+            <X size={20} />
+          </button>
+          <div className="w-16 h-16 rounded-full bg-[#1D6B42] flex items-center justify-center mb-6">
+            <Check size={32} className="text-white" />
+          </div>
+          <h2 className="text-2xl font-semibold text-white mb-3">You're on the list.</h2>
+          <p className="text-[#A8D4B8] text-[15px] leading-[1.65] mb-8">
+            We'll have your personalised quote ready within 48 hours. Check your inbox at <span className="text-white font-medium">{email}</span>.
+          </p>
+          <button
+            onClick={() => {
+              onClose()
+              setTimeout(() => document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth' }), 100)
+            }}
+            className="group flex items-center gap-2 bg-[#1D6B42] hover:bg-[#155232] text-white text-[14px] font-medium rounded-full pl-5 pr-2 py-2.5 transition-colors"
+          >
+            <span>While you wait, talk to our advisor</span>
+            <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+              <ArrowRight size={13} className="text-[#1D6B42] transition-transform duration-300 group-hover:-rotate-45" />
+            </div>
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative overflow-hidden" onClick={e => e.stopPropagation()}>
+        {/* Close */}
+        <button onClick={onClose} className="absolute top-5 right-5 z-10 text-gray-400 hover:text-gray-700 transition-colors">
+          <X size={20} />
+        </button>
+
+        {/* Progress dots */}
+        <div className="flex items-center justify-center gap-2 pt-6 pb-2">
+          {Array.from({ length: totalSteps }).map((_, i) => (
+            <div
+              key={i}
+              className={`transition-all duration-300 flex items-center justify-center ${
+                i < step
+                  ? 'w-5 h-5 rounded-full bg-[#1D6B42]'
+                  : i === step
+                    ? 'w-5 h-5 rounded-full bg-[#1D6B42] ring-4 ring-[#EBF5EE]'
+                    : 'w-2.5 h-2.5 rounded-full bg-gray-200'
+              }`}
+            >
+              {i < step && <Check size={10} className="text-white" />}
+            </div>
+          ))}
+        </div>
+
+        {/* Step content */}
+        <div
+          className={`px-8 pt-5 pb-4 transition-all duration-[180ms] ease-out ${slideClass}`}
+          style={{ minHeight: 320 }}
+        >
+          {step === 0 && (
+            <div>
+              <h3 className="text-[20px] font-semibold text-gray-900 mb-1">What does your startup do?</h3>
+              <p className="text-[13px] text-gray-500 mb-5">This helps us recommend the right cover.</p>
+              <div className="grid grid-cols-2 gap-2.5 mb-5">
+                {SECTORS.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => setSector(s)}
+                    className={`text-left text-[13px] font-medium px-4 py-2.5 rounded-xl border transition-all duration-150 ${
+                      sector === s
+                        ? 'border-[#1D6B42] bg-[#EBF5EE] text-[#1D6B42]'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+              <input
+                type="text"
+                value={sectorDesc}
+                onChange={e => setSectorDesc(e.target.value)}
+                placeholder="Describe what you build (optional)"
+                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-[#1D6B42] transition-colors"
+              />
+            </div>
+          )}
+
+          {step === 1 && (
+            <div>
+              <h3 className="text-[20px] font-semibold text-gray-900 mb-5">How many people are on your team?</h3>
+              <div className="grid grid-cols-1 gap-3">
+                {TEAM_SIZES.map(ts => (
+                  <button
+                    key={ts.id}
+                    onClick={() => setTeamSize(ts.id)}
+                    className={`flex items-center justify-between px-5 py-4 rounded-xl border transition-all duration-150 text-left ${
+                      teamSize === ts.id
+                        ? 'border-[#1D6B42] bg-[#EBF5EE]'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <span className={`text-[14px] font-medium ${teamSize === ts.id ? 'text-[#1D6B42]' : 'text-gray-900'}`}>{ts.label}</span>
+                    <span className={`text-[12px] ${teamSize === ts.id ? 'text-[#1D6B42]/70' : 'text-gray-400'}`}>{ts.sub}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div>
+              <h3 className="text-[20px] font-semibold text-gray-900 mb-5">What stage are you at?</h3>
+              <div className="grid grid-cols-1 gap-3">
+                {STAGES.map(st => (
+                  <button
+                    key={st.id}
+                    onClick={() => setStage(st.id)}
+                    className={`flex items-center px-5 py-4 rounded-xl border transition-all duration-150 text-left ${
+                      stage === st.id
+                        ? 'border-[#1D6B42] bg-[#EBF5EE]'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <span className={`text-[14px] font-medium ${stage === st.id ? 'text-[#1D6B42]' : 'text-gray-900'}`}>{st.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div>
+              <h3 className="text-[20px] font-semibold text-gray-900 mb-5">Where do you operate?</h3>
+              <div className="grid grid-cols-1 gap-3">
+                {REGIONS.map(r => (
+                  <button
+                    key={r.id}
+                    onClick={() => setRegion(r.id)}
+                    className={`flex items-center justify-between px-5 py-4 rounded-xl border transition-all duration-150 text-left ${
+                      region === r.id
+                        ? 'border-[#1D6B42] bg-[#EBF5EE]'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <span className={`text-[14px] font-medium ${region === r.id ? 'text-[#1D6B42]' : 'text-gray-900'}`}>{r.label}</span>
+                    {r.popular && (
+                      <span className="text-[11px] font-semibold bg-[#1D6B42] text-white px-2 py-0.5 rounded-full">Most popular</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
+            <form onSubmit={handleSubmit}>
+              <h3 className="text-[20px] font-semibold text-gray-900 mb-1">Last step — where should we send your quote?</h3>
+              <p className="text-[13px] text-gray-500 mb-5">You'll hear from us within 48 hours.</p>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                autoFocus
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] outline-none focus:border-[#1D6B42] transition-colors mb-4"
+              />
+              <button
+                type="submit"
+                disabled={!email.includes('@')}
+                className="w-full bg-[#1D6B42] hover:bg-[#155232] disabled:opacity-40 text-white text-[14px] font-semibold rounded-xl py-3.5 transition-colors"
+              >
+                Get my tailored quote →
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* Nav buttons */}
+        {step < 4 && (
+          <div className="flex items-center justify-between px-8 pb-7 pt-2">
+            <button
+              onClick={goPrev}
+              disabled={step === 0}
+              className="text-[13px] text-gray-400 hover:text-gray-700 disabled:opacity-0 transition-colors"
+            >
+              ← Back
+            </button>
+            <button
+              onClick={goNext}
+              disabled={!canNext()}
+              className="bg-[#1D6B42] hover:bg-[#155232] disabled:opacity-40 text-white text-[13px] font-semibold rounded-full px-6 py-2.5 transition-colors"
+            >
+              Next →
+            </button>
+          </div>
+        )}
+        {step === 4 && (
+          <div className="flex items-center justify-start px-8 pb-7 pt-2">
+            <button onClick={goPrev} className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">
+              ← Back
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── Waitlist Modal ─────────────────────────────────────────── */
+interface WaitlistModalProps {
+  onClose: () => void
+  title?: string
+}
+
+function WaitlistModal({ onClose, title = 'Get early access.' }: WaitlistModalProps) {
+  const [wEmail, setWEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setSubmitted(true)
+  }
+
+  return (
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors">
+          <X size={20} />
+        </button>
+        {submitted ? (
+          <div className="text-center py-4">
+            <div className="w-12 h-12 rounded-full bg-[#EBF5EE] flex items-center justify-center mx-auto mb-4">
+              <Check size={22} className="text-[#1D6B42]" />
+            </div>
+            <p className="text-[15px] font-medium text-gray-900">You're on the list — we'll be in touch.</p>
+          </div>
+        ) : (
+          <>
+            <h3 className="text-[22px] font-semibold text-gray-900 mb-2">{title}</h3>
+            <p className="text-[14px] text-gray-500 mb-6 leading-[1.6]">
+              Be first to know when Gnocchi launches in your region.
+            </p>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <input
+                type="email"
+                value={wEmail}
+                onChange={e => setWEmail(e.target.value)}
+                placeholder="your@email.com"
+                autoFocus
+                className="border border-gray-200 rounded-xl px-4 py-3 text-[14px] outline-none focus:border-[#1D6B42] transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={!wEmail.includes('@')}
+                className="bg-[#1D6B42] hover:bg-[#155232] disabled:opacity-40 text-white text-[14px] font-semibold rounded-xl py-3 transition-colors"
+              >
+                Join waitlist
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── Marquee Section ────────────────────────────────────────── */
+const MARQUEE_LOGOS = [
+  'Techstars', 'Seedcamp', 'Entrepreneur First', 'Antler',
+  'Notion Capital', 'Y Combinator', 'Backed VC', 'LocalGlobe',
+]
+
+function MarqueeSection() {
+  const allLogos = [...MARQUEE_LOGOS, ...MARQUEE_LOGOS]
+  return (
+    <div className="border-y border-gray-100 py-5 bg-white overflow-hidden">
+      <div className="flex items-center">
+        <div className="flex-shrink-0 pl-5 sm:pl-8 lg:pl-12 pr-6 text-[12px] text-gray-400 font-medium whitespace-nowrap">
+          Trusted by founders from
+        </div>
+        <div className="flex-1 overflow-hidden min-w-0">
+          <div className="marquee-track">
+            {allLogos.map((logo, i) => (
+              <span
+                key={i}
+                className="inline-block mx-8 text-[14px] font-semibold text-gray-300 hover:text-gray-500 transition-colors duration-200 whitespace-nowrap cursor-default select-none"
+              >
+                {logo}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── 3D Hero Card ───────────────────────────────────────────── */
+interface HeroCard3DProps {
+  tiltX: number
+  tiltY: number
+}
+
+function HeroCard3D({ tiltX, tiltY }: HeroCard3DProps) {
+  const cardStyle: React.CSSProperties = {
+    transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
+    transition: 'transform 0.15s ease-out',
+    boxShadow: `${tiltY * 1.5}px ${-tiltX * 1.5 + 8}px ${20 + Math.abs(tiltX) + Math.abs(tiltY)}px rgba(0,0,0,0.28)`,
+  }
+  const badge1Style: React.CSSProperties = {
+    transform: `perspective(1000px) rotateX(${tiltX * 0.5}deg) rotateY(${tiltY * 0.5}deg)`,
+    transition: 'transform 0.15s ease-out',
+  }
+  const badge2Style: React.CSSProperties = {
+    transform: `perspective(1000px) rotateX(${tiltX * 0.5}deg) rotateY(${tiltY * 0.5}deg)`,
+    transition: 'transform 0.15s ease-out',
+  }
+
+  return (
+    <div className="relative flex flex-col items-center" style={{ width: 300 }}>
+      {/* Badge 1 — top right offset */}
+      <div
+        className="absolute -top-4 -right-6 bg-white rounded-xl px-3.5 py-2.5 shadow-lg z-10 card-3d"
+        style={badge1Style}
+      >
+        <span className="text-[12px] font-semibold text-gray-900">£229/mo</span>
+        <span className="text-[11px] text-gray-400 ml-1.5">Growth plan</span>
+      </div>
+
+      {/* Main card */}
+      <div
+        className="w-full rounded-2xl overflow-hidden card-3d"
+        style={{ ...cardStyle, background: 'linear-gradient(145deg, #0F2419 0%, #1A3D2A 100%)' }}
+      >
+        {/* Card header */}
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-[12px] font-medium text-white/80">Active</span>
+          </div>
+          <span className="text-[12px] font-semibold text-white">Gnocchi Coverage</span>
+        </div>
+        {/* Card body */}
+        <div className="px-5 py-4">
+          <p className="text-[11px] text-white/50 uppercase tracking-wider mb-3">Coverage overview</p>
+          <ul className="space-y-2.5 mb-4">
+            {[
+              { label: 'Professional indemnity', active: true },
+              { label: 'Cyber & data breach', active: true },
+              { label: 'Directors & officers', active: true },
+            ].map(item => (
+              <li key={item.label} className="flex items-center gap-2.5">
+                <span className="w-4 h-4 rounded-full bg-[#1D6B42] flex items-center justify-center flex-shrink-0">
+                  <Check size={9} className="text-white" />
+                </span>
+                <span className="text-[12px] text-[#A8D4B8]">{item.label}</span>
+              </li>
+            ))}
+            <li className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className="w-4 h-4 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0" />
+                <span className="text-[12px] text-white/40">Product liability</span>
+              </div>
+              <span className="text-[11px] text-[#1D6B42] font-medium bg-[#1D6B42]/20 px-2 py-0.5 rounded-full">+ Add</span>
+            </li>
+          </ul>
+          <div className="border-t border-white/10 pt-3.5 space-y-1.5">
+            <div className="flex justify-between">
+              <span className="text-[11px] text-white/40">Plan</span>
+              <span className="text-[11px] text-white/70 font-medium">Growth (Seed)</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[11px] text-white/40">Team</span>
+              <span className="text-[11px] text-white/70 font-medium">18 people</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[11px] text-white/40">Next renewal</span>
+              <span className="text-[11px] text-white/70 font-medium">Jan 2027</span>
+            </div>
+          </div>
+          <button className="mt-4 w-full flex items-center justify-center gap-1.5 text-[12px] text-[#A8D4B8] border border-[#A8D4B8]/30 rounded-lg py-2 hover:bg-white/5 transition-colors">
+            View policy
+            <ArrowRight size={11} />
+          </button>
+        </div>
+      </div>
+
+      {/* Badge 2 — bottom left offset */}
+      <div
+        className="absolute -bottom-4 -left-6 bg-white rounded-xl px-3.5 py-2.5 shadow-lg z-10 card-3d"
+        style={badge2Style}
+      >
+        <span className="text-[12px] font-semibold text-[#1D6B42]">FCA Authorised</span>
+        <span className="text-[11px] text-gray-400 ml-1">✓</span>
+      </div>
+    </div>
+  )
+}
+
 /* ────────────────────────────────────────────────────────────── */
 /*  MAIN APP                                                       */
 /* ────────────────────────────────────────────────────────────── */
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showQuote, setShowQuote] = useState(false)
+  const [showWaitlist, setShowWaitlist] = useState(false)
+  const [waitlistTitle, setWaitlistTitle] = useState('Get early access.')
   const londonTime = useLondonTime()
+
+  /* 3D card tilt state */
+  const [tiltX, setTiltX] = useState(0)
+  const [tiltY, setTiltY] = useState(0)
+  const heroRef = useRef<HTMLElement>(null)
+
+  const handleHeroMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const rect = heroRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    const dx = (e.clientX - cx) / (rect.width / 2)
+    const dy = (e.clientY - cy) / (rect.height / 2)
+    setTiltY(dx * 12)
+    setTiltX(-dy * 12)
+  }, [])
+
+  const handleHeroMouseLeave = useCallback(() => {
+    setTiltX(0)
+    setTiltY(0)
+  }, [])
+
+  function openWaitlist(t?: string) {
+    setWaitlistTitle(t || 'Get early access.')
+    setShowWaitlist(true)
+  }
 
   /* chat state */
   const [messages, setMessages] = useState<Message[]>([
@@ -246,14 +759,17 @@ export default function App() {
   return (
     <div className="bg-white min-h-screen overflow-x-hidden">
 
-      {/* ════════════════════════════════════════════════════ */}
-      {/* SECTION 1 — HERO                                     */}
-      {/* ════════════════════════════════════════════════════ */}
-      <section className="min-h-screen bg-[#EFEFEF] relative flex flex-col overflow-hidden">
-
-        {/* ── Shader stack ───────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* SECTION 1 — HERO                                    */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section
+        ref={heroRef}
+        className="min-h-screen bg-[#EFEFEF] relative flex flex-col overflow-hidden"
+        onMouseMove={handleHeroMouseMove}
+        onMouseLeave={handleHeroMouseLeave}
+      >
+        {/* ── Shader stack ──────────────────────────────── */}
         <div className="absolute inset-0 z-10 pointer-events-none">
-          {/* Layer 1: MeshGradient (ChromaFlow substitute — animated color flow) */}
           <div className="absolute inset-0">
             <MeshGradient
               colors={['#EFEFEF', '#f2f5f0', '#d6e8db', '#eaf3ee']}
@@ -263,7 +779,6 @@ export default function App() {
               style={{ width: '100%', height: '100%' }}
             />
           </div>
-          {/* Layer 2: Swirl (subtle swirl on top, low opacity) */}
           <div className="absolute inset-0" style={{ opacity: 0.22, mixBlendMode: 'multiply' }}>
             <Swirl
               colors={['#c8e0d0', '#EBF5EE', '#f0f7f3']}
@@ -278,7 +793,6 @@ export default function App() {
               style={{ width: '100%', height: '100%' }}
             />
           </div>
-          {/* Layer 3: FlutedGlass (glass distortion overlay) */}
           <div className="absolute inset-0" style={{ opacity: 0.35 }}>
             <FlutedGlass
               colorBack="#00000000"
@@ -296,22 +810,21 @@ export default function App() {
           </div>
         </div>
 
-        {/* ── NAV ─────────────────────────────────────────── */}
+        {/* ── NAV ─────────────────────────────────────── */}
         <div className="relative z-20 max-w-[1440px] mx-auto w-full p-2 sm:p-3">
           <nav className="bg-white rounded-full flex items-center justify-between" style={{ padding: '5px' }}>
-
             {/* Left */}
             <div className="flex items-center gap-4 sm:gap-6 pl-1">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-900 flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold tracking-tight" style={{ fontSize: 10 }}>GN</span>
               </div>
               <div className="hidden md:flex items-center gap-6">
-                {['Plans', 'Coverage', 'Advisors', 'Contact'].map(l => (
-                  <a key={l} href="#" className="text-[14px] text-gray-900 hover:text-gray-500 transition-colors duration-300">{l}</a>
-                ))}
+                <button onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })} className="text-[14px] text-gray-900 hover:text-gray-500 transition-colors duration-300">Plans</button>
+                <button onClick={() => document.getElementById('coverage')?.scrollIntoView({ behavior: 'smooth' })} className="text-[14px] text-gray-900 hover:text-gray-500 transition-colors duration-300">Coverage</button>
+                <button onClick={() => document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth' })} className="text-[14px] text-gray-900 hover:text-gray-500 transition-colors duration-300">Advisors</button>
+                <button onClick={() => openWaitlist('Get in touch')} className="text-[14px] text-gray-900 hover:text-gray-500 transition-colors duration-300">Contact</button>
               </div>
             </div>
-
             {/* Right: desktop */}
             <div className="hidden md:flex items-center gap-4 pr-0.5">
               <span className="hidden lg:block text-[13px] text-gray-600">Now covering UK &amp; EU founders</span>
@@ -321,7 +834,7 @@ export default function App() {
               </div>
               <button
                 className="group flex items-center gap-2 bg-gray-900 hover:bg-[#1D6B42] text-white text-[13px] font-medium rounded-full pl-5 pr-2 py-2 transition-colors duration-300"
-                onClick={() => document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => setShowQuote(true)}
               >
                 <div className="overflow-hidden" style={{ height: 20 }}>
                   <div className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-1/2">
@@ -334,7 +847,6 @@ export default function App() {
                 </div>
               </button>
             </div>
-
             {/* Right: mobile */}
             <div className="flex md:hidden items-center pr-0.5">
               <button
@@ -348,40 +860,50 @@ export default function App() {
           </nav>
         </div>
 
-        {/* ── Hero content (bottom-anchored) ─────────────── */}
+        {/* ── Hero content ──────────────────────────── */}
         <div className="flex-1 flex items-end relative z-20">
           <div className="max-w-[1440px] mx-auto w-full px-5 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20">
-            <p className="text-[13px] sm:text-[14px] text-gray-900 tracking-wide mb-5 sm:mb-8">
-              Gnocchi Insurance
-            </p>
-            <h1
-              className="font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 mb-8 sm:mb-12"
-              style={{ fontSize: 'clamp(1.75rem, 7vw, 4.2rem)' }}
-            >
-              Business insurance
-              <br className="hidden sm:block" /><span className="sm:hidden"> </span>
-              built for founders,
-              <br className="hidden sm:block" /><span className="sm:hidden"> </span>
-              not legacy businesses.
-            </h1>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-12 lg:gap-0">
+              {/* Left: copy */}
+              <div className="max-w-xl">
+                {/* Label pill */}
+                <div className="inline-flex items-center gap-2 border border-[#1D6B42]/40 rounded-full px-3.5 py-1.5 mb-6 sm:mb-8">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#1D6B42]" />
+                  <span className="text-[12px] sm:text-[13px] font-medium text-[#1D6B42]">Now active — UK &amp; EU startup cover</span>
+                </div>
+                <h1
+                  className="font-medium leading-[1.06] tracking-[-0.03em] text-gray-900 mb-6 sm:mb-8"
+                  style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 'clamp(2.4rem, 7vw, 5rem)' }}
+                >
+                  Stop worrying<br />about insurance.
+                </h1>
+                <p className="text-[15px] sm:text-[16px] leading-[1.68] text-gray-600 mb-8 sm:mb-10 max-w-md">
+                  Tailored cover for UK &amp; EU founders. Pre-seed to Series A+. Get the right protection in 48 hours — without the broker, the jargon, or the hassle.
+                </p>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
+                  <RollButton
+                    text="Start cover"
+                    variant="green"
+                    size="md"
+                    onClick={() => setShowQuote(true)}
+                  />
+                  {/* FCA badge */}
+                  <div
+                    className="flex items-center gap-2 bg-white rounded-[4px] px-3 sm:px-4 py-2 cursor-default select-none transition-shadow duration-200"
+                    style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)')}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)')}
+                  >
+                    <Starburst className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-[#1D6B42]" />
+                    <span className="text-[13px] sm:text-[14px] font-medium text-gray-900">FCA Authorised</span>
+                    <span className="text-[10px] sm:text-[11px] bg-gray-900 text-white px-1.5 sm:px-2 py-0.5 rounded font-medium">UK &amp; EU</span>
+                  </div>
+                </div>
+              </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
-              <RollButton
-                text="Get my quote"
-                variant="green"
-                size="md"
-                onClick={() => document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth' })}
-              />
-              {/* FCA badge */}
-              <div
-                className="flex items-center gap-2 bg-white rounded-[4px] px-3 sm:px-4 py-2 cursor-default select-none transition-shadow duration-200"
-                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)')}
-              >
-                <Starburst className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-[#1D6B42]" />
-                <span className="text-[13px] sm:text-[14px] font-medium text-gray-900">FCA Authorised</span>
-                <span className="text-[10px] sm:text-[11px] bg-gray-900 text-white px-1.5 sm:px-2 py-0.5 rounded font-medium">UK &amp; EU</span>
+              {/* Right: 3D card (desktop only) */}
+              <div className="hidden lg:flex items-end justify-end pb-8 pr-4">
+                <HeroCard3D tiltX={tiltX} tiltY={tiltY} />
               </div>
             </div>
           </div>
@@ -405,36 +927,46 @@ export default function App() {
             <span>{londonTime} London</span>
           </div>
           <ul className="flex flex-col gap-4 mb-8">
-            {['Plans', 'Coverage', 'Advisors', 'Contact'].map(l => (
-              <li key={l}>
-                <a href="#" className="text-[28px] sm:text-[32px] font-medium text-gray-900 hover:text-[#1D6B42] transition-colors duration-200" onClick={() => setMenuOpen(false)}>{l}</a>
+            {[
+              { label: 'Plans', action: () => { setMenuOpen(false); document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' }) } },
+              { label: 'Coverage', action: () => { setMenuOpen(false); document.getElementById('coverage')?.scrollIntoView({ behavior: 'smooth' }) } },
+              { label: 'Advisors', action: () => { setMenuOpen(false); document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth' }) } },
+              { label: 'Contact', action: () => { setMenuOpen(false); openWaitlist('Get in touch') } },
+            ].map(item => (
+              <li key={item.label}>
+                <button onClick={item.action} className="text-[28px] sm:text-[32px] font-medium text-gray-900 hover:text-[#1D6B42] transition-colors duration-200">{item.label}</button>
               </li>
             ))}
           </ul>
-          <RollButton text="Get a quote" variant="green" size="md" onClick={() => setMenuOpen(false)} />
+          <RollButton text="Get a quote" variant="green" size="md" onClick={() => { setMenuOpen(false); setShowQuote(true) }} />
         </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════ */}
-      {/* SECTION 2 — ABOUT                                    */}
-      {/* ════════════════════════════════════════════════════ */}
-      <section className="bg-white pt-16 sm:pt-20 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 overflow-hidden">
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* MARQUEE — Trusted by founders                       */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <MarqueeSection />
+
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* SECTION 2 — ABOUT                                   */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section id="coverage" className="bg-white pt-16 sm:pt-20 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
-          <Badge num="1" label="Introducing Gnocchi" />
+          <Badge num="1" label="Why Gnocchi" />
           <h2
             className="font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 mb-12 sm:mb-16 lg:mb-28"
             style={{ fontSize: 'clamp(1.5rem, 4vw, 3.2rem)' }}
           >
-            Tailored protection for<br />the founders building tomorrow.
+            Insurance that works<br />as hard as you do.
           </h2>
 
           {/* Mobile / tablet */}
           <div className="lg:hidden space-y-8">
             <div>
               <p className="text-[15px] sm:text-[17px] leading-[1.6] font-medium text-gray-900 mb-7">
-                Through deep understanding of startup risk, regulatory requirements and growth stage, we help UK and EU founders build their companies with complete confidence and the cover they actually need.
+                Founders don't have time for brokers, jargon, or policies built for legacy businesses. Gnocchi gives you the right cover for your stage, sector and size — without the friction.
               </p>
-              <RollButton text="Our story" variant="green" size="md" />
+              <RollButton text="Our story" variant="green" size="md" onClick={() => openWaitlist('Stay updated on Gnocchi')} />
             </div>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mt-8">
               <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="Founders collaborating" className="sm:w-[45%] aspect-[438/346] object-cover rounded-xl sm:rounded-2xl" />
@@ -449,13 +981,13 @@ export default function App() {
             </div>
             <div className="self-start flex flex-col justify-end pb-4">
               <p className="text-[16px] sm:text-[18px] leading-[1.65] font-medium text-gray-900 whitespace-nowrap mb-8">
-                Through deep understanding of<br />
-                startup risk, regulatory requirements<br />
-                and growth stage, we help UK and<br />
-                EU founders build with confidence<br />
-                and the cover they actually need.
+                Founders don't have time for brokers,<br />
+                jargon, or policies built for legacy<br />
+                businesses. Gnocchi gives you the<br />
+                right cover for your stage, sector<br />
+                and size — without the friction.
               </p>
-              <RollButton text="Our story" variant="green" size="md" />
+              <RollButton text="Our story" variant="green" size="md" onClick={() => openWaitlist('Stay updated on Gnocchi')} />
             </div>
             <div className="self-end">
               <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80" alt="Modern workspace" className="aspect-[3/2] object-cover rounded-2xl w-full" />
@@ -464,18 +996,21 @@ export default function App() {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════ */}
-      {/* SECTION 3 — PACKAGES                                 */}
-      {/* ════════════════════════════════════════════════════ */}
-      <section className="bg-[#F5F5F5] pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28">
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* SECTION 3 — PACKAGES                                */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section id="plans" className="bg-[#F5F5F5] pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
           <Badge num="2" label="Coverage plans" light />
           <h2
-            className="font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 mb-10 sm:mb-14 lg:mb-16"
+            className="font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 mb-4"
             style={{ fontSize: 'clamp(1.75rem, 7vw, 4.2rem)' }}
           >
-            Our packages
+            Cover that grows<br />with you.
           </h2>
+          <p className="text-[15px] sm:text-[16px] text-gray-500 mb-10 sm:mb-14 lg:mb-16 max-w-md leading-[1.6]">
+            Start with the essentials. Upgrade as you scale. No re-application, no admin.
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-7">
             {/* Essentials */}
@@ -501,10 +1036,13 @@ export default function App() {
                     ))}
                   </ul>
                 </div>
-                <ExpandPill label="View plan" />
+                <ExpandPill label="View plan" onClick={() => setShowQuote(true)} />
               </div>
               <p className="text-[13px] text-gray-600 mt-4 leading-relaxed">Core protection for early-stage teams. Professional indemnity, cyber, and public liability from day one.</p>
               <p className="text-[14px] sm:text-[15px] font-semibold text-gray-900 mt-1">Essentials — Pre-Seed</p>
+              <div className="mt-4">
+                <RollButton text="Start with Essentials" variant="green" size="sm" onClick={() => setShowQuote(true)} />
+              </div>
             </div>
 
             {/* Growth */}
@@ -531,7 +1069,10 @@ export default function App() {
                   </ul>
                 </div>
                 {/* White expand pill */}
-                <div className="group/pill absolute bottom-4 left-4 z-10 flex items-center overflow-hidden rounded-full cursor-pointer h-9 w-9 hover:w-[168px] transition-all duration-300 ease-in-out bg-white">
+                <div
+                  className="group/pill absolute bottom-4 left-4 z-10 flex items-center overflow-hidden rounded-full cursor-pointer h-9 w-9 hover:w-[168px] transition-all duration-300 ease-in-out bg-white"
+                  onClick={() => setShowQuote(true)}
+                >
                   <span className="ml-4 whitespace-nowrap text-[13px] font-medium text-gray-900 opacity-0 group-hover/pill:opacity-100 transition-opacity delay-100 duration-200">View plan</span>
                   <span className="ml-auto mr-2 flex-shrink-0">
                     <ArrowRight size={14} className="text-gray-900 transition-transform duration-300 -rotate-45 group-hover/pill:rotate-0" />
@@ -540,17 +1081,30 @@ export default function App() {
               </div>
               <p className="text-[13px] text-gray-600 mt-4 leading-relaxed">The all-in-one growth plan for funded startups. D&amp;O cover, enhanced cyber, and investor due diligence support.</p>
               <p className="text-[14px] sm:text-[15px] font-semibold text-gray-900 mt-1">Growth — Seed</p>
+              <div className="mt-4">
+                <RollButton text="Start with Growth" variant="dark" size="sm" onClick={() => setShowQuote(true)} />
+              </div>
             </div>
+          </div>
+
+          {/* Compare link */}
+          <div className="mt-8 sm:mt-10 text-center">
+            <button
+              onClick={() => openWaitlist('Get full plan comparison')}
+              className="text-[14px] font-medium text-[#1D6B42] hover:text-[#155232] underline underline-offset-2 transition-colors"
+            >
+              Compare all plans →
+            </button>
           </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════ */}
-      {/* SECTION 4 — COVERAGE ADVISOR (claude-fable-5)        */}
-      {/* ════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* SECTION 4 — COVERAGE ADVISOR (claude-fable-5)       */}
+      {/* ═══════════════════════════════════════════════════ */}
       <section id="advisor" className="bg-white pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
-          <Badge num="3" label="Coverage advisor" />
+          <Badge num="3" label="Talk to an advisor" />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
             {/* Left: copy */}
@@ -559,10 +1113,10 @@ export default function App() {
                 className="font-medium leading-[1.1] tracking-[-0.03em] text-gray-900 mb-5"
                 style={{ fontSize: 'clamp(1.75rem, 4.5vw, 3.5rem)' }}
               >
-                Describe your startup,<br />get a tailored quote.
+                Get your quote<br />in minutes.
               </h2>
               <p className="text-[15px] sm:text-[16px] leading-[1.68] text-gray-500 mb-8 max-w-md">
-                No forms. No phone calls. Just tell us about your business and our coverage advisor will recommend exactly what you need — with indicative pricing in plain English.
+                No forms. No phone calls. Describe your startup and our advisor walks you through exactly what you need — with pricing.
               </p>
               <ul className="space-y-4 mb-8">
                 {[
@@ -593,7 +1147,7 @@ export default function App() {
                   <span className="text-white font-bold" style={{ fontSize: 9 }}>GN</span>
                 </div>
                 <div>
-                  <div className="text-[13px] font-600 text-gray-900 font-semibold">Gnocchi advisor</div>
+                  <div className="text-[13px] font-semibold text-gray-900">Gnocchi advisor</div>
                   <div className="flex items-center gap-1.5 text-[12px] text-gray-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
                     Online now
@@ -661,7 +1215,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── API key modal ─────────────────────────────────── */}
+      {/* ── API key modal ────────────────────────────────── */}
       {showKeyModal && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setShowKeyModal(false)}>
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
@@ -684,6 +1238,12 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* ── Quote Form Modal ─────────────────────────────── */}
+      {showQuote && <QuoteFormModal onClose={() => setShowQuote(false)} />}
+
+      {/* ── Waitlist Modal ───────────────────────────────── */}
+      {showWaitlist && <WaitlistModal onClose={() => setShowWaitlist(false)} title={waitlistTitle} />}
 
     </div>
   )
