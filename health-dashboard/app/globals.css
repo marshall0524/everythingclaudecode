@@ -2,54 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── shadcn/ui design tokens ──────────────────────────────────── */
+@layer base {
+  :root {
+    --background:       0 0% 4%;
+    --foreground:       210 40% 98%;
+    --card:             220 14% 10%;
+    --card-foreground:  210 40% 98%;
+    --popover:          220 14% 10%;
+    --popover-foreground: 210 40% 98%;
+    --primary:          142 71% 45%;
+    --primary-foreground: 144 61% 5%;
+    --secondary:        217 19% 16%;
+    --secondary-foreground: 210 40% 98%;
+    --muted:            217 19% 16%;
+    --muted-foreground: 215 20% 55%;
+    --accent:           217 19% 16%;
+    --accent-foreground: 210 40% 98%;
+    --destructive:      0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border:           217 19% 19%;
+    --input:            217 19% 19%;
+    --ring:             142 71% 45%;
+    --radius:           0.75rem;
+
+    /* semantic health tokens */
+    --health-recovery: 142 71% 45%;   /* #30D158 */
+    --health-strain:   211 100% 55%;  /* #0A84FF */
+    --health-sleep:    270 66% 63%;   /* #BF5AF2 */
+    --health-warning:  36 100% 53%;   /* #FF9F0A */
+    --health-danger:   4 100% 59%;    /* #FF3B30 */
+  }
+}
+
 :root {
   --font-inter: 'Inter', system-ui, sans-serif;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+  border-color: hsl(var(--border));
 }
 
 body {
-  background-color: #030712;
-  color: #f9fafb;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family: var(--font-inter);
   overscroll-behavior-y: none;
 }
 
-/* Safe area for iPhone notch/home indicator */
+/* ── component aliases ─────────────────────────────────────────── */
+.bg-background      { background-color: hsl(var(--background)); }
+.bg-card            { background-color: hsl(var(--card)); }
+.bg-secondary       { background-color: hsl(var(--secondary)); }
+.bg-muted           { background-color: hsl(var(--muted)); }
+.bg-primary         { background-color: hsl(var(--primary)); }
+.text-foreground    { color: hsl(var(--foreground)); }
+.text-card-foreground { color: hsl(var(--card-foreground)); }
+.text-muted-foreground { color: hsl(var(--muted-foreground)); }
+.text-primary       { color: hsl(var(--primary)); }
+.text-primary-foreground { color: hsl(var(--primary-foreground)); }
+.text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
+.border-border      { border-color: hsl(var(--border)); }
+.ring-ring          { --tw-ring-color: hsl(var(--ring)); }
+
+/* ── safe area ─────────────────────────────────────────────────── */
 .safe-area-pb {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 2px;
-}
-
-/* Prevent text selection on cards */
-.select-none {
-  -webkit-user-select: none;
-  user-select: none;
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 2px; }
 
 @layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out;
-  }
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out;
-  }
+  .animate-fade-in   { animation: fadeIn 0.4s ease-out; }
+  .animate-slide-up  { animation: slideUp 0.3s ease-out; }
 }
