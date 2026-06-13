@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Activity, Brain, RefreshCw, FileText, Home } from 'lucide-react';
+import { Activity, Brain, RefreshCw, ClipboardList, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: Home },
-  { href: '/coach', label: 'Coach', icon: Brain },
-  { href: '/sync', label: 'Sync', icon: RefreshCw },
-  { href: '/pathology', label: 'Docs', icon: FileText },
+  { href: '/',      label: 'Dashboard', icon: Home },
+  { href: '/gp',    label: 'Records',   icon: ClipboardList },
+  { href: '/coach', label: 'Coach',     icon: Brain },
+  { href: '/sync',  label: 'Sync',      icon: RefreshCw },
 ];
 
 export default function Navigation() {
