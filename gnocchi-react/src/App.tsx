@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Clock, Menu, X, ArrowRight, Send, Shield, Check, Lock, ChevronDown, ChevronUp } from 'lucide-react'
+import { Clock, Menu, X, ArrowRight, Shield, Check, Lock, ChevronDown, ChevronUp } from 'lucide-react'
 import { Swirl, MeshGradient, FlutedGlass } from '@paper-design/shaders-react'
 
 /* ── Live London clock ──────────────────────────────────────── */
@@ -99,42 +99,6 @@ function Starburst({ className = '' }: { className?: string }) {
   )
 }
 
-/* ── Chat helpers ───────────────────────────────────────────── */
-const ADVISOR_SYSTEM = `You are a friendly coverage advisor at Gnocchi Insurance. You help founders:
-1. Understand what business insurance they need (and what they don't)
-2. Explain each type of cover in plain, jargon-free language
-3. Give an indicative quote recommendation (Essentials £89/mo, Growth £249/mo, Custom for Series B+)
-4. Answer common questions about how Gnocchi works, the underwriting process, claims, and compliance
-
-You are NOT a broker. You provide personalised guidance and rough estimates.
-Always refer founders to the formal quote process for binding prices.
-Tone: warm, direct, concise. Founders are busy — give short clear answers.
-Never mention AI or automation. Always mention FCA authorisation.
-UK GDPR and ICO registration relevant for data-handling questions.`
-
-type Message = { role: 'user' | 'assistant'; content: string }
-
-function formatMsg(text: string): string {
-  let t = text
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/£[\d,]+(?:\/month|\/mo)?(?:\s*[-–]\s*£[\d,]+(?:\/month|\/mo)?)?/g,
-      m => `<span style="background:#EBF5EE;color:#1D6B42;font-weight:600;padding:0 5px;border-radius:4px;font-size:.75rem">${m}</span>`)
-  const lines = t.split('\n')
-  let out = '', inList = false
-  for (const ln of lines) {
-    const bullet = ln.match(/^[-•]\s+(.*)/)
-    if (bullet) {
-      if (!inList) { out += '<ul style="padding-left:1.2em;margin:.25rem 0">'; inList = true }
-      out += `<li style="margin-bottom:.2rem">${bullet[1]}</li>`
-    } else {
-      if (inList) { out += '</ul>'; inList = false }
-      if (ln.trim()) out += `<p style="margin-bottom:.25rem">${ln}</p>`
-    }
-  }
-  if (inList) out += '</ul>'
-  return out
-}
 
 /* ── Quote Form Modal ───────────────────────────────────────── */
 const SECTORS = [
@@ -749,11 +713,6 @@ function PricingSection({ onQuote, onWaitlist }: { onQuote: () => void; onWaitli
           </div>
         </div>
 
-        {/* Bundle discount */}
-        <div className="bg-[#EBF5EE] border border-[#A8D4B8]/40 rounded-2xl px-6 py-4 flex items-center gap-3">
-          <span className="text-[#1D6B42] text-[18px]">🎁</span>
-          <p className="text-[14px] text-[#1D6B42] font-medium">Bundle 2+ products and save 5% · Automatic at checkout</p>
-        </div>
       </div>
     </section>
   )
@@ -1065,6 +1024,292 @@ function Nav({
   )
 }
 
+/* ── Advisor Chat (guided flow — no API key required) ────────── */
+type AnswerMap = { sector?: string; teamSize?: string; stage?: string }
+
+interface FlowOption {
+  label: string
+  answerKey?: keyof AnswerMap
+  answerValue?: string
+  next: string
+}
+
+interface FlowMsg {
+  role: 'advisor' | 'user'
+  text: string
+  options?: FlowOption[]
+  planCard?: { name: string; price: number; features: string[]; dark: boolean }
+  isEmail?: boolean
+}
+
+function getRecommendation(answers: AnswerMap): { name: string; price: number; features: string[]; dark: boolean } {
+  const isScaleUp =
+    answers.teamSize === 'growing' ||
+    answers.teamSize === 'scaling' ||
+    answers.stage === 'seriesa' ||
+    answers.stage === 'seriesb'
+  if (isScaleUp) {
+    return {
+      name: 'Scale-up', price: 249, dark: true,
+      features: [
+        'Everything in Founder',
+        'D&O cover £2M',
+        'Enhanced cyber £2M',
+        'GDPR breach legal support',
+        'Investor DD document pack',
+      ],
+    }
+  }
+  return {
+    name: 'Founder', price: 89, dark: false,
+    features: [
+      'PI £500k · PL £10M · EL £10M',
+      'Basic cyber £100k',
+      'FCA & ICO compliance docs',
+      'Policy portal access',
+      '48h quote turnaround',
+    ],
+  }
+}
+
+function getNextMessages(nextStep: string, selectedLabel: string, answers: AnswerMap): FlowMsg[] {
+  const userMsg: FlowMsg = { role: 'user', text: selectedLabel }
+
+  if (nextStep === 'team') {
+    return [userMsg, {
+      role: 'advisor',
+      text: `Got it — ${answers.sector}. How many people are on your team right now?`,
+      options: [
+        { label: 'Solo / co-founder', answerKey: 'teamSize', answerValue: 'solo', next: 'stage' },
+        { label: 'Small team (3–10)', answerKey: 'teamSize', answerValue: 'small', next: 'stage' },
+        { label: 'Growing (11–30)', answerKey: 'teamSize', answerValue: 'growing', next: 'stage' },
+        { label: 'Scaling (31+)', answerKey: 'teamSize', answerValue: 'scaling', next: 'stage' },
+      ],
+    }]
+  }
+
+  if (nextStep === 'stage') {
+    return [userMsg, {
+      role: 'advisor',
+      text: 'Perfect. What stage are you at?',
+      options: [
+        { label: 'Pre-seed / Bootstrapped', answerKey: 'stage', answerValue: 'preseed', next: 'result' },
+        { label: 'Seed / Angel-backed', answerKey: 'stage', answerValue: 'seed', next: 'result' },
+        { label: 'Series A', answerKey: 'stage', answerValue: 'seriesa', next: 'result' },
+        { label: 'Series B+', answerKey: 'stage', answerValue: 'seriesb', next: 'result' },
+      ],
+    }]
+  }
+
+  if (nextStep === 'result') {
+    const rec = getRecommendation(answers)
+    return [userMsg, {
+      role: 'advisor',
+      text: `Based on your profile, here's what I'd recommend:`,
+      planCard: rec,
+      options: [
+        { label: 'Get a full quote →', next: 'email' },
+        { label: 'Tell me more first', next: 'moreinfo' },
+      ],
+    }]
+  }
+
+  if (nextStep === 'moreinfo') {
+    const rec = getRecommendation(answers)
+    const detail = rec.name === 'Scale-up'
+      ? `The Scale-up plan at £249/mo covers Directors & Officers up to £2M, enhanced cyber up to £2M, GDPR breach legal support, and an Investor Due Diligence document pack — everything you'd need going into a raise.`
+      : `The Founder plan at £89/mo covers professional indemnity up to £500k, public and employers' liability at £10M, plus basic cyber cover, FCA compliance docs, and portal access — solid all-round cover for early-stage teams.`
+    return [userMsg, {
+      role: 'advisor',
+      text: detail,
+      options: [
+        { label: 'Yes, get my quote', next: 'email' },
+        { label: 'Maybe later', next: 'done_soft' },
+      ],
+    }]
+  }
+
+  if (nextStep === 'email') {
+    return [userMsg, {
+      role: 'advisor',
+      text: `Perfect — drop your email below and we'll have your personalised quote ready within 48 hours.`,
+      isEmail: true,
+    }]
+  }
+
+  if (nextStep === 'done_soft') {
+    return [userMsg, {
+      role: 'advisor',
+      text: `No problem at all! When you're ready, just tap "Get a quote" at the top. We're here whenever you need us.`,
+    }]
+  }
+
+  return [userMsg]
+}
+
+function AdvisorChat({ onQuote }: { onQuote: () => void }) {
+  const [messages, setMessages] = useState<FlowMsg[]>([{
+    role: 'advisor',
+    text: "Hi! I'm your Gnocchi coverage advisor. Let's find the right cover for your startup in a few quick steps. What best describes what you do?",
+    options: [
+      { label: 'SaaS / B2B', answerKey: 'sector', answerValue: 'SaaS / B2B', next: 'team' },
+      { label: 'Fintech', answerKey: 'sector', answerValue: 'Fintech', next: 'team' },
+      { label: 'E-commerce', answerKey: 'sector', answerValue: 'E-commerce', next: 'team' },
+      { label: 'Health Tech', answerKey: 'sector', answerValue: 'Health Tech', next: 'team' },
+      { label: 'Hardware / Deep Tech', answerKey: 'sector', answerValue: 'Hardware / Deep Tech', next: 'team' },
+      { label: 'Other', answerKey: 'sector', answerValue: 'Other', next: 'team' },
+    ],
+  }])
+  const [answers, setAnswers] = useState<AnswerMap>({})
+  const [emailInput, setEmailInput] = useState('')
+  const [emailDone, setEmailDone] = useState(false)
+  const [disabledIdxs, setDisabledIdxs] = useState<Set<number>>(new Set())
+  const chatEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  function handleOption(msgIdx: number, opt: FlowOption) {
+    if (disabledIdxs.has(msgIdx)) return
+    setDisabledIdxs(prev => new Set([...prev, msgIdx]))
+    if (opt.next === 'quote_form') { onQuote(); return }
+    const newAnswers = opt.answerKey ? { ...answers, [opt.answerKey]: opt.answerValue } : answers
+    setAnswers(newAnswers)
+    const nextMsgs = getNextMessages(opt.next, opt.label, newAnswers)
+    setTimeout(() => setMessages(prev => [...prev, ...nextMsgs]), 280)
+  }
+
+  function submitEmail(e: React.FormEvent) {
+    e.preventDefault()
+    const safe = emailInput.trim()
+    if (!safe.includes('@') || safe.includes('<') || safe.includes('>')) return
+    try { localStorage.setItem('gno_lead_email', safe) } catch { /* ignore */ }
+    setEmailDone(true)
+    setTimeout(() => setMessages(prev => [
+      ...prev,
+      { role: 'user', text: safe },
+      {
+        role: 'advisor',
+        text: `You're on the list! We'll be in touch at ${safe} within 48 hours.`,
+        options: [{ label: 'View full quote form →', next: 'quote_form' }],
+      },
+    ]), 300)
+  }
+
+  return (
+    <div className="flex flex-col border border-gray-100 rounded-2xl overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)]" style={{ height: 520 }}>
+      {/* Header */}
+      <div className="flex items-center gap-3 px-5 py-3.5 border-b border-gray-100 bg-white flex-shrink-0">
+        <div className="flex-shrink-0"><GnocchiLogo size={22} /></div>
+        <div>
+          <div className="text-[13px] font-semibold text-gray-900">Gnocchi advisor</div>
+          <div className="flex items-center gap-1.5 text-[12px] text-gray-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+            Online now
+          </div>
+        </div>
+        <div className="ml-auto flex items-center gap-1.5 text-[11px] text-gray-400 border border-gray-100 rounded-full px-3 py-1">
+          <Shield size={10} />
+          <span>Secure</span>
+        </div>
+      </div>
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50" style={{ scrollbarWidth: 'thin' }}>
+        {messages.map((msg, idx) => (
+          <div key={idx}>
+            <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-2`}>
+              <div className={`max-w-[84%] px-4 py-3 rounded-2xl text-[13px] leading-[1.6] ${
+                msg.role === 'user'
+                  ? 'bg-gray-900 text-white rounded-br-sm'
+                  : 'bg-white text-gray-800 rounded-bl-sm border border-gray-100 shadow-sm'
+              }`}>
+                {msg.text}
+              </div>
+            </div>
+            {/* Inline plan card */}
+            {msg.planCard && (
+              <div className="flex justify-start mb-2">
+                <div className={`rounded-2xl p-4 max-w-[84%] w-full ${msg.planCard.dark ? 'bg-[#0F2419]' : 'bg-white border border-gray-200'}`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full ${msg.planCard.dark ? 'text-[#A8D4B8] bg-[#1D6B42]/30' : 'text-[#1D6B42] bg-[#EBF5EE]'}`}>
+                      {msg.planCard.name}
+                    </span>
+                    {msg.planCard.name === 'Scale-up' && (
+                      <span className="text-[10px] font-semibold bg-[#1D6B42] text-white px-2 py-0.5 rounded-full">Most popular</span>
+                    )}
+                  </div>
+                  <div className="mb-3">
+                    <span className={`text-2xl font-bold ${msg.planCard.dark ? 'text-white' : 'text-gray-900'}`}>£{msg.planCard.price}</span>
+                    <span className={`text-xs ml-1 ${msg.planCard.dark ? 'text-[#5A8A6A]' : 'text-gray-400'}`}>/mo</span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {msg.planCard.features.map(f => (
+                      <li key={f} className={`flex items-start gap-2 text-[12px] ${msg.planCard!.dark ? 'text-[#A8D4B8]' : 'text-gray-600'}`}>
+                        <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${msg.planCard!.dark ? 'bg-[#1D6B42]/40' : 'bg-[#EBF5EE]'}`}>
+                          <svg width="7" height="7" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke={msg.planCard!.dark ? '#A8D4B8' : '#1D6B42'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+            {/* Email capture */}
+            {msg.isEmail && !emailDone && (
+              <div className="flex justify-start mb-2">
+                <form onSubmit={submitEmail} className="flex gap-2 max-w-[84%] w-full">
+                  <input
+                    type="email"
+                    value={emailInput}
+                    onChange={e => setEmailInput(e.target.value)}
+                    placeholder="your@email.com"
+                    autoFocus
+                    className="flex-1 text-[13px] bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-[#1D6B42] transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!emailInput.includes('@')}
+                    className="text-[13px] font-medium bg-[#1D6B42] hover:bg-[#155232] disabled:opacity-40 text-white rounded-xl px-4 py-2.5 transition-colors whitespace-nowrap"
+                  >
+                    Send →
+                  </button>
+                </form>
+              </div>
+            )}
+            {/* Option buttons */}
+            {msg.options && msg.options.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-1">
+                {msg.options.map((opt, oi) => (
+                  <button
+                    key={oi}
+                    onClick={() => handleOption(idx, opt)}
+                    disabled={disabledIdxs.has(idx)}
+                    className={`text-[12px] font-medium rounded-full px-3.5 py-1.5 border transition-all duration-150 ${
+                      disabledIdxs.has(idx)
+                        ? 'border-gray-100 bg-gray-50 text-gray-300 cursor-default'
+                        : 'border-[#1D6B42]/40 bg-[#EBF5EE] text-[#1D6B42] hover:bg-[#1D6B42] hover:text-white cursor-pointer'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+        <div ref={chatEndRef} />
+      </div>
+      {/* Footer */}
+      <div className="px-4 py-2.5 border-t border-gray-100 bg-white flex-shrink-0 flex items-center gap-2 text-[11px] text-gray-400">
+        <Shield size={10} />
+        <span>Tap an option above to continue · No data stored until you submit your email</span>
+      </div>
+    </div>
+  )
+}
+
 /* ────────────────────────────────────────────────────────────── */
 /*  MAIN APP                                                       */
 /* ────────────────────────────────────────────────────────────── */
@@ -1082,9 +1327,11 @@ export default function App() {
   })
   const londonTime = useLondonTime()
 
-  /* 3D card tilt state */
+  /* 3D card tilt + parallax state */
   const [tiltX, setTiltX] = useState(0)
   const [tiltY, setTiltY] = useState(0)
+  const [mouseX, setMouseX] = useState(0)
+  const [mouseY, setMouseY] = useState(0)
   const heroRef = useRef<HTMLElement>(null)
 
   const handleHeroMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
@@ -1096,9 +1343,14 @@ export default function App() {
     const dy = (e.clientY - cy) / (rect.height / 2)
     setTiltY(dx * 12)
     setTiltX(-dy * 12)
+    setMouseX(dx)
+    setMouseY(dy)
   }, [])
 
-  const handleHeroMouseLeave = useCallback(() => { setTiltX(0); setTiltY(0) }, [])
+  const handleHeroMouseLeave = useCallback(() => {
+    setTiltX(0); setTiltY(0)
+    setMouseX(0); setMouseY(0)
+  }, [])
 
   function openWaitlist(t?: string) {
     setWaitlistTitle(t || 'Get early access.')
@@ -1108,96 +1360,6 @@ export default function App() {
   function dismissWebinar() {
     try { localStorage.setItem('gno_webinar_dismissed', '1') } catch { /* ignore */ }
     setWebinarDismissed(true)
-  }
-
-  /* chat state */
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi! I'm your Gnocchi coverage advisor. Tell me about your startup — what you do, your team size, and where you're based — and I'll walk you through exactly the cover you need." }
-  ])
-  const [chatInput, setChatInput] = useState('')
-  const [chatLoading, setChatLoading] = useState(false)
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gno_k') || '')
-  const [showKeyModal, setShowKeyModal] = useState(false)
-  const [keyDraft, setKeyDraft] = useState('')
-  const chatEndRef = useRef<HTMLDivElement>(null)
-  const historyRef = useRef<Message[]>([])
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, chatLoading])
-
-  async function sendChat(text?: string) {
-    const msg = (text ?? chatInput).trim()
-    if (!msg) return
-    const key = apiKey || localStorage.getItem('gno_k') || ''
-    if (!key) { setShowKeyModal(true); return }
-    setChatInput('')
-    const userMsg: Message = { role: 'user', content: msg }
-    historyRef.current = [...historyRef.current, userMsg]
-    setMessages(prev => [...prev, userMsg])
-    setChatLoading(true)
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
-        body: JSON.stringify({
-          model: 'claude-fable-5',
-          max_tokens: 1200,
-          stream: true,
-          system: ADVISOR_SYSTEM,
-          messages: historyRef.current,
-        }),
-      })
-      if (!res.ok) {
-        setChatLoading(false)
-        setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please check your API key and try again.' }])
-        return
-      }
-      setChatLoading(false)
-      let full = ''
-      setMessages(prev => [...prev, { role: 'assistant', content: '' }])
-      const reader = res.body!.getReader()
-      const dec = new TextDecoder()
-      let buf = ''
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        buf += dec.decode(value, { stream: true })
-        const lines = buf.split('\n'); buf = lines.pop() ?? ''
-        for (const line of lines) {
-          if (!line.startsWith('data:')) continue
-          const data = line.slice(5).trim()
-          if (data === '[DONE]') continue
-          try {
-            const ev = JSON.parse(data)
-            if (ev.type === 'content_block_delta' && ev.delta?.text) {
-              full += ev.delta.text
-              setMessages(prev => {
-                const updated = [...prev]
-                updated[updated.length - 1] = { role: 'assistant', content: full }
-                return updated
-              })
-            }
-          } catch { /* ignore */ }
-        }
-      }
-      historyRef.current = [...historyRef.current, { role: 'assistant', content: full }]
-    } catch {
-      setChatLoading(false)
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Connection error. Please try again.' }])
-    }
-  }
-
-  function saveKey() {
-    if (!keyDraft.startsWith('sk-ant-')) { alert('Please enter a valid Anthropic API key starting with sk-ant-'); return }
-    localStorage.setItem('gno_k', keyDraft)
-    setApiKey(keyDraft)
-    setShowKeyModal(false)
   }
 
   const navProps = { currentPage, setCurrentPage, londonTime, onQuote: () => setShowQuote(true), onWaitlist: openWaitlist, menuOpen, setMenuOpen }
@@ -1235,21 +1397,50 @@ export default function App() {
 
       {/* Webinar announcement banner */}
       {!webinarDismissed && (
-        <div className="sticky top-0 z-40 bg-[#0F2419] h-11 flex items-center justify-between px-4 sm:px-8">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-            <span className="text-white text-[12px] sm:text-[13px] font-medium">Live webinar — Raising your Series A: CFO playbook</span>
-          </div>
-          <div className="hidden sm:block text-[12px] text-white/50 absolute left-1/2 -translate-x-1/2">
-            June 27 · 11:00 BST · Free to attend
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setShowWebinar(true)} className="text-[12px] font-semibold text-gray-900 bg-white hover:bg-gray-100 px-3 py-1 rounded-full transition-colors whitespace-nowrap">
-              Save my seat →
-            </button>
-            <button onClick={dismissWebinar} className="text-white/50 hover:text-white transition-colors ml-1">
-              <X size={14} />
-            </button>
+        <div className="sticky top-0 z-40 bg-[#0F2419] border-b border-white/10">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 py-3 flex items-center gap-3 sm:gap-5">
+            {/* Left: live badge + text */}
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <span className="flex-shrink-0 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider animate-pulse">
+                Live
+              </span>
+              <div className="min-w-0">
+                <p className="text-white text-[12px] sm:text-[13px] font-semibold leading-tight truncate">
+                  Raising your Series A: The CFO Playbook
+                </p>
+                <p className="text-white/50 text-[11px] leading-tight mt-0.5 hidden sm:block">
+                  June 27 · 11:00 BST · Free to attend · Featuring Alex Chen, CFO at Acme Capital
+                </p>
+                <p className="text-white/50 text-[11px] leading-tight mt-0.5 sm:hidden">June 27 · 11:00 BST · Free</p>
+              </div>
+            </div>
+            {/* Center: preview image thumbnail */}
+            <div className="hidden md:flex items-center flex-shrink-0">
+              <div className="relative rounded-lg overflow-hidden" style={{ width: 80, height: 50 }}>
+                <img
+                  src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=300&q=80"
+                  alt="Webinar preview — founders raising"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-white/90 flex items-center justify-center">
+                    <svg width="8" height="9" viewBox="0 0 8 9" fill="#0F2419"><path d="M1 1l6 3.5-6 3.5V1z"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Right: CTA + dismiss */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={() => setShowWebinar(true)}
+                className="text-[12px] font-semibold text-gray-900 bg-white hover:bg-gray-100 px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
+              >
+                Save my seat →
+              </button>
+              <button onClick={dismissWebinar} className="text-white/40 hover:text-white transition-colors p-1">
+                <X size={14} />
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1263,15 +1454,15 @@ export default function App() {
         onMouseMove={handleHeroMouseMove}
         onMouseLeave={handleHeroMouseLeave}
       >
-        {/* Shader stack */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          <div className="absolute inset-0">
+        {/* Shader stack — 3D parallax on mouse move */}
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+          <div className="absolute inset-0" style={{ transform: `scale(1.1) translate(${mouseX * 18}px, ${mouseY * 12}px)`, transition: 'transform 0.18s ease-out' }}>
             <MeshGradient colors={['#EFEFEF', '#f2f5f0', '#d6e8db', '#eaf3ee']} speed={0.08} distortion={0.55} swirl={0.18} style={{ width: '100%', height: '100%' }} />
           </div>
-          <div className="absolute inset-0" style={{ opacity: 0.22, mixBlendMode: 'multiply' }}>
+          <div className="absolute inset-0" style={{ opacity: 0.22, mixBlendMode: 'multiply', transform: `scale(1.1) translate(${mouseX * 10}px, ${mouseY * 7}px)`, transition: 'transform 0.18s ease-out' }}>
             <Swirl colors={['#c8e0d0', '#EBF5EE', '#f0f7f3']} colorBack="#EFEFEF" bandCount={3} twist={0.12} center={0.15} speed={0.1} noise={0.18} noiseFrequency={0.35} softness={0.6} style={{ width: '100%', height: '100%' }} />
           </div>
-          <div className="absolute inset-0" style={{ opacity: 0.35 }}>
+          <div className="absolute inset-0" style={{ opacity: 0.35, transform: `scale(1.1) translate(${-mouseX * 6}px, ${-mouseY * 4}px)`, transition: 'transform 0.18s ease-out' }}>
             <FlutedGlass colorBack="#00000000" colorShadow="#1D6B42" colorHighlight="#ffffff" size={0.1} angle={31} distortion={0.28} highlights={0.09} shadows={0.06} shape="lines" speed={0.08} style={{ width: '100%', height: '100%' }} />
           </div>
         </div>
@@ -1423,55 +1614,7 @@ export default function App() {
                 <span>Secure, confidential — no data stored</span>
               </div>
             </div>
-            <div className="flex flex-col border border-gray-100 rounded-2xl overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)]" style={{ height: 520 }}>
-              <div className="flex items-center gap-3 px-5 py-3.5 border-b border-gray-100 bg-white flex-shrink-0">
-                <div className="flex-shrink-0"><GnocchiLogo size={22} /></div>
-                <div>
-                  <div className="text-[13px] font-semibold text-gray-900">Gnocchi advisor</div>
-                  <div className="flex items-center gap-1.5 text-[12px] text-gray-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
-                    Online now
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50" style={{ scrollbarWidth: 'thin' }}>
-                {messages.map((m, i) => (
-                  <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div
-                      className={`max-w-[84%] px-4 py-3 rounded-2xl text-[13px] leading-[1.6] ${m.role === 'user' ? 'bg-gray-900 text-white rounded-br-sm' : 'bg-white text-gray-800 rounded-bl-sm border border-gray-100 shadow-sm'}`}
-                      dangerouslySetInnerHTML={{ __html: m.role === 'user' ? m.content : formatMsg(m.content) }}
-                    />
-                  </div>
-                ))}
-                {chatLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm flex gap-1 items-center">
-                      {[0, 0.2, 0.4].map((d, i) => (
-                        <span key={i} className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: `${d}s` }} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-              {messages.length <= 2 && (
-                <div className="flex gap-2 px-4 py-2.5 border-t border-gray-100 overflow-x-auto flex-shrink-0 bg-white" style={{ scrollbarWidth: 'none' }}>
-                  {['SaaS B2B, 8-person team', 'Fintech startup, 20 people', 'E-commerce, just me and co-founder', 'What does Gnocchi cover?'].map(s => (
-                    <button key={s} onClick={() => sendChat(s)} className="flex-shrink-0 text-[12px] font-medium text-gray-600 border border-gray-200 bg-gray-50 hover:bg-[#EBF5EE] hover:border-[#A8D4B8] hover:text-[#1D6B42] rounded-full px-3 py-1.5 transition-colors duration-150 whitespace-nowrap">{s}</button>
-                  ))}
-                </div>
-              )}
-              <div className="flex gap-2 px-4 py-3 border-t border-gray-100 bg-white flex-shrink-0">
-                <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendChat()}
-                  placeholder="Describe your startup..."
-                  className="flex-1 text-[13px] bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-[#1D6B42] focus:bg-white transition-colors" />
-                <button onClick={() => sendChat()} disabled={chatLoading}
-                  className="w-10 h-10 rounded-xl bg-gray-900 hover:bg-[#1D6B42] flex items-center justify-center flex-shrink-0 transition-colors disabled:opacity-40">
-                  <Send size={15} className="text-white" />
-                </button>
-              </div>
-            </div>
+            <AdvisorChat onQuote={() => setShowQuote(true)} />
           </div>
         </div>
       </section>
@@ -1493,20 +1636,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
-      {/* API key modal */}
-      {showKeyModal && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setShowKeyModal(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
-            <h3 className="text-[16px] font-semibold text-gray-900 mb-2">Add your Anthropic API key</h3>
-            <p className="text-[13px] text-gray-500 leading-[1.6] mb-4">To use the live coverage advisor, paste your Anthropic API key. It's stored only in your browser and never sent to our servers.</p>
-            <input type="password" placeholder="sk-ant-..." value={keyDraft} onChange={e => setKeyDraft(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && saveKey()} autoFocus
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[13px] outline-none focus:border-[#1D6B42] mb-3" />
-            <button onClick={saveKey} className="w-full bg-gray-900 hover:bg-[#1D6B42] text-white text-[13px] font-medium rounded-xl py-3 transition-colors">Save &amp; start chatting</button>
-          </div>
-        </div>
-      )}
 
       {showQuote && <QuoteFormModal onClose={() => setShowQuote(false)} />}
       {showWaitlist && <WaitlistModal onClose={() => setShowWaitlist(false)} title={waitlistTitle} />}
