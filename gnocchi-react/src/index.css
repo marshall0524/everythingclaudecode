@@ -17,3 +17,20 @@ html { scroll-behavior: smooth; }
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(50px);
 }
+
+@keyframes marquee-x {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 28s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+.card-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
