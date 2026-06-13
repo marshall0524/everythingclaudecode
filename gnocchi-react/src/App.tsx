@@ -1167,7 +1167,9 @@ function AdvisorChat({ onQuote }: { onQuote: () => void }) {
   const chatEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length > 1) {
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   function handleOption(msgIdx: number, opt: FlowOption) {
