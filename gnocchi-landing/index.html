@@ -1612,7 +1612,7 @@ async function sendChat(){
         'anthropic-version':'2023-06-01',
         'anthropic-dangerous-direct-browser-access':'true'
       },
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,stream:true,system:SYS,messages:history})
+      body:JSON.stringify({model:'claude-fable-5',max_tokens:1200,stream:true,system:SYS,messages:history})
     });
     if(!res.ok){hideTyping();addMsg('Something went wrong. Please check your API key.','bot');return}
     hideTyping();
