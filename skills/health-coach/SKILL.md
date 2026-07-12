@@ -21,8 +21,10 @@ Acts as Marshall's personal health coach: sports medicine + strength & condition
 
 This skill has one job above all: **don't hallucinate.** Before giving advice, read what's actually on file:
 
-1. `health-dashboard/data/health-data.json` — profile, synced weight/sleep/exercise/stress/VO2max, uploaded bloodwork (`pathology`), and `coachNotes` (things Marshall has told the coach before — treat as ground truth, stay consistent with it).
+1. `health-dashboard/data/health-data.json` — profile, synced weight/sleep/exercise/stress/VO2max, logged meals (`meals` — photo-analysed food entries with per-item macros), uploaded bloodwork (`pathology`), and `coachNotes` (things Marshall has told the coach before — treat as ground truth, stay consistent with it).
 2. `health-dashboard/data/evidence-library.json` — the only source of citations to use. Cite from here (`(Author et al., Year, Journal)` format). If a claim isn't covered by an entry here and you're not highly confident it's an established consensus guideline (WHO/ACSM/EASL/AASM-level), say the claim is your general understanding rather than presenting it as a study citation.
+
+For "how much protein/calories do I have left today" questions: filter `meals` to today's date, sum `totalProtein`/`totalCalories`, and compare against the target from `health-dashboard/lib/nutrition.ts` (1.8g/kg bodyweight for protein; ~20% below Mifflin-St Jeor maintenance for calories) — don't estimate either number from memory.
 
 If `weight`/`sleep`/`exercise`/`stress` arrays are empty, say so — do not fill in plausible-looking numbers. Point Marshall at the Sync page in the HealthOS app to connect Apple Health / Strava.
 

@@ -22,7 +22,14 @@
     "appleHealthConnected": false,
     "renphoConnected": false
   },
-  "weight": [],
+  "weight": [
+    {
+      "date": "2026-07-12",
+      "weight": 77,
+      "bmi": 27.6,
+      "source": "manual"
+    }
+  ],
   "sleep": [],
   "exercise": [],
   "stress": [],
@@ -54,5 +61,6 @@
   ],
   "lastSync": {},
   "isSampleData": true,
-  "coachNotes": []
+  "coachNotes": [],
+  "meals": []
 }

@@ -23,8 +23,16 @@ Mobile-optimised PWA that syncs all your health data in one place and coaches yo
 - Chat with your coach any time, or generate a full weekly program
 - A matching Claude Code skill lives at `skills/health-coach/SKILL.md` in the repo root, for coaching directly in a coding session using the same data files
 
+**Nutrition — Photo Logging** (`/nutrition`)
+- Snap a photo of a meal, Claude vision breaks it down into individual food items with estimated quantity, calories, protein, carbs, fat, fibre, and added sugar
+- Server sums the macro totals from the itemised breakdown (not a model-provided total) to avoid arithmetic drift
+- Protein target: 1.8g/kg bodyweight (Morton et al., 2018). Calorie target: ~20% below estimated maintenance via the Mifflin-St Jeor equation (Mifflin et al., 1990; Helms et al., 2014) — both shown with their formula inline, not just a number
+- Shows protein/calories remaining for the day, updated live as you log meals
+- Each meal gets a short, specific tip (e.g. what to swap, what to keep doing), grounded in the same evidence library — flagged "rough estimate" when the photo doesn't give a clear read on portions
+- Fully wired into the AI Coach and daily WhatsApp summary — ask "how much protein do I have left today" in chat and it reads your actual logged totals, not a guess
+
 **Daily WhatsApp Summary**
-- Every morning, a short evidence-based summary + one action item is sent to your WhatsApp via [CallMeBot](https://www.callmebot.com/blog/free-api-whatsapp-messages/) (free, no business account needed)
+- Every morning, a short evidence-based summary + today's protein/calorie targets + one action item is sent to your WhatsApp via [CallMeBot](https://www.callmebot.com/blog/free-api-whatsapp-messages/) (free, no business account needed)
 - See "WhatsApp Setup" below, or the in-app guide on the Sync page
 
 **Data Sync**

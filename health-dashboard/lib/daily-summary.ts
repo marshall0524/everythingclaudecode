@@ -1,6 +1,7 @@
 import { HealthData } from './types';
 import { last, avg } from './utils';
 import { evidenceLibraryAsPromptBlock } from './evidence';
+import { computeTargets, mealsForDate, sumMeals, todayISO } from './nutrition';
 
 export function buildDailySummaryPrompt(data: HealthData): { system: string; user: string } {
   const { profile, weight, sleep, exercise, stress, vo2max, pathology, coachNotes } = data;
@@ -8,7 +9,9 @@ export function buildDailySummaryPrompt(data: HealthData): { system: string; use
   const avgSleep7 = sleep.length ? avg(sleep.slice(-7).map(s => s.totalHours)) : null;
   const recentEx = exercise.slice(-7);
   const weeklyMin = recentEx.reduce((s, e) => s + e.duration, 0);
-  const noData = !weight.length && !sleep.length && !exercise.length && !stress.length;
+  const noData = !sleep.length && !exercise.length && !stress.length;
+  const targets = computeTargets(data);
+  const todaysTotals = sumMeals(mealsForDate(data.meals, todayISO()));
 
   const system = `You are a concise, evidence-based personal health coach writing a WhatsApp message. This is NOT a chat app — write plain WhatsApp text:
 - Use *single asterisks* for bold (WhatsApp formatting), never markdown ## headers or **double asterisks**.
@@ -34,6 +37,10 @@ ${noData ? 'No Apple Health / Strava / RENPHO data synced yet.' : `
 - HRV today: ${ls?.hrv ?? 'not synced'}ms | Resting HR: ${ls?.restingHeartRate ?? 'not synced'}bpm | Stress: ${ls?.score ?? 'not synced'}/100
 - VO2 Max: ${lv ? `${lv.value} mL/kg/min (${lv.category})` : 'not synced'}
 - Last 7 days exercise: ${recentEx.length} sessions, ${weeklyMin} min total`}
+
+## NUTRITION TARGETS TODAY
+- Protein target: ${targets.proteinG}g | Calorie target: ${targets.calorieTarget} kcal
+- Logged so far today: ${todaysTotals.protein}g protein, ${todaysTotals.calories} kcal (meal photos logged via the Nutrition tab)
 
 ## BLOODWORK ON FILE
 ${pathology.length ? pathology.map(p => `- ${p.filename} (${p.uploadDate}): ${p.summary}`).join('\n') : 'None uploaded'}

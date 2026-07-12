@@ -78,5 +78,15 @@
     "topic": "Fibre intake and metabolic/liver health",
     "citation": "Ma et al., 2018, Journal of Hepatology",
     "finding": "Higher dietary fibre intake is independently associated with lower odds of NAFLD, largely via improved insulin sensitivity and gut microbiome effects."
+  },
+  {
+    "topic": "Resting metabolic rate estimation",
+    "citation": "Mifflin et al., 1990, American Journal of Clinical Nutrition",
+    "finding": "The Mifflin-St Jeor equation (men: 10×weight[kg] + 6.25×height[cm] − 5×age + 5) is the most accurate validated BMR estimate for the general population, used as the baseline for calorie targets here."
+  },
+  {
+    "topic": "Deficit size for fat loss while preserving muscle",
+    "citation": "Helms, Zinn, Rowlands & Aragon, 2014, International Journal of Sport Nutrition and Exercise Metabolism",
+    "finding": "A moderate ~20-25% calorie deficit below maintenance, combined with adequate protein and resistance training, better preserves lean mass during fat loss than aggressive deficits."
   }
 ]

@@ -71,6 +71,35 @@ export interface CoachNote {
   note: string;
 }
 
+export interface FoodItem {
+  name: string;
+  quantity: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber?: number;
+  addedSugar?: number;
+}
+
+export interface LoggedMeal {
+  id: string;
+  date: string;
+  timestamp: string;
+  mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  imagePath: string;
+  caption?: string;
+  items: FoodItem[];
+  totalCalories: number;
+  totalProtein: number;
+  totalCarbs: number;
+  totalFat: number;
+  totalFiber: number;
+  totalAddedSugar: number;
+  tips: string;
+  confidence: 'low' | 'medium' | 'high';
+}
+
 export interface HealthData {
   profile: UserProfile;
   weight: WeightEntry[];
@@ -79,6 +108,7 @@ export interface HealthData {
   stress: StressEntry[];
   vo2max: VO2MaxEntry[];
   pathology: PathologyDocument[];
+  meals: LoggedMeal[];
   coachNotes: CoachNote[];
   lastSync: Record<string, string>;
   isSampleData: boolean;

@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Activity, Brain, RefreshCw, FileText, Home } from 'lucide-react';
+import { Activity, Brain, RefreshCw, FileText, Home, Utensils } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const navItems = [
   { href: '/',          label: 'Home',   icon: Home },
+  { href: '/nutrition', label: 'Food',   icon: Utensils },
   { href: '/coach',     label: 'Coach',  icon: Brain },
   { href: '/sync',      label: 'Sync',   icon: RefreshCw },
   { href: '/pathology', label: 'Docs',   icon: FileText },
@@ -43,7 +44,7 @@ export default function Navigation() {
               <Link
                 key={href}
                 href={href}
-                className="flex flex-col items-center gap-0.5 px-5 py-1.5 rounded-2xl transition-all active:scale-90"
+                className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all active:scale-90"
                 style={{
                   color: active ? 'var(--recovery)' : 'var(--text-faint)',
                   background: active ? 'color-mix(in srgb, var(--recovery) 12%, transparent)' : 'transparent',

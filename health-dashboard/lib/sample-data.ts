@@ -29,11 +29,17 @@ export const sampleHealthData: HealthData = {
     appleHealthConnected: false,
     renphoConnected: false,
   },
-  weight: [],
+  weight: [
+    // Told directly to the coach (2026-07-12), not synced — kept as a manual
+    // baseline so protein/calorie targets have something real to work from
+    // until Apple Health/RENPHO sync in and supersede it.
+    { date: '2026-07-12', weight: 77, bmi: 27.6, source: 'manual' },
+  ],
   sleep: [],
   exercise: [],
   stress: [],
   vo2max: [],
+  meals: [],
   pathology: [
     {
       id: 'doc-001',

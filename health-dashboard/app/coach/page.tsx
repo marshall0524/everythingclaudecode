@@ -7,7 +7,7 @@ import { UserProfile } from '@/lib/types';
 interface Message { role: 'user' | 'assistant'; content: string; }
 
 const quickPrompts = [
-  { icon: Utensils,     label: 'Nutrition',    text: 'What should I eat today to support my weight loss and VO2 max goals?' },
+  { icon: Utensils,     label: 'Protein left', text: 'How much protein and calories do I have left today, and what should I eat to hit it?' },
   { icon: Dumbbell,     label: 'Workout',      text: 'Based on my recovery data, what workout should I do today?' },
   { icon: Moon,         label: 'Sleep',        text: 'My sleep has been averaging under 7 hours. What specific changes should I make?' },
   { icon: Pill,         label: 'Supplements',  text: 'What evidence-based supplements do I need given my blood work?' },

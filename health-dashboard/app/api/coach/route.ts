@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { getHealthData, saveHealthData } from '@/lib/store';
 import { last, avg } from '@/lib/utils';
 import { evidenceLibraryAsPromptBlock } from '@/lib/evidence';
+import { computeTargets, mealsForDate, sumMeals, todayISO } from '@/lib/nutrition';
 
 function buildSystemPrompt(data: Awaited<ReturnType<typeof getHealthData>>) {
   const { profile } = data;
@@ -46,6 +47,21 @@ ${data.coachNotes.length
 - Never present invented numbers as if they were synced data. If a data field is missing, say it's missing and ask, don't fill it in.`;
 }
 
+function buildNutritionContext(data: Awaited<ReturnType<typeof getHealthData>>) {
+  const targets = computeTargets(data);
+  const todaysMeals = mealsForDate(data.meals, todayISO());
+  const totals = sumMeals(todaysMeals);
+  const remainingProtein = Math.max(0, targets.proteinG - totals.protein);
+  const remainingCalories = Math.max(0, targets.calorieTarget - totals.calories);
+
+  return `## TODAY'S NUTRITION (logged via meal photos — use these exact numbers, don't re-derive)
+- Protein target: ${targets.proteinG}g (1.8g/kg × ${targets.weightUsedKg}kg bodyweight, Morton et al. 2018) | Logged so far: ${totals.protein}g | Remaining: ${remainingProtein}g
+- Calorie target: ${targets.calorieTarget} kcal (~20% deficit below ${targets.maintenanceCalories} kcal estimated maintenance — Mifflin-St Jeor 1990, Helms et al. 2014) | Logged so far: ${totals.calories} kcal | Remaining: ${remainingCalories} kcal
+- Carbs so far: ${totals.carbs}g | Fat so far: ${totals.fat}g | Fibre so far: ${totals.fiber}g | Added sugar so far: ${totals.addedSugar}g
+- Meals logged today: ${todaysMeals.length ? todaysMeals.map(m => `${m.mealType} (${m.totalCalories}kcal, ${m.totalProtein}g protein)`).join(', ') : 'none yet'}
+${!data.meals.length ? '- No meals have ever been logged. If asked about protein/calories remaining, mention they can log a meal photo on the Nutrition tab for tracking, but you can still give a target.' : ''}`;
+}
+
 function buildHealthContext(data: Awaited<ReturnType<typeof getHealthData>>) {
   const { weight, sleep, exercise, stress, vo2max, pathology, profile } = data;
   const lw  = last(weight);
@@ -62,12 +78,14 @@ function buildHealthContext(data: Awaited<ReturnType<typeof getHealthData>>) {
     ? (last(weight)!.weight - weight[Math.max(0, weight.length - 8)].weight).toFixed(1)
     : null;
 
-  const noData = !weight.length && !sleep.length && !exercise.length && !stress.length;
+  const noData = !sleep.length && !exercise.length && !stress.length;
 
   if (noData) {
     return `## CURRENT HEALTH DATA
-No synced data yet — Apple Health / Strava / RENPHO haven't connected. Do not invent numbers.
+Only a manually-entered weight is on file (${lw ? `${lw.weight}kg` : 'none'}) — sleep/exercise/stress/VO2max haven't synced yet from Apple Health / Strava / RENPHO. Do not invent numbers for those.
 Base advice on the profile, goals, known conditions, and pathology below, and ask what to prioritize first. Encourage connecting data via the Sync page for personalised tracking.
+
+${buildNutritionContext(data)}
 
 ## PATHOLOGY / BLOODWORK ON FILE
 ${pathology.length ? pathology.map(p => `- **${p.filename}** (${p.uploadDate}, ${p.type}): ${p.summary}${p.keyValues && Object.keys(p.keyValues).length ? '\n  ' + Object.entries(p.keyValues).map(([k, v]) => `${k}: ${v}`).join(' | ') : ''}`).join('\n') : '- None uploaded yet'}`;
@@ -93,6 +111,8 @@ ${pathology.length ? pathology.map(p => `- **${p.filename}** (${p.uploadDate}, $
 **Exercise (last 7 days)**
 - Sessions: ${recentEx.length} | Total active time: ${weeklyMin} min
 - Types: ${[...new Set(recentEx.map(e => e.type))].join(', ') || 'none synced'}
+
+${buildNutritionContext(data)}
 
 ## PATHOLOGY / BLOODWORK ON FILE
 ${pathology.length ? pathology.map(p => `- **${p.filename}** (${p.uploadDate}, ${p.type}): ${p.summary}${p.keyValues && Object.keys(p.keyValues).length ? '\n  ' + Object.entries(p.keyValues).map(([k, v]) => `${k}: ${v}`).join(' | ') : ''}`).join('\n') : '- None uploaded yet'}`;

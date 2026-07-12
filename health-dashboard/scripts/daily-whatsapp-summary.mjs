@@ -27,13 +27,40 @@ function buildEvidenceBlock(evidence) {
   return evidence.map(e => `- ${e.topic}: ${e.finding} (${e.citation})`).join('\n');
 }
 
+// Mirrors lib/nutrition.ts — kept in sync manually since this script runs
+// standalone without a TS build step.
+function computeTargets(data) {
+  const { profile, exercise, weight } = data;
+  const weightUsedKg = last(weight)?.weight ?? profile.targetWeight;
+  const weeklyExerciseMinutes = exercise.slice(-7).reduce((s, e) => s + e.duration, 0);
+  const bmr = profile.gender === 'male'
+    ? 10 * weightUsedKg + 6.25 * profile.height - 5 * profile.age + 5
+    : 10 * weightUsedKg + 6.25 * profile.height - 5 * profile.age - 161;
+  const activityFactor = weeklyExerciseMinutes >= 300 ? 1.55 : weeklyExerciseMinutes >= 150 ? 1.45 : weeklyExerciseMinutes >= 60 ? 1.375 : 1.2;
+  const maintenanceCalories = Math.round(bmr * activityFactor);
+  const calorieTarget = Math.round(maintenanceCalories * 0.8);
+  const proteinG = Math.round(weightUsedKg * 1.8);
+  return { proteinG, maintenanceCalories, calorieTarget };
+}
+
+function todaysMealTotals(data) {
+  const today = new Date().toISOString().split('T')[0];
+  const meals = (data.meals || []).filter(m => m.date === today);
+  return meals.reduce((acc, m) => ({
+    calories: acc.calories + m.totalCalories,
+    protein: acc.protein + m.totalProtein,
+  }), { calories: 0, protein: 0 });
+}
+
 function buildContext(data) {
   const { profile, weight, sleep, exercise, stress, vo2max, pathology, coachNotes } = data;
   const lw = last(weight), ls = last(stress), lv = last(vo2max), lsl = last(sleep);
   const avgSleep7 = sleep.length ? avg(sleep.slice(-7).map(s => s.totalHours)) : null;
   const recentEx = exercise.slice(-7);
   const weeklyMin = recentEx.reduce((s, e) => s + e.duration, 0);
-  const noData = !weight.length && !sleep.length && !exercise.length && !stress.length;
+  const noData = !sleep.length && !exercise.length && !stress.length;
+  const targets = computeTargets(data);
+  const todaysTotals = todaysMealTotals(data);
 
   return `## PROFILE
 ${profile.name}, ${profile.age}, ${profile.gender}, ${profile.ethnicity}, ${profile.height}cm, ${profile.location}.
@@ -41,12 +68,16 @@ Goals: ${profile.goals.join('; ')}
 Known conditions: ${profile.knownConditions.join('; ') || 'none recorded'}
 
 ## TODAY'S DATA
-${noData ? 'No Apple Health / Strava / RENPHO data synced yet.' : `
+${noData ? 'No Apple Health / Strava / RENPHO data synced yet (aside from a manually-entered weight).' : `
 - Weight: ${lw ? `${lw.weight}kg (BMI ${lw.bmi})` : 'not synced'} | Target: ${profile.targetWeight}kg
 - Sleep last night: ${lsl ? `${lsl.totalHours.toFixed(1)}h (deep ${lsl.deepSleep.toFixed(1)}h, REM ${lsl.remSleep.toFixed(1)}h)` : 'not synced'} | 7-day avg: ${avgSleep7 !== null ? avgSleep7.toFixed(1) + 'h' : 'not synced'}
 - HRV today: ${ls?.hrv ?? 'not synced'}ms | Resting HR: ${ls?.restingHeartRate ?? 'not synced'}bpm | Stress: ${ls?.score ?? 'not synced'}/100
 - VO2 Max: ${lv ? `${lv.value} mL/kg/min (${lv.category})` : 'not synced'}
 - Last 7 days exercise: ${recentEx.length} sessions, ${weeklyMin} min total`}
+
+## NUTRITION TARGETS TODAY
+- Protein target: ${targets.proteinG}g | Calorie target: ${targets.calorieTarget} kcal
+- Logged so far today: ${todaysTotals.protein}g protein, ${todaysTotals.calories} kcal (meal photos logged via the Nutrition tab)
 
 ## BLOODWORK ON FILE
 ${pathology.length ? pathology.map(p => `- ${p.filename} (${p.uploadDate}): ${p.summary}`).join('\n') : 'None uploaded'}
@@ -79,7 +110,7 @@ ${buildEvidenceBlock(evidence)}`;
 
   const userPrompt = `${buildContext(data)}
 
-Write this morning's WhatsApp health summary: (1) one-line status from last night's sleep/recovery if synced, (2) today's single most useful action — nutrition or training, tied to their goals (healthy weight ~${data.profile.targetWeight}kg, 15-18% body fat, longevity, and their fatty liver priority), (3) if data is missing, ask ONE short question instead of guessing.`;
+Write this morning's WhatsApp health summary: (1) one-line status from last night's sleep/recovery if synced, (2) today's protein/calorie targets from the NUTRITION TARGETS section above, (3) today's single most useful action — nutrition or training, tied to their goals (healthy weight ~${data.profile.targetWeight}kg, ${data.profile.targetBodyFatPercent}% body fat, longevity, and their fatty liver priority), (4) if data is missing, ask ONE short question instead of guessing.`;
 
   const client = new Anthropic({ apiKey: anthropicKey });
   const response = await client.messages.create({
