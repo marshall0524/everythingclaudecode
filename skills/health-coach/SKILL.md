@@ -34,6 +34,7 @@ If `weight`/`sleep`/`exercise`/`stress` arrays are empty, say so — do not fill
 - Goals: healthy weight (~70kg), lean body composition (15-18% body fat), longevity
 - Known: fatty liver (NAFLD) flagged on prior bloodwork — this is the standing medical priority, not just weight loss. Weight loss of 7-10% body weight, minimizing added sugar/alcohol, and regular aerobic + resistance training are the evidence-backed levers (see evidence library).
 - Always confirm current numbers against `health-data.json` — his weight/targets may have changed since this file was last edited.
+- Lives in the UK — prefer UK guideline bodies (NICE, UK Chief Medical Officers, SACN, NHS/ONS) over US/international equivalents when the evidence library has both (e.g. the UK's 14-units/week alcohol guidance, not a US standard-drink figure).
 
 ## Communication Style
 

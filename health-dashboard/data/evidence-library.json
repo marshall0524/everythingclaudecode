@@ -88,5 +88,45 @@
     "topic": "Deficit size for fat loss while preserving muscle",
     "citation": "Helms, Zinn, Rowlands & Aragon, 2014, International Journal of Sport Nutrition and Exercise Metabolism",
     "finding": "A moderate ~20-25% calorie deficit below maintenance, combined with adequate protein and resistance training, better preserves lean mass during fat loss than aggressive deficits."
+  },
+  {
+    "topic": "UK physical activity guidelines",
+    "citation": "UK Chief Medical Officers' Physical Activity Guidelines, 2019 (GOV.UK)",
+    "finding": "Adults should accumulate ≥150 min/week moderate-intensity activity or ≥75 min/week vigorous activity (or an equivalent combination), plus muscle-strengthening activity on 2+ days/week, and minimise sedentary time."
+  },
+  {
+    "topic": "NAFLD prevalence (UK/general population)",
+    "citation": "NICE Guideline NG49 — Non-alcoholic fatty liver disease: assessment and management, 2016 (reviewed 2024)",
+    "finding": "NAFLD affects an estimated 20-30% of the general population, with 2-3% having NASH (non-alcoholic steatohepatitis, the more severe inflammatory form) — Marshall's flag is a common finding, not a rare one, but still warrants the lifestyle intervention this guideline sets out as first-line."
+  },
+  {
+    "topic": "UK low-risk alcohol guidelines",
+    "citation": "UK Chief Medical Officers' Low Risk Drinking Guidelines, 2016 (GOV.UK)",
+    "finding": "To keep health risks low, adults should drink no more than 14 units/week on a regular basis, spread over 3+ days — the same limit for men and women. Given an existing fatty liver flag, staying well under this (or abstaining) is the more relevant target (see EASL guidance above)."
+  },
+  {
+    "topic": "England adult overweight/obesity prevalence",
+    "citation": "NHS Digital, Health Survey for England 2024",
+    "finding": "30% of English adults were living with obesity (BMI ≥30) in 2024 — the highest on record — and 66% were overweight or obese overall; prevalence is higher in men (67%) than women (60%) and rises with age and deprivation. Useful population context, not an individual diagnosis."
+  },
+  {
+    "topic": "UK added sugar (free sugars) limit",
+    "citation": "SACN (Scientific Advisory Committee on Nutrition), Carbohydrates and Health, 2015, adopted by UK Government",
+    "finding": "Free sugars should not exceed 5% of total dietary energy intake for adults and children 2+ — roughly 30g/day (about 7 sugar cubes) for an adult. Particularly relevant given fructose/added sugar's direct link to liver fat (see NAFLD entries above)."
+  },
+  {
+    "topic": "UK dietary fibre reference intake",
+    "citation": "SACN / Public Health England, Eatwell Guide reference values",
+    "finding": "UK adults should aim for 30g/day of fibre — roughly 5 portions of fruit/veg, 2 wholewheat cereal biscuits, 2 thick slices of wholemeal bread, and a jacket potato with skin. Most UK adults currently fall short of this."
+  },
+  {
+    "topic": "UK sedentary-population protein RNI (baseline, not athletic target)",
+    "citation": "UK Reference Nutrient Intake (RNI), Scientific Advisory Committee on Nutrition / British Nutrition Foundation",
+    "finding": "The UK RNI for protein is 0.75g/kg/day for sedentary adults (~56g/day for a 75kg man) — this is a minimum to avoid deficiency, not a target for someone resistance training in a calorie deficit. The 1.6-2.2g/kg range (Morton et al., 2018, above) is the relevant figure for that goal; the RNI is cited here only to explain why generic 'UK guideline' protein numbers look much lower than the coach's target."
+  },
+  {
+    "topic": "UK healthy life expectancy",
+    "citation": "ONS (Office for National Statistics), Health state life expectancies, UK: 2022 to 2024",
+    "finding": "UK males at birth can expect 60.7 years (about 77% of total life expectancy) in good general health — both figures at their lowest since ONS records began in 2011-2013. Frames why longevity-focused habits (VO2max, resistance training, liver health) compound rather than just extending lifespan."
   }
 ]

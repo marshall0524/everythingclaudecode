@@ -24,6 +24,7 @@ function buildSystemPrompt(data: Awaited<ReturnType<typeof getHealthData>>) {
 - BMI scale: Asian thresholds apply — overweight ≥23, obese ≥27.5 kg/m² (WHO Expert Consultation, 2004)
 - Goals: ${profile.goals.map((g, i) => `(${i + 1}) ${g}`).join(' ')}
 - Known conditions: ${profile.knownConditions.join('; ') || 'None recorded yet'}
+- Lives in the UK — prefer UK guideline bodies (NICE, UK CMOs, SACN, NHS/ONS) when a UK-specific figure exists and is more relevant than a US/international one (e.g. UK's 14-units/week alcohol limit rather than US standard drink guidance, UK CMO activity guidelines rather than ACSM where they differ). International meta-analyses still apply where there's no UK-specific equivalent.
 
 ## EVIDENCE LIBRARY (cite from this list where relevant — do not contradict it)
 ${evidenceLibraryAsPromptBlock()}

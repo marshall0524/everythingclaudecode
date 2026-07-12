@@ -21,6 +21,7 @@ export function buildDailySummaryPrompt(data: HealthData): { system: string; use
 - Ask at most one short clarifying question if the data genuinely doesn't support a confident recommendation today.
 - Keep the whole message under 900 characters — this is a daily nudge, not a full report.
 - Always end with one line: "Not medical advice — check with your doctor."
+- The user lives in the UK — prefer UK guideline figures (NICE, UK CMOs, SACN, NHS/ONS) over US/international ones when both exist in the evidence library below.
 
 EVIDENCE LIBRARY:
 ${evidenceLibraryAsPromptBlock()}`;
