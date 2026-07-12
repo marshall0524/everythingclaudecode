@@ -93,7 +93,7 @@ export default function NutritionPage() {
             <div>
               <div className="flex items-end gap-1.5 mb-1">
                 <Beef size={16} style={{ color: 'var(--nutrition)' }} />
-                <span className="text-2xl font-black" style={{ color: 'var(--nutrition)' }}>{remaining.protein}</span>
+                <span className="stat-num text-2xl font-black" style={{ color: 'var(--nutrition)' }}>{remaining.protein}</span>
                 <span className="text-xs font-bold mb-0.5" style={{ color: 'var(--text-muted)' }}>g protein</span>
               </div>
               <ProgressBar value={totals.protein} target={targets.proteinG} color="var(--nutrition)" />
@@ -102,7 +102,7 @@ export default function NutritionPage() {
             <div>
               <div className="flex items-end gap-1.5 mb-1">
                 <Flame size={16} style={{ color: 'var(--strain)' }} />
-                <span className="text-2xl font-black" style={{ color: 'var(--strain)' }}>{remaining.calories}</span>
+                <span className="stat-num text-2xl font-black" style={{ color: 'var(--strain)' }}>{remaining.calories}</span>
                 <span className="text-xs font-bold mb-0.5" style={{ color: 'var(--text-muted)' }}>kcal</span>
               </div>
               <ProgressBar value={totals.calories} target={targets.calorieTarget} color="var(--strain)" />

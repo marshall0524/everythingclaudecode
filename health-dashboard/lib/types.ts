@@ -71,6 +71,12 @@ export interface CoachNote {
   note: string;
 }
 
+export interface IntegrationSettings {
+  stravaClientId?: string;
+  stravaClientSecret?: string;
+  stravaRefreshToken?: string;
+}
+
 export interface FoodItem {
   name: string;
   quantity: string;
@@ -110,6 +116,7 @@ export interface HealthData {
   pathology: PathologyDocument[];
   meals: LoggedMeal[];
   coachNotes: CoachNote[];
+  settings: IntegrationSettings;
   lastSync: Record<string, string>;
   isSampleData: boolean;
 }

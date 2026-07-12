@@ -66,6 +66,7 @@ export const sampleHealthData: HealthData = {
     },
   ],
   coachNotes: [],
+  settings: {},
   lastSync: {},
   isSampleData: true,
 };

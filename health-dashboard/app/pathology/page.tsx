@@ -1,16 +1,15 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FileText, Upload, Plus, FlaskConical, Scan, ClipboardList, Pill, File, X, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { FileText, Upload, Plus, FlaskConical, Scan, ClipboardList, Pill, File, X, CheckCircle2, ChevronDown, ChevronUp, Sparkles, Loader2 } from 'lucide-react';
 import { PathologyDocument } from '@/lib/types';
 
 const docTypeConfig = {
-  blood_test: { label: 'Blood Test', icon: FlaskConical, color: 'text-red-400', bg: 'bg-red-900/20 border-red-800/30' },
-  imaging: { label: 'Imaging', icon: Scan, color: 'text-blue-400', bg: 'bg-blue-900/20 border-blue-800/30' },
-  report: { label: 'Report', icon: ClipboardList, color: 'text-green-400', bg: 'bg-green-900/20 border-green-800/30' },
-  prescription: { label: 'Prescription', icon: Pill, color: 'text-purple-400', bg: 'bg-purple-900/20 border-purple-800/30' },
-  other: { label: 'Other', icon: File, color: 'text-gray-400', bg: 'bg-gray-800/50 border-gray-700' },
+  blood_test: { label: 'Blood Test', icon: FlaskConical, color: '#FF3B30' },
+  imaging: { label: 'Imaging', icon: Scan, color: '#0A84FF' },
+  report: { label: 'Report', icon: ClipboardList, color: '#30D158' },
+  prescription: { label: 'Prescription', icon: Pill, color: '#BF5AF2' },
+  other: { label: 'Other', icon: File, color: '#8E8E93' },
 };
 
 export default function PathologyPage() {
@@ -19,6 +18,7 @@ export default function PathologyPage() {
   const [showUpload, setShowUpload] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [autoExtracted, setAutoExtracted] = useState(false);
   const [expandedDoc, setExpandedDoc] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('all');
   const fileRef = useRef<HTMLInputElement>(null);
@@ -51,10 +51,11 @@ export default function PathologyPage() {
       if (data.success) {
         setDocs((prev) => [data.doc, ...prev]);
         setUploadSuccess(true);
+        setAutoExtracted(data.autoExtracted);
         setShowUpload(false);
         setForm({ type: 'blood_test', summary: '' });
         if (fileRef.current) fileRef.current.value = '';
-        setTimeout(() => setUploadSuccess(false), 3000);
+        setTimeout(() => setUploadSuccess(false), 4000);
       }
     } finally {
       setUploading(false);
@@ -66,21 +67,22 @@ export default function PathologyPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 rounded-full border-2 border-primary-400 border-t-transparent animate-spin" />
+        <Loader2 size={24} className="animate-spin" style={{ color: 'var(--recovery)' }} />
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-4 space-y-5 animate-fade-in">
+    <div className="px-4 py-4 space-y-5 animate-fade">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Pathology Docs</h1>
-          <p className="text-sm text-gray-400">{docs.length} document{docs.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-xl font-extrabold" style={{ color: 'var(--text)' }}>Health Documents</h1>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>{docs.length} document{docs.length !== 1 ? 's' : ''} · grounds your coach's advice</p>
         </div>
         <button
           onClick={() => setShowUpload(!showUpload)}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary-700 hover:bg-primary-600 text-xs font-semibold text-white transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-black transition-all active:scale-95"
+          style={{ background: 'var(--recovery)' }}
         >
           <Plus size={14} />
           Upload
@@ -88,28 +90,31 @@ export default function PathologyPage() {
       </div>
 
       {uploadSuccess && (
-        <div className="flex items-center gap-2 rounded-xl border border-green-800/40 bg-green-900/20 px-3 py-2.5 animate-slide-up">
-          <CheckCircle2 size={16} className="text-green-400" />
-          <span className="text-sm text-green-300">Document uploaded successfully</span>
+        <div className="flex items-start gap-2.5 rounded-2xl p-3 animate-up" style={{ background: 'color-mix(in srgb, var(--recovery) 12%, var(--bg-card))', border: '1px solid color-mix(in srgb, var(--recovery) 30%, transparent)' }}>
+          {autoExtracted ? <Sparkles size={15} style={{ color: 'var(--recovery)', flexShrink: 0, marginTop: 1 }} /> : <CheckCircle2 size={15} style={{ color: 'var(--recovery)', flexShrink: 0, marginTop: 1 }} />}
+          <p className="text-xs font-semibold" style={{ color: 'var(--recovery)' }}>
+            {autoExtracted ? 'Uploaded — Claude auto-extracted the key values below.' : 'Document uploaded.'}
+          </p>
         </div>
       )}
 
       {/* Upload form */}
       {showUpload && (
-        <div className="rounded-2xl border border-gray-700 bg-gray-900/80 p-4 animate-slide-up">
+        <div className="card p-4 animate-up">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold text-white">Upload Document</span>
+            <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Upload Document</span>
             <button onClick={() => setShowUpload(false)}>
-              <X size={16} className="text-gray-400" />
+              <X size={16} style={{ color: 'var(--text-faint)' }} />
             </button>
           </div>
           <form onSubmit={handleUpload} className="space-y-3">
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">Document Type</label>
+              <label className="text-xs font-semibold mb-1 block" style={{ color: 'var(--text-muted)' }}>Document Type</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))}
-                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-200 outline-none focus:border-primary-500"
+                className="w-full text-sm rounded-xl px-3 py-2 outline-none"
+                style={{ background: 'var(--bg-elevated)', color: 'var(--text)', border: '1px solid var(--border)' }}
               >
                 <option value="blood_test">Blood Test</option>
                 <option value="imaging">Imaging (MRI/X-ray)</option>
@@ -119,32 +124,36 @@ export default function PathologyPage() {
               </select>
             </div>
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">Summary (optional)</label>
+              <label className="text-xs font-semibold mb-1 block" style={{ color: 'var(--text-muted)' }}>Summary (optional — auto-filled if left blank)</label>
               <input
                 type="text"
                 value={form.summary}
                 onChange={(e) => setForm((p) => ({ ...p, summary: e.target.value }))}
                 placeholder="e.g. Annual blood panel — May 2025"
-                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-200 placeholder-gray-500 outline-none focus:border-primary-500"
+                className="w-full text-sm rounded-xl px-3 py-2 outline-none"
+                style={{ background: 'var(--bg-elevated)', color: 'var(--text)', border: '1px solid var(--border)' }}
               />
             </div>
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">File</label>
+              <label className="text-xs font-semibold mb-1 block" style={{ color: 'var(--text-muted)' }}>File</label>
               <div
-                className="border-2 border-dashed border-gray-700 rounded-xl p-4 text-center cursor-pointer hover:border-primary-600 transition-colors"
+                className="rounded-xl p-4 text-center cursor-pointer transition-colors"
+                style={{ border: '2px dashed var(--border)' }}
                 onClick={() => fileRef.current?.click()}
               >
-                <Upload size={20} className="text-gray-500 mx-auto mb-1" />
-                <p className="text-xs text-gray-400">Tap to select PDF or image</p>
+                <Upload size={20} style={{ color: 'var(--text-faint)', margin: '0 auto 4px' }} />
+                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Tap to select a PDF or photo — from files or camera</p>
                 <input ref={fileRef} type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png,.heic" required />
               </div>
             </div>
             <button
               type="submit"
               disabled={uploading}
-              className="w-full py-2.5 rounded-xl bg-primary-700 hover:bg-primary-600 text-sm font-semibold text-white transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold text-black transition-all active:scale-95 disabled:opacity-50"
+              style={{ background: 'var(--recovery)' }}
             >
-              {uploading ? 'Uploading…' : 'Upload Document'}
+              {uploading && <Loader2 size={14} className="animate-spin" />}
+              {uploading ? 'Analysing document…' : 'Upload Document'}
             </button>
           </form>
         </div>
@@ -156,10 +165,10 @@ export default function PathologyPage() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={cn(
-              'flex-shrink-0 text-[11px] font-medium px-3 py-1.5 rounded-full transition-colors',
-              filter === f ? 'bg-primary-700 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-            )}
+            className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 rounded-full transition-colors"
+            style={filter === f
+              ? { background: 'var(--recovery)', color: '#000' }
+              : { background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}
           >
             {f === 'all' ? 'All' : docTypeConfig[f as keyof typeof docTypeConfig].label}
           </button>
@@ -169,9 +178,9 @@ export default function PathologyPage() {
       {/* Document list */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <FileText size={32} className="text-gray-700 mb-3" />
-          <p className="text-sm text-gray-500">No documents yet</p>
-          <p className="text-xs text-gray-600 mt-1">Upload your blood tests, scans, and reports</p>
+          <FileText size={28} style={{ color: 'var(--text-faint)' }} />
+          <p className="text-sm font-semibold mt-3" style={{ color: 'var(--text-muted)' }}>No documents yet</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-faint)' }}>Upload blood tests, scans, and reports — your coach reads these directly</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -181,47 +190,56 @@ export default function PathologyPage() {
             const isExpanded = expandedDoc === doc.id;
 
             return (
-              <div key={doc.id} className={cn('rounded-2xl border bg-gray-900/60', cfg.bg)}>
+              <div key={doc.id} className="card overflow-hidden">
                 <button
                   className="w-full flex items-start gap-3 p-4 text-left"
                   onClick={() => setExpandedDoc(isExpanded ? null : doc.id)}
                 >
-                  <div className={cn('p-2 rounded-xl bg-gray-900/80 flex-shrink-0', cfg.color)}>
+                  <div className="p-2 rounded-xl flex-shrink-0" style={{ background: 'color-mix(in srgb, ' + cfg.color + ' 15%, var(--bg-elevated))', color: cfg.color }}>
                     <Icon size={18} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{doc.filename}</p>
-                    {doc.summary && <p className="text-xs text-gray-400 mt-0.5 truncate">{doc.summary}</p>}
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className={cn('text-[10px] font-medium px-1.5 py-0.5 rounded-full border', cfg.bg, cfg.color)}>{cfg.label}</span>
-                      <span className="text-[10px] text-gray-500">{doc.uploadDate}</span>
+                    <p className="text-sm font-bold truncate" style={{ color: 'var(--text)' }}>{doc.filename}</p>
+                    {doc.summary && <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{doc.summary}</p>}
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, ' + cfg.color + ' 15%, transparent)', color: cfg.color }}>{cfg.label}</span>
+                      <span className="text-[10px]" style={{ color: 'var(--text-faint)' }}>{doc.uploadDate}</span>
                     </div>
                   </div>
-                  {isExpanded ? <ChevronUp size={16} className="text-gray-500 flex-shrink-0 mt-1" /> : <ChevronDown size={16} className="text-gray-500 flex-shrink-0 mt-1" />}
+                  {isExpanded ? <ChevronUp size={16} style={{ color: 'var(--text-faint)', flexShrink: 0, marginTop: 4 }} /> : <ChevronDown size={16} style={{ color: 'var(--text-faint)', flexShrink: 0, marginTop: 4 }} />}
                 </button>
 
-                {isExpanded && doc.keyValues && Object.keys(doc.keyValues).length > 0 && (
-                  <div className="px-4 pb-4 animate-slide-up">
-                    <div className="border-t border-gray-800/50 pt-3">
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Key Values</p>
-                      <div className="grid grid-cols-2 gap-2">
-                        {Object.entries(doc.keyValues).map(([k, v]) => (
-                          <div key={k} className="bg-gray-800/60 rounded-xl p-2">
-                            <p className="text-[10px] text-gray-500 mb-0.5">{k}</p>
-                            <p className="text-sm font-semibold text-white">{v}</p>
+                {isExpanded && (
+                  <div className="px-4 pb-4 animate-up">
+                    <div style={{ borderTop: '1px solid var(--border-subtle)' }} className="pt-3">
+                      {doc.keyValues && Object.keys(doc.keyValues).length > 0 ? (
+                        <>
+                          <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'var(--text-faint)' }}>Key Values</p>
+                          <div className="grid grid-cols-2 gap-2 mb-3">
+                            {Object.entries(doc.keyValues).map(([k, v]) => (
+                              <div key={k} className="rounded-xl p-2" style={{ background: 'var(--bg-elevated)' }}>
+                                <p className="text-[10px] mb-0.5" style={{ color: 'var(--text-faint)' }}>{k}</p>
+                                <p className="text-sm font-bold" style={{ color: 'var(--text)' }}>{v}</p>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
+                        </>
+                      ) : (
+                        <p className="text-xs mb-3" style={{ color: 'var(--text-faint)' }}>No structured values extracted for this document.</p>
+                      )}
+                      {doc.filePath && (
+                        <a
+                          href={doc.filePath}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-colors"
+                          style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}
+                        >
+                          <FileText size={13} />
+                          View Document
+                        </a>
+                      )}
                     </div>
-                    <a
-                      href={doc.filePath}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-300 transition-colors"
-                    >
-                      <FileText size={13} />
-                      View Document
-                    </a>
                   </div>
                 )}
               </div>

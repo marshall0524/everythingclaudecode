@@ -40,7 +40,7 @@ export default function RecoveryRing({ score, label, sublabel, color, size = 260
       </svg>
       {/* Center text */}
       <div className="flex flex-col items-center gap-0.5 z-10">
-        <span className="font-black tracking-tight leading-none" style={{ fontSize: size * 0.22, color }}>{score}%</span>
+        <span className="stat-num font-black leading-none" style={{ fontSize: size * 0.22, color }}>{score}%</span>
         <span className="font-black tracking-[0.2em] uppercase" style={{ fontSize: size * 0.055, color: 'var(--text-muted)' }}>{label}</span>
         {sublabel && <span className="font-bold tracking-[0.15em] uppercase" style={{ fontSize: size * 0.045, color }}>{sublabel}</span>}
       </div>

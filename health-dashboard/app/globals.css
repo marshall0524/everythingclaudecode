@@ -28,7 +28,8 @@
   --danger-bg:    #3D0900;
   --nutrition:    #FF6B35;
 
-  --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), 'SF Mono', ui-monospace, monospace;
 }
 
 .dark {
@@ -67,6 +68,8 @@ body {
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
 }
+
+.stat-num       { font-family: var(--font-mono); font-feature-settings: 'tnum' 1; letter-spacing: -0.02em; }
 
 .text-primary   { color: var(--text); }
 .text-muted     { color: var(--text-muted); }

@@ -1,10 +1,57 @@
 'use client';
 
 import { useState, useRef, useEffect, ReactElement } from 'react';
-import { Brain, Send, Loader2, Calendar, MessageSquare, Zap, Utensils, Moon, Dumbbell, Pill, ChevronRight } from 'lucide-react';
-import { UserProfile } from '@/lib/types';
+import Link from 'next/link';
+import { Brain, Send, Loader2, Calendar, MessageSquare, Zap, Utensils, Moon, Dumbbell, Pill, ChevronRight, Camera, Flame, Beef, ChevronDown, ChevronUp } from 'lucide-react';
+import { UserProfile, LoggedMeal } from '@/lib/types';
 
-interface Message { role: 'user' | 'assistant'; content: string; }
+interface Message { role: 'user' | 'assistant'; content: string; imageUrl?: string; meal?: LoggedMeal; error?: boolean; }
+
+function MealCard({ meal }: { meal: LoggedMeal }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="card px-4 py-3">
+      <div className="flex items-center gap-1.5 mb-2">
+        <Utensils size={11} style={{ color: 'var(--nutrition)' }} />
+        <span className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: 'var(--nutrition)' }}>Meal Analysed</span>
+        {meal.confidence === 'low' && (
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, var(--warning) 15%, transparent)', color: 'var(--warning)' }}>rough estimate</span>
+        )}
+      </div>
+      <div className="grid grid-cols-4 gap-2 mb-3 text-center">
+        {[
+          { label: 'Calories', val: meal.totalCalories, unit: '', color: 'var(--strain)', icon: Flame },
+          { label: 'Protein', val: meal.totalProtein, unit: 'g', color: 'var(--nutrition)', icon: Beef },
+          { label: 'Carbs', val: meal.totalCarbs, unit: 'g', color: 'var(--sleep)' },
+          { label: 'Fat', val: meal.totalFat, unit: 'g', color: 'var(--recovery)' },
+        ].map(m => (
+          <div key={m.label} className="rounded-xl p-2" style={{ background: 'var(--bg-elevated)' }}>
+            <p className="stat-num text-sm font-black" style={{ color: m.color }}>{m.val}{m.unit}</p>
+            <p className="text-[9px] font-bold" style={{ color: 'var(--text-faint)' }}>{m.label}</p>
+          </div>
+        ))}
+      </div>
+      <button onClick={() => setExpanded(!expanded)} className="flex items-center gap-1 text-xs font-semibold mb-2" style={{ color: 'var(--text-muted)' }}>
+        {expanded ? 'Hide items' : `${meal.items.length} item${meal.items.length !== 1 ? 's' : ''}`}
+        {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+      </button>
+      {expanded && (
+        <div className="space-y-1.5 mb-3 animate-up">
+          {meal.items.map((item, i) => (
+            <div key={i} className="flex items-center justify-between text-xs">
+              <span style={{ color: 'var(--text)' }}>{item.name} <span style={{ color: 'var(--text-faint)' }}>({item.quantity})</span></span>
+              <span style={{ color: 'var(--text-muted)' }}>{item.calories} kcal</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {meal.tips && <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>{meal.tips}</p>}
+      <Link href="/nutrition" className="flex items-center gap-1 text-xs font-bold mt-2.5" style={{ color: 'var(--nutrition)' }}>
+        View nutrition dashboard <ChevronRight size={12} />
+      </Link>
+    </div>
+  );
+}
 
 const quickPrompts = [
   { icon: Utensils,     label: 'Protein left', text: 'How much protein and calories do I have left today, and what should I eat to hit it?' },
@@ -81,7 +128,9 @@ export default function CoachPage() {
   const [weeklyLoaded, setWeeklyLoaded] = useState(false);
   const [apiStatus, setApiStatus] = useState<'unknown' | 'ok' | 'missing'>('unknown');
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, loading]);
 
@@ -116,6 +165,28 @@ export default function CoachPage() {
     setMessages(prev => [...prev, { role: 'user', content: q }]);
     const reply = await callCoach(q);
     setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
+  };
+
+  const analyzeMealPhoto = async (file: File) => {
+    const imageUrl = URL.createObjectURL(file);
+    const caption = input.trim();
+    setInput('');
+    setMessages(prev => [...prev, { role: 'user', content: caption || '📷 Meal photo', imageUrl }]);
+    setAnalyzingPhoto(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      if (caption) fd.append('caption', caption);
+      const res = await fetch('/api/nutrition', { method: 'POST', body: fd });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error || 'Analysis failed');
+      setMessages(prev => [...prev, { role: 'assistant', content: '', meal: d.meal }]);
+    } catch (e) {
+      setMessages(prev => [...prev, { role: 'assistant', content: e instanceof Error ? e.message : 'Could not analyse that photo — try again.', error: true }]);
+    } finally {
+      setAnalyzingPhoto(false);
+      if (fileRef.current) fileRef.current.value = '';
+    }
   };
 
   const loadWeekly = async () => {
@@ -254,14 +325,24 @@ export default function CoachPage() {
             {messages.map((msg, i) => (
               <div key={i} className={`animate-up ${msg.role === 'user' ? 'flex justify-end' : ''}`}>
                 {msg.role === 'user' ? (
-                  <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-tr-sm" style={{ background: 'var(--strain)' }}>
-                    <p className="text-sm text-white">{msg.content}</p>
+                  <div className="max-w-[85%] flex flex-col items-end gap-1.5">
+                    {msg.imageUrl && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={msg.imageUrl} alt="Meal" className="w-40 h-40 rounded-2xl object-cover" />
+                    )}
+                    {msg.content && (
+                      <div className="px-4 py-2.5 rounded-2xl rounded-tr-sm" style={{ background: 'var(--strain)' }}>
+                        <p className="text-sm text-white">{msg.content}</p>
+                      </div>
+                    )}
                   </div>
+                ) : msg.meal ? (
+                  <MealCard meal={msg.meal} />
                 ) : (
-                  <div className="card px-4 py-3">
+                  <div className="card px-4 py-3" style={msg.error ? { borderColor: 'var(--danger)' } : undefined}>
                     <div className="flex items-center gap-1.5 mb-2">
-                      <Brain size={11} style={{ color: 'var(--recovery)' }} />
-                      <span className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: 'var(--recovery)' }}>Health Coach</span>
+                      <Brain size={11} style={{ color: msg.error ? 'var(--danger)' : 'var(--recovery)' }} />
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: msg.error ? 'var(--danger)' : 'var(--recovery)' }}>{msg.error ? 'Error' : 'Health Coach'}</span>
                     </div>
                     {parseMarkdown(msg.content)}
                   </div>
@@ -274,6 +355,14 @@ export default function CoachPage() {
                 <div className="flex items-center gap-2">
                   <Loader2 size={14} className="animate-spin" style={{ color: 'var(--recovery)' }} />
                   <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Analysing your health data…</span>
+                </div>
+              </div>
+            )}
+            {analyzingPhoto && (
+              <div className="card px-4 py-3 animate-up">
+                <div className="flex items-center gap-2">
+                  <Loader2 size={14} className="animate-spin" style={{ color: 'var(--nutrition)' }} />
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>Analysing your meal photo…</span>
                 </div>
               </div>
             )}
@@ -301,11 +390,28 @@ export default function CoachPage() {
           {/* Input */}
           <div className="px-4 pb-3 pt-2" style={{ borderTop: '1px solid var(--border-subtle)' }}>
             <div className="flex items-end gap-2 rounded-2xl px-3 py-2" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
+              <button
+                onClick={() => fileRef.current?.click()}
+                disabled={analyzingPhoto}
+                className="p-2 rounded-xl transition-all flex-shrink-0 active:scale-90 disabled:opacity-40"
+                style={{ background: 'var(--bg-card)' }}
+                title="Attach a meal photo"
+              >
+                <Camera size={14} style={{ color: 'var(--nutrition)' }} />
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={e => { const f = e.target.files?.[0]; if (f) analyzeMealPhoto(f); }}
+              />
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
-                placeholder="Ask your coach anything…"
+                placeholder="Ask your coach anything, or attach a meal photo…"
                 className="flex-1 bg-transparent text-sm resize-none outline-none max-h-24 min-h-[20px]"
                 style={{ color: 'var(--text)' }}
                 rows={1}

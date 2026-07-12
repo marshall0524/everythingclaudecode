@@ -66,7 +66,7 @@ export default async function DashboardPage() {
         {!isSampleData && ls && (
           <div className="text-right">
             <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>Resting HR</p>
-            <p className="text-xl font-black" style={{ color: rColor }}>{ls.restingHeartRate}<span className="text-xs font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>bpm</span></p>
+            <p className="stat-num text-xl font-black" style={{ color: rColor }}>{ls.restingHeartRate}<span className="text-xs font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>bpm</span></p>
           </div>
         )}
       </div>
@@ -87,7 +87,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-2 gap-3 mx-4 mb-4">
         <Link href="/exercise" className="card p-4 text-center active:scale-95 transition-transform block">
           <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: 'var(--text-faint)' }}>Strain</p>
-          <p className="font-black leading-none" style={{ fontSize: 42, color: '#0A84FF' }}>{strainScore}</p>
+          <p className="stat-num font-black leading-none" style={{ fontSize: 42, color: '#0A84FF' }}>{strainScore}</p>
           <p className="text-[10px] font-bold mt-1" style={{ color: 'var(--text-muted)' }}>{weeklyMin} min · {weeklyCalories} kcal</p>
           <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
             <div className="h-full rounded-full" style={{ width: `${Math.min((strainScore / 21) * 100, 100)}%`, background: '#0A84FF', boxShadow: '0 0 6px #0A84FF88' }} />
@@ -96,7 +96,7 @@ export default async function DashboardPage() {
 
         <Link href="/sleep" className="card p-4 text-center active:scale-95 transition-transform block">
           <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: 'var(--text-faint)' }}>Sleep</p>
-          <p className="font-black leading-none" style={{ fontSize: 42, color: '#BF5AF2' }}>{lsl?.totalHours.toFixed(1) ?? '--'}<span className="text-lg">h</span></p>
+          <p className="stat-num font-black leading-none" style={{ fontSize: 42, color: '#BF5AF2' }}>{lsl?.totalHours.toFixed(1) ?? '--'}<span className="text-lg">h</span></p>
           <p className="text-[10px] font-bold mt-1" style={{ color: 'var(--text-muted)' }}>7d avg {avgSleep7.toFixed(1)}h</p>
           <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
             <div className="h-full rounded-full" style={{ width: `${sleepScore}%`, background: '#BF5AF2', boxShadow: '0 0 6px #BF5AF288' }} />
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
         <Link href="/body" className="card p-4 flex items-center gap-3 active:opacity-80 transition-opacity block mb-3">
           <div className="flex-1">
             <div className="flex items-end gap-2 mb-1">
-              <span className="text-3xl font-black" style={{ color: '#0A84FF' }}>{lw?.weight ?? '--'}</span>
+              <span className="stat-num text-3xl font-black" style={{ color: '#0A84FF' }}>{lw?.weight ?? '--'}</span>
               <span className="text-sm font-bold mb-1" style={{ color: 'var(--text-muted)' }}>kg</span>
               {wTrend !== 'stable' && (
                 <span className="text-xs font-bold mb-1" style={{ color: Number(weightChange30) < 0 ? '#30D158' : '#FF9F0A' }}>{Number(weightChange30) > 0 ? '+' : ''}{weightChange30}kg</span>
@@ -145,13 +145,13 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-2 gap-3">
           <Link href="/exercise" className="card p-4 active:scale-95 transition-transform block">
             <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'var(--text-faint)' }}>This Week</p>
-            <p className="text-2xl font-black" style={{ color: '#30D158' }}>{weeklyMin}<span className="text-sm font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>min</span></p>
+            <p className="stat-num text-2xl font-black" style={{ color: '#30D158' }}>{weeklyMin}<span className="text-sm font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>min</span></p>
             <p className="text-xs mt-1 font-semibold" style={{ color: 'var(--text-muted)' }}>{recentEx.length} sessions</p>
             <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-faint)' }}>Strava + Apple Health</p>
           </Link>
           <Link href="/exercise" className="card p-4 active:scale-95 transition-transform block">
             <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'var(--text-faint)' }}>VO2 Max</p>
-            <p className="text-2xl font-black" style={{ color: '#0A84FF' }}>{lv?.value ?? '--'}<span className="text-xs font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>mL/kg</span></p>
+            <p className="stat-num text-2xl font-black" style={{ color: '#0A84FF' }}>{lv?.value ?? '--'}<span className="text-xs font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>mL/kg</span></p>
             <p className="text-xs mt-1 font-semibold" style={{ color: 'var(--text-muted)' }}>{lv?.category ?? '--'}</p>
             <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-faint)' }}>{lv?.source === 'strava' ? 'Strava' : 'Apple Health'}</p>
           </Link>
@@ -173,7 +173,7 @@ export default async function DashboardPage() {
             ].map(({ label, val, unit, color }) => (
               <div key={label}>
                 <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: 'var(--text-faint)' }}>{label}</p>
-                <p className="text-xl font-black" style={{ color }}>{val}<span className="text-[9px] font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>{unit}</span></p>
+                <p className="stat-num text-xl font-black" style={{ color }}>{val}<span className="text-[9px] font-bold ml-0.5" style={{ color: 'var(--text-muted)' }}>{unit}</span></p>
               </div>
             ))}
           </div>

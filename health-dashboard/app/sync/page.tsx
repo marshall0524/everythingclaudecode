@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Apple, Activity, RefreshCw, CheckCircle2, Clock, Smartphone, Copy, Check, ChevronRight, AlertCircle, MessageCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Apple, Activity, RefreshCw, CheckCircle2, Clock, Smartphone, Copy, Check, ChevronRight, AlertCircle, MessageCircle, Settings } from 'lucide-react';
 
 function timeAgo(iso: string) {
   const diff = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
@@ -36,21 +37,45 @@ export default function SyncPage() {
   const [showAPI, setShowAPI]       = useState(false);
   const [showWA, setShowWA]         = useState(false);
   const [waConfigured, setWaConfigured] = useState<boolean | null>(null);
+  const [stravaConfigured, setStravaConfigured] = useState(false);
+  const [syncError, setSyncError]   = useState<string | null>(null);
+  const [banner, setBanner] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('strava') === 'connected') setBanner({ type: 'success', text: 'Strava connected — hit Sync Now to pull your activities.' });
+    if (params.get('error') === 'strava_denied') setBanner({ type: 'error', text: 'Strava connection was cancelled.' });
+    if (params.get('error') === 'strava_token') setBanner({ type: 'error', text: 'Strava rejected the connection — check your Client ID/Secret on the Settings page.' });
+    if (params.toString()) window.history.replaceState({}, '', window.location.pathname);
+
     fetch('/api/health').then(r => r.json()).then(d => {
       setLastSync(d.lastSync || {});
       setConnected({ apple: d.profile?.appleHealthConnected, strava: d.profile?.stravaConnected });
     }).catch(() => {});
     fetch('/api/coach/test').then(r => r.json()).then(d => setWaConfigured(!!d.whatsappConfigured)).catch(() => {});
+    fetch('/api/settings').then(r => r.json()).then(d => setStravaConfigured(!!d.stravaConfigured)).catch(() => {});
   }, []);
 
   const sync = async (src: string) => {
     setSyncing(src);
-    await fetch('/api/sync', { method: 'POST' });
-    const d = await fetch('/api/health').then(r => r.json());
-    setLastSync(d.lastSync || {});
-    setSyncing(null);
+    setSyncError(null);
+    try {
+      if (src === 'strava') {
+        const res = await fetch('/api/strava', { method: 'POST' });
+        const d = await res.json();
+        if (!res.ok) throw new Error(d.error?.message || d.error || 'Strava sync failed');
+      } else {
+        // Apple Health is push-based (webhook) — nothing to actively pull here.
+        await fetch('/api/sync', { method: 'POST' });
+      }
+      const d = await fetch('/api/health').then(r => r.json());
+      setLastSync(d.lastSync || {});
+      setConnected({ apple: d.profile?.appleHealthConnected, strava: d.profile?.stravaConnected });
+    } catch (e) {
+      setSyncError(e instanceof Error ? e.message : 'Sync failed');
+    } finally {
+      setSyncing(null);
+    }
   };
 
   const copy = (text: string) => {
@@ -67,6 +92,19 @@ export default function SyncPage() {
         <h1 className="text-xl font-extrabold" style={{ color: 'var(--text)' }}>Data Sources</h1>
         <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>Apple Health · Strava · Automated daily sync</p>
       </div>
+
+      {banner && (
+        <div
+          className="flex items-start gap-2.5 rounded-2xl p-3"
+          style={{
+            background: banner.type === 'success' ? 'color-mix(in srgb, var(--recovery) 12%, var(--bg-card))' : 'color-mix(in srgb, var(--danger) 12%, var(--bg-card))',
+            border: `1px solid ${banner.type === 'success' ? 'color-mix(in srgb, var(--recovery) 30%, transparent)' : 'color-mix(in srgb, var(--danger) 30%, transparent)'}`,
+          }}
+        >
+          {banner.type === 'success' ? <CheckCircle2 size={15} style={{ color: 'var(--recovery)', flexShrink: 0, marginTop: 1 }} /> : <AlertCircle size={15} style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 1 }} />}
+          <p className="text-xs font-semibold" style={{ color: banner.type === 'success' ? 'var(--recovery)' : 'var(--danger)' }}>{banner.text}</p>
+        </div>
+      )}
 
       {/* Auto-sync badge */}
       <div className="card p-4 flex items-center gap-3">
@@ -199,22 +237,39 @@ export default function SyncPage() {
           </div>
         )}
 
-        <div className="flex gap-2">
-          {!connected.strava && (
+        {syncError && (
+          <div className="flex items-start gap-2 mb-3 p-2.5 rounded-xl" style={{ background: 'color-mix(in srgb, var(--danger) 12%, var(--bg-card))' }}>
+            <AlertCircle size={13} style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 1 }} />
+            <p className="text-xs" style={{ color: 'var(--danger)' }}>{syncError}</p>
+          </div>
+        )}
+
+        <div className="flex gap-2 flex-wrap">
+          {!stravaConfigured ? (
+            <Link href="/settings" className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all active:scale-95" style={{ background: '#FC4C02' }}>
+              <Settings size={12} />
+              Set Up Strava API
+            </Link>
+          ) : !connected.strava ? (
             <a href="/api/strava" className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all active:scale-95" style={{ background: '#FC4C02' }}>
               Connect Strava
               <ChevronRight size={12} />
             </a>
+          ) : (
+            <button
+              onClick={() => sync('strava')}
+              disabled={syncing === 'strava'}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 disabled:opacity-40"
+              style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}
+            >
+              <RefreshCw size={12} className={syncing === 'strava' ? 'animate-spin' : ''} />
+              {syncing === 'strava' ? 'Syncing…' : 'Sync Now'}
+            </button>
           )}
-          <button
-            onClick={() => sync('strava')}
-            disabled={syncing === 'strava'}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 disabled:opacity-40"
-            style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}
-          >
-            <RefreshCw size={12} className={syncing === 'strava' ? 'animate-spin' : ''} />
-            {syncing === 'strava' ? 'Syncing…' : 'Sync Now'}
-          </button>
+          <Link href="/settings" className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all active:scale-95" style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}>
+            <Settings size={12} />
+            API Settings
+          </Link>
         </div>
       </div>
 
