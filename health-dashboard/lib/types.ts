@@ -66,6 +66,11 @@ export interface VO2MaxEntry {
   source: 'apple_health' | 'strava' | 'manual';
 }
 
+export interface CoachNote {
+  date: string;
+  note: string;
+}
+
 export interface HealthData {
   profile: UserProfile;
   weight: WeightEntry[];
@@ -74,18 +79,24 @@ export interface HealthData {
   stress: StressEntry[];
   vo2max: VO2MaxEntry[];
   pathology: PathologyDocument[];
+  coachNotes: CoachNote[];
   lastSync: Record<string, string>;
   isSampleData: boolean;
 }
 
 export interface UserProfile {
   name: string;
+  dob: string;
   age: number;
   gender: string;
   ethnicity: string;
   height: number;
   targetWeight: number;
+  targetBodyFatPercent: string;
   location: string;
+  timezone: string;
+  goals: string[];
+  knownConditions: string[];
   stravaConnected: boolean;
   appleHealthConnected: boolean;
   renphoConnected: boolean;

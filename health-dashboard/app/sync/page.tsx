@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Apple, Activity, RefreshCw, CheckCircle2, Clock, Smartphone, Copy, Check, ChevronRight, AlertCircle } from 'lucide-react';
+import { Apple, Activity, RefreshCw, CheckCircle2, Clock, Smartphone, Copy, Check, ChevronRight, AlertCircle, MessageCircle } from 'lucide-react';
 
 function timeAgo(iso: string) {
   const diff = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
@@ -34,12 +34,15 @@ export default function SyncPage() {
   const [copied, setCopied]         = useState(false);
   const [showGuide, setShowGuide]   = useState(false);
   const [showAPI, setShowAPI]       = useState(false);
+  const [showWA, setShowWA]         = useState(false);
+  const [waConfigured, setWaConfigured] = useState<boolean | null>(null);
 
   useEffect(() => {
     fetch('/api/health').then(r => r.json()).then(d => {
       setLastSync(d.lastSync || {});
       setConnected({ apple: d.profile?.appleHealthConnected, strava: d.profile?.stravaConnected });
     }).catch(() => {});
+    fetch('/api/coach/test').then(r => r.json()).then(d => setWaConfigured(!!d.whatsappConfigured)).catch(() => {});
   }, []);
 
   const sync = async (src: string) => {
@@ -72,9 +75,22 @@ export default function SyncPage() {
         </div>
         <div className="flex-1">
           <p className="text-sm font-bold" style={{ color: 'var(--text)' }}>Automated Daily Sync</p>
-          <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>Runs every morning at 6:00 AM from Apple Health & Strava</p>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+            {Object.keys(lastSync).length
+              ? 'Set up Health Auto Export / Strava to push data here every morning'
+              : 'Not receiving data yet — follow the setup guides below'}
+          </p>
         </div>
-        <span className="text-[10px] font-bold px-2 py-1 rounded-full" style={{ background: 'color-mix(in srgb, var(--recovery) 15%, transparent)', color: 'var(--recovery)' }}>ACTIVE</span>
+        <span
+          className="text-[10px] font-bold px-2 py-1 rounded-full"
+          style={
+            Object.keys(lastSync).length
+              ? { background: 'color-mix(in srgb, var(--recovery) 15%, transparent)', color: 'var(--recovery)' }
+              : { background: 'color-mix(in srgb, var(--warning) 15%, transparent)', color: 'var(--warning)' }
+          }
+        >
+          {Object.keys(lastSync).length ? 'RECEIVING DATA' : 'NOT SET UP'}
+        </span>
       </div>
 
       {/* Apple Health */}
@@ -86,7 +102,10 @@ export default function SyncPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <p className="text-sm font-extrabold" style={{ color: 'var(--text)' }}>Apple Health</p>
-              <CheckCircle2 size={14} style={{ color: 'var(--recovery)' }} />
+              {connected.apple
+                ? <CheckCircle2 size={14} style={{ color: 'var(--recovery)' }} />
+                : <AlertCircle size={14} style={{ color: 'var(--warning)' }} />
+              }
             </div>
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Weight, sleep, HRV, steps, VO2 max, active energy</p>
           </div>
@@ -197,6 +216,61 @@ export default function SyncPage() {
             {syncing === 'strava' ? 'Syncing…' : 'Sync Now'}
           </button>
         </div>
+      </div>
+
+      {/* WhatsApp daily summary */}
+      <div className="card p-4">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'color-mix(in srgb, #25D366 15%, var(--bg-card))' }}>
+            <MessageCircle size={20} style={{ color: '#25D366' }} />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-extrabold" style={{ color: 'var(--text)' }}>Daily WhatsApp Summary</p>
+              {waConfigured === null ? null : waConfigured
+                ? <CheckCircle2 size={14} style={{ color: 'var(--recovery)' }} />
+                : <AlertCircle size={14} style={{ color: 'var(--warning)' }} />
+              }
+            </div>
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Sent every morning via CallMeBot</p>
+          </div>
+        </div>
+
+        {waConfigured === false && (
+          <div className="p-3 rounded-xl mb-3" style={{ background: 'color-mix(in srgb, var(--warning) 10%, var(--bg-card))', border: '1px solid color-mix(in srgb, var(--warning) 25%, transparent)' }}>
+            <p className="text-xs font-semibold" style={{ color: 'var(--warning)' }}>Not configured yet</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>Set CALLMEBOT_PHONE and CALLMEBOT_APIKEY to enable it.</p>
+          </div>
+        )}
+
+        <button
+          onClick={() => setShowWA(!showWA)}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all active:scale-95"
+          style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}
+        >
+          <Smartphone size={12} />
+          Setup Guide
+        </button>
+
+        {showWA && (
+          <div className="mt-4 space-y-3 animate-up">
+            <div className="h-px" style={{ background: 'var(--border-subtle)' }} />
+            {[
+              { n: '1', title: 'Add the CallMeBot contact', body: 'Save +34 644 51 95 23 in your phone contacts.' },
+              { n: '2', title: 'Send the opt-in message', body: 'WhatsApp that contact: "I allow callmebot to send me messages"' },
+              { n: '3', title: 'Get your API key', body: 'CallMeBot replies with a key within a minute or two.' },
+              { n: '4', title: 'Add it to your environment', body: 'Set CALLMEBOT_PHONE=61469616917 and CALLMEBOT_APIKEY=<your key> in .env.local (local) or Vercel env vars (deployed), then redeploy/restart.' },
+            ].map(({ n, title, body }) => (
+              <div key={n} className="flex gap-3">
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0" style={{ background: 'color-mix(in srgb, var(--recovery) 20%, var(--bg-card))', color: 'var(--recovery)' }}>{n}</span>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold" style={{ color: 'var(--text)' }}>{title}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* API reference */}

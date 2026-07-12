@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       const entry = {
         date: body.date || new Date().toISOString().split('T')[0],
         weight: body.weight,
-        bmi: body.bmi || parseFloat((body.weight / (1.68 * 1.68)).toFixed(1)),
+        bmi: body.bmi || parseFloat((body.weight / ((data.profile.height / 100) ** 2)).toFixed(1)),
         bodyFat: body.bodyFat,
         muscleMass: body.muscleMass,
         visceralFat: body.visceralFat,

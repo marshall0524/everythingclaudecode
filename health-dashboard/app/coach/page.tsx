@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, ReactElement } from 'react';
 import { Brain, Send, Loader2, Calendar, MessageSquare, Zap, Utensils, Moon, Dumbbell, Pill, ChevronRight } from 'lucide-react';
+import { UserProfile } from '@/lib/types';
 
 interface Message { role: 'user' | 'assistant'; content: string; }
 
@@ -79,6 +80,7 @@ export default function CoachPage() {
   const [weeklyPlan, setWeeklyPlan] = useState<string>('');
   const [weeklyLoaded, setWeeklyLoaded] = useState(false);
   const [apiStatus, setApiStatus] = useState<'unknown' | 'ok' | 'missing'>('unknown');
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, loading]);
@@ -87,6 +89,7 @@ export default function CoachPage() {
     fetch('/api/coach/test').then(r => r.json()).then(d => {
       setApiStatus(d.configured ? 'ok' : 'missing');
     }).catch(() => setApiStatus('missing'));
+    fetch('/api/health').then(r => r.json()).then(d => setProfile(d.profile)).catch(() => {});
   }, []);
 
   const callCoach = async (question?: string, mode?: string) => {
@@ -149,17 +152,25 @@ export default function CoachPage() {
             <Brain size={18} style={{ color: 'var(--recovery)' }} />
           </div>
           <div>
-            <h1 className="text-base font-extrabold leading-tight" style={{ color: 'var(--text)' }}>Dr. Marcus Chen</h1>
-            <p className="text-[11px] font-medium" style={{ color: 'var(--text-faint)' }}>Sports Medicine · CSCS · Registered Dietitian</p>
+            <h1 className="text-base font-extrabold leading-tight" style={{ color: 'var(--text)' }}>Your Health Coach</h1>
+            <p className="text-[11px] font-medium" style={{ color: 'var(--text-faint)' }}>Evidence-based · Sports medicine · Nutrition · Longevity</p>
           </div>
         </div>
 
         {/* Profile chips */}
-        <div className="flex gap-1.5 flex-wrap mb-3">
-          {['30M', 'Asian', '168cm', '78→68kg', 'Shanghai'].map(t => (
-            <span key={t} className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}>{t}</span>
-          ))}
-        </div>
+        {profile && (
+          <div className="flex gap-1.5 flex-wrap mb-3">
+            {[
+              `${profile.age}${profile.gender === 'male' ? 'M' : 'F'}`,
+              profile.ethnicity,
+              `${profile.height}cm`,
+              `→${profile.targetWeight}kg`,
+              profile.location,
+            ].map(t => (
+              <span key={t} className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'var(--bg-elevated)', color: 'var(--text-muted)' }}>{t}</span>
+            ))}
+          </div>
+        )}
 
         {/* Tab switcher */}
         <div className="flex gap-1 p-1 rounded-2xl" style={{ background: 'var(--bg-elevated)' }}>
@@ -203,7 +214,7 @@ export default function CoachPage() {
               </div>
               <div>
                 <p className="text-base font-extrabold mb-1" style={{ color: 'var(--text)' }}>Your Weekly Program</p>
-                <p className="text-sm max-w-xs" style={{ color: 'var(--text-muted)' }}>Dr. Chen will build a personalised Mon–Sun training and nutrition plan based on your health data.</p>
+                <p className="text-sm max-w-xs" style={{ color: 'var(--text-muted)' }}>Your coach will build a personalised Mon–Sun training and nutrition plan based on your health data.</p>
               </div>
               <button
                 onClick={loadWeekly}
@@ -250,7 +261,7 @@ export default function CoachPage() {
                   <div className="card px-4 py-3">
                     <div className="flex items-center gap-1.5 mb-2">
                       <Brain size={11} style={{ color: 'var(--recovery)' }} />
-                      <span className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: 'var(--recovery)' }}>Dr. Marcus Chen</span>
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: 'var(--recovery)' }}>Health Coach</span>
                     </div>
                     {parseMarkdown(msg.content)}
                   </div>
@@ -294,7 +305,7 @@ export default function CoachPage() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
-                placeholder="Ask Dr. Chen anything…"
+                placeholder="Ask your coach anything…"
                 className="flex-1 bg-transparent text-sm resize-none outline-none max-h-24 min-h-[20px]"
                 style={{ color: 'var(--text)' }}
                 rows={1}

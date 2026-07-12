@@ -1,0 +1,82 @@
+[
+  {
+    "topic": "Protein intake for body recomposition",
+    "citation": "Morton et al., 2018, British Journal of Sports Medicine (meta-analysis, 49 studies)",
+    "finding": "Protein intakes up to ~1.6g/kg/day maximize resistance-training-induced gains in muscle mass; higher intakes (up to 2.2g/kg/day) show benefit for lean individuals in a calorie deficit."
+  },
+  {
+    "topic": "Protein distribution",
+    "citation": "Schoenfeld & Aragon, 2018, Journal of the International Society of Sports Nutrition",
+    "finding": "~0.4g/kg per meal across 3-4 meals/day maximizes muscle protein synthesis versus skewed distribution."
+  },
+  {
+    "topic": "NAFLD — weight loss target",
+    "citation": "Vilar-Gomez et al., 2015, Gastroenterology",
+    "finding": "≥7% body weight loss resolves NASH in most patients; ≥10% loss can regress fibrosis. Weight loss is the single most effective intervention for fatty liver."
+  },
+  {
+    "topic": "NAFLD — exercise independent of weight loss",
+    "citation": "Hashida et al., 2017, Journal of Hepatology (systematic review)",
+    "finding": "Aerobic and resistance exercise reduce intrahepatic fat even without significant weight loss, via improved insulin sensitivity."
+  },
+  {
+    "topic": "NAFLD — clinical guidelines",
+    "citation": "EASL-EASD-EASO Clinical Practice Guidelines, 2016 (updated 2024)",
+    "finding": "First-line management is lifestyle: calorie deficit, reduced saturated fat/added sugar, increased fibre, ≥150min/week moderate aerobic activity, resistance training 2-3x/week, and alcohol minimization."
+  },
+  {
+    "topic": "NAFLD — added sugar / fructose",
+    "citation": "Zelber-Sagi et al., 2018, Liver International",
+    "finding": "Fructose-sweetened beverages are independently associated with liver fat accumulation regardless of total calorie intake."
+  },
+  {
+    "topic": "Cardiorespiratory fitness and mortality",
+    "citation": "Mandsager et al., 2018, JAMA Network Open (122,007 patients)",
+    "finding": "Higher cardiorespiratory fitness (VO2 max) shows a continuous, dose-dependent inverse association with all-cause mortality — the strongest modifiable predictor of longevity studied."
+  },
+  {
+    "topic": "Resistance training and mortality",
+    "citation": "Momma et al., 2022, British Journal of Sports Medicine (meta-analysis)",
+    "finding": "Muscle-strengthening activity 30-60 min/week associated with 10-20% lower all-cause, cardiovascular, and cancer mortality; more is not better beyond ~60min/week."
+  },
+  {
+    "topic": "VO2 max training method",
+    "citation": "Milanović et al., 2015, Sports Medicine (meta-analysis)",
+    "finding": "High-intensity interval training produces larger VO2 max improvements than moderate continuous training in the same time budget."
+  },
+  {
+    "topic": "Polarized training distribution",
+    "citation": "Seiler, 2010, International Journal of Sports Physiology and Performance",
+    "finding": "Elite endurance athletes improve most with ~80% low-intensity (Zone 2) / ~20% high-intensity training rather than moderate-intensity-heavy plans."
+  },
+  {
+    "topic": "Sleep duration and mortality/metabolic risk",
+    "citation": "Cappuccio et al., 2010, Sleep (meta-analysis, 1.3M participants)",
+    "finding": "Both short (<6h) and long (>9h) sleep associated with increased mortality; 7-8h is the low-risk range for adults."
+  },
+  {
+    "topic": "Sleep duration recommendation",
+    "citation": "Watson et al., 2015, joint consensus statement, American Academy of Sleep Medicine & Sleep Research Society",
+    "finding": "Adults should sleep 7+ hours per night on a regular basis for optimal health."
+  },
+  {
+    "topic": "Alcohol and liver disease",
+    "citation": "EASL Clinical Practice Guidelines on NAFLD, 2016",
+    "finding": "Even moderate alcohol intake accelerates fibrosis progression in patients with existing fatty liver; abstinence or near-abstinence is advised."
+  },
+  {
+    "topic": "Asian-specific BMI thresholds",
+    "citation": "WHO Expert Consultation, 2004, The Lancet",
+    "finding": "For Asian populations, health risk rises at lower BMI than the standard scale: overweight ≥23 kg/m², obese ≥27.5 kg/m² (vs 25/30 on the standard WHO scale)."
+  },
+  {
+    "topic": "HRV and training readiness",
+    "citation": "Plews et al., 2013, Sports Medicine (review)",
+    "finding": "A declining rolling 7-day HRV average relative to baseline is a validated signal for reducing training load; day-to-day HRV alone is noisy and should be trended, not read in isolation."
+  },
+  {
+    "topic": "Fibre intake and metabolic/liver health",
+    "citation": "Ma et al., 2018, Journal of Hepatology",
+    "finding": "Higher dietary fibre intake is independently associated with lower odds of NAFLD, largely via improved insulin sensitivity and gut microbiome effects."
+  }
+]
